@@ -25,6 +25,7 @@
       "@hooks/*": ["./hooks/*"],
       "@utils/*": ["./utils/*"],
       "@pages/*": ["./pages/*"],
+      "@layouts/*": ["./layouts/*"],
     },
   },
   "include": ["src"],
