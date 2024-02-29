@@ -38,7 +38,7 @@ const DashboardNavbar = ({ handleOpenSidebar, isSidebarOpen }: Props) => {
         isSidebarOpen && "pl-64"
       }  w-full transition-all duration-300`}
     >
-      <div className="h-20 shadow-md flex items-center pl-6 pr-8">
+      <div className="h-20 shadow-md flex items-center px-6">
         <div className="w-full flex justify-between items-center">
           <div className="flex items-center gap-4">
             <button onClick={handleOpenSidebar}>
