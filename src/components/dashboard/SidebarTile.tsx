@@ -12,7 +12,7 @@ const SidebarTile = ({ isActive = false, Icon, name }: Props) => {
 
   return (
     <Link
-      to={`./${linkPath}`}
+      to={`${name === "Home" ? "." : `./${linkPath}`}`}
       relative="path"
       className={`${
         isActive ? "bg-purple-100" : "bg-white"
