@@ -3,7 +3,12 @@ import { IoIosArrowDown } from "react-icons/io";
 import { IoIosLogOut } from "react-icons/io";
 import { useEffect, useState, useRef } from "react";
 
-const DashboardNavbar: React.FC = () => {
+interface Props {
+  handleOpenSidebar: () => void;
+  isSidebarOpen: boolean;
+}
+
+const DashboardNavbar = ({ handleOpenSidebar, isSidebarOpen }: Props) => {
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] =
     useState<boolean>(false);
 
@@ -11,11 +16,14 @@ const DashboardNavbar: React.FC = () => {
 
   useEffect(() => {
     const closeProfileDropdown = (e: MouseEvent) => {
-      if (dropdownRef.current && dropdownRef.current.contains(e.target as Node)) {
+      if (
+        dropdownRef.current &&
+        dropdownRef.current.contains(e.target as Node)
+      ) {
         return;
       }
       setIsProfileDropdownOpen(false);
-    }
+    };
 
     window.addEventListener("click", closeProfileDropdown);
 
@@ -24,13 +32,16 @@ const DashboardNavbar: React.FC = () => {
     };
   }, []);
 
-
   return (
-    <div className="z-40 absolute left-0 top-0 pl-64 w-full">
+    <div
+      className={`z-40 absolute left-0 top-0 ${
+        isSidebarOpen && "pl-64"
+      }  w-full transition-all duration-300`}
+    >
       <div className="h-20 shadow-md flex items-center pl-6 pr-8">
         <div className="w-full flex justify-between items-center">
           <div className="flex items-center gap-4">
-            <button>
+            <button onClick={handleOpenSidebar}>
               <RxHamburgerMenu className="text-3xl" />
             </button>
             <p>
@@ -51,9 +62,7 @@ const DashboardNavbar: React.FC = () => {
             </button>
 
             {isProfileDropdownOpen && (
-              <div
-                className="absolute top-16 right-0 w-36 bg-white shadow-md rounded-md py-2"
-              >
+              <div className="absolute top-16 right-0 w-36 bg-white shadow-md rounded-md py-2">
                 <div className="px-4 py-2 flex gap-2 items-center cursor-pointer">
                   <IoIosLogOut className="text-xl" />
                   <p>Logout</p>

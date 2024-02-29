@@ -11,6 +11,7 @@ export default defineConfig({
       "@hooks": "/src/hooks",
       "@utils": "/src/utils",
       "@layouts": "/src/layouts",
+      "@contexts": "/src/contexts",
     }
   }
 })
