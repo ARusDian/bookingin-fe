@@ -13,6 +13,7 @@ import Flight from "@pages/homes/flights/Flight";
 import Hotel from "@pages/homes/hotels/Hotel"; 
 import FlightPayments from "@pages/homes/flights/payments/FlightPayments";
 import HotelPayments from "@pages/homes/hotels/payments/HotelPayments";
+import TopupList from "@pages/dashboard/users/top-up/TopupList";
 
 const router = createBrowserRouter([
   {
@@ -56,11 +57,20 @@ const router = createBrowserRouter([
         element: <DashboardIndex />,
       },
       {
-        path: "users",
+        path: "user",
         children: [
           {
             index: true,
             element: <UserList />,
+          },
+          {
+            path: "top-up",
+            children: [
+              {
+                index: true,
+                element: <TopupList />,
+              },
+            ],
           },
           {
             path: "create",
@@ -69,31 +79,31 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "plane-tickets",
+        path: "plane-ticket",
         children: [
           {
             index: true,
-            element: <PlaneTicketList />
-          }
-        ]
+            element: <PlaneTicketList />,
+          },
+        ],
       },
       {
-        path: "hotel-tickets",
+        path: "hotel-ticket",
         children: [
           {
             index: true,
-            element: <HotelTicketList />
-          }
-        ]
+            element: <HotelTicketList />,
+          },
+        ],
       },
       {
-        path: "partners",
+        path: "partner",
         children: [
           {
             index: true,
-            element: <PartnerList />
-          }
-        ]
+            element: <PartnerList />,
+          },
+        ],
       },
     ],
   },

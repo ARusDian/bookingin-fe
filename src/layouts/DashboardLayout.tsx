@@ -7,7 +7,7 @@ const DashboardLayout = () => {
   const { openSidebar, handleOpenSidebar } = useOpenSidebar();
 
   return (
-    <div>
+    <div className="bg-slate-50">
       <DashboardNavbar
         handleOpenSidebar={handleOpenSidebar}
         isSidebarOpen={openSidebar}
@@ -16,7 +16,7 @@ const DashboardLayout = () => {
       <div
         className={`${
           openSidebar ? "ml-64" : ""
-        } mt-20 bg-slate-50 min-h-screen transition-all duration-300`}
+        } mt-20 min-h-screen transition-all duration-300`}
       >
         <Outlet />
       </div>
