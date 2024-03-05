@@ -9,12 +9,24 @@ import UserAdd from "@pages/dashboard/users/UserAdd";
 import PlaneTicketList from "@pages/dashboard/plane-tickets/PlaneTicketList";
 import HotelTicketList from "@pages/dashboard/hotel-tickets/HotelTicketList";
 import PartnerList from "@pages/dashboard/partners/PartnerList";
+import Flight from "@pages/flights/Flight";
+import Hotel from "@pages/hotels/Hotel";
 
 const router = createBrowserRouter([
   {
     path: "/",
     index: true,
     element: <Home />,
+  },
+  {
+    path: "/hotel",
+    index: true,
+    element: <Hotel />,
+  },
+  {
+    path: "/flight",
+    index: true,
+    element: <Flight />,
   },
   {
     path: "/dashboard",
