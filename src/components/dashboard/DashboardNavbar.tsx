@@ -62,7 +62,7 @@ const DashboardNavbar = ({ handleOpenSidebar, isSidebarOpen }: Props) => {
             </button>
 
             {isProfileDropdownOpen && (
-              <div className="absolute top-16 right-0 w-36 shadow-md rounded-md py-2">
+              <div className="absolute top-16 right-0 w-36 shadow-md rounded-md py-2 bg-white">
                 <div className="px-4 py-2 flex gap-2 items-center cursor-pointer">
                   <IoIosLogOut className="text-xl" />
                   <p>Logout</p>
