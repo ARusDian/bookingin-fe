@@ -1,55 +1,56 @@
-import { Link } from "react-router-dom";
-import { IoMdArrowBack } from "react-icons/io";
+import { useParams } from "react-router-dom";
 
-const UserAdd = () => {
+const UserEdit = () => {
+  const { user_id } = useParams();
+
   return (
-    <div className="py-4 px-6">
-      <div className="flex max-w-2xl justify-between mx-auto items-center relative">
-        <Link
-          to={".."}
-          relative="path"
-          className="absolute flex items-center gap-2 font-roboto hover:text-purple-500"
-        >
-          <IoMdArrowBack className="text-xl" />
-          <span>Kembali</span>
-        </Link>
-        <p className="text-2xl font-semibold text-center mb-4 flex-1">
-          Add User
-        </p>
-        <p></p>
-      </div>
+    <div className="px-6 py-4">
+      <p className="text-2xl font-semibold text-center mb-4">
+        Edit User {user_id}
+      </p>
       <div className="max-w-2xl mx-auto border rounded-lg shadow-md">
         <form className="flex flex-col p-4 space-y-4">
           <div className="flex flex-col space-y-1">
             <label htmlFor="name" className="text-lg font-medium">
               Name
             </label>
-            <input type="text" id="name" className="border p-2 rounded-lg" />
+            <input
+              type="text"
+              id="name"
+              className="border p-2 rounded-lg"
+              disabled
+            />
           </div>
           <div className="flex flex-col space-y-1">
             <label htmlFor="email" className="text-lg font-medium">
               Email
             </label>
-            <input type="email" id="email" className="border p-2 rounded-lg" />
-          </div>
-          <div className="flex flex-col space-y-1">
-            <label htmlFor="password" className="text-lg font-medium">
-              Password
-            </label>
             <input
-              type="password"
-              id="password"
+              type="email"
+              id="email"
               className="border p-2 rounded-lg"
+              disabled
             />
           </div>
           <div className="flex flex-col space-y-1">
             <label htmlFor="role" className="text-lg font-medium">
               Role
             </label>
-            <select id="role" className="border p-2 rounded-lg">
+            <select id="role" className="border p-2 rounded-lg" disabled>
               <option value="admin">Admin</option>
               <option value="user">User</option>
             </select>
+          </div>
+          <div className="flex flex-col space-y-1">
+            <label htmlFor="password" className="text-lg font-medium">
+              Currency Amount
+            </label>
+            <input
+              type="number"
+              id="currency"
+              className="border p-2 rounded-lg"
+              defaultValue={0}
+            />
           </div>
           <div className="flex justify-center">
             <button
@@ -65,4 +66,4 @@ const UserAdd = () => {
   );
 };
 
-export default UserAdd;
+export default UserEdit;

@@ -1,6 +1,8 @@
 const HotelTicketList = () => {
   return (
-    <div>HotelTicketList</div>
+    <div className="py-4 px-6">
+      <p className="text-2xl font-medium">Daftar Tiket Hotel</p>
+    </div>
   )
 }
 

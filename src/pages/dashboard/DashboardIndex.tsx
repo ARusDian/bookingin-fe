@@ -1,7 +1,7 @@
 const DashboardIndex = () => {
   return (
     <div className='p-4'>
-      <p>Ariq Keren</p>
+      <p>Kelompok 2 - PABW B</p>
     </div>
   )
 }

@@ -17,7 +17,7 @@ const SidebarTile = ({ isActive = false, Icon, linkTo, name, children, className
         to={linkTo}
         relative="path"
         className={`${
-          isActive ? "bg-purple-100" : "bg-white"
+          isActive ? "bg-purple-100" : ""
         } flex flex-row gap-2 items-center hover:bg-purple-100 py-3 px-4 transition-colors duration-200 ease-in-out rounded-lg ${className}`}
       >
         <Icon className="text-2xl" />
