@@ -15,8 +15,8 @@ const DashboardLayout = () => {
       <DashboardSidebar isOpen={openSidebar} />
       <div
         className={`${
-          openSidebar ? "ml-64" : ""
-        } mt-20 min-h-screen transition-all duration-300`}
+          openSidebar ? "pl-64" : ""
+        } pt-20 min-h-screen transition-all duration-300`}
       >
         <Outlet />
       </div>

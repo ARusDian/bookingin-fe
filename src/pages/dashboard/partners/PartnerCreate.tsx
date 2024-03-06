@@ -1,9 +1,12 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
 import { IoMdArrowBack } from "react-icons/io";
+import { Link } from "react-router-dom";
 
-const UserAdd = () => {
+const PartnerCreate = () => {
+  const [type, setType] = useState<string>("hotel");
+
   return (
-    <div className="py-4 px-6">
+    <div className="px-6 py-4">
       <div className="flex max-w-2xl justify-between mx-auto items-center relative">
         <Link
           to={".."}
@@ -14,12 +17,26 @@ const UserAdd = () => {
           <span>Kembali</span>
         </Link>
         <p className="text-2xl font-semibold text-center mb-4 flex-1">
-          Add User
+          Tambah Mitra
         </p>
         <p></p>
       </div>
       <div className="max-w-2xl mx-auto border rounded-lg shadow-md">
         <form className="flex flex-col p-4 space-y-4">
+          <div className="flex flex-col space-y-1">
+            <label htmlFor="role" className="text-lg font-medium">
+              Jenis
+            </label>
+            <select
+              id="role"
+              className="border p-2 rounded-lg"
+              value={type}
+              onChange={(e) => setType(e.target.value)}
+            >
+              <option value="hotel">Hotel</option>
+              <option value="airline">Maskapai</option>
+            </select>
+          </div>
           <div className="flex flex-col space-y-1">
             <label htmlFor="name" className="text-lg font-medium">
               Name
@@ -27,29 +44,21 @@ const UserAdd = () => {
             <input type="text" id="name" className="border p-2 rounded-lg" />
           </div>
           <div className="flex flex-col space-y-1">
-            <label htmlFor="email" className="text-lg font-medium">
-              Email
+            <label htmlFor="description" className="text-lg font-medium">
+              Deskripsi
             </label>
-            <input type="email" id="email" className="border p-2 rounded-lg" />
+            <textarea id="description" className="border p-2 rounded-lg" />
           </div>
           <div className="flex flex-col space-y-1">
-            <label htmlFor="password" className="text-lg font-medium">
-              Password
+            <label htmlFor="alamat" className="text-lg font-medium">
+              Alamat
             </label>
             <input
-              type="password"
-              id="password"
+              type="text"
+              id="alamat"
               className="border p-2 rounded-lg"
+              disabled={type === "airline"}
             />
-          </div>
-          <div className="flex flex-col space-y-1">
-            <label htmlFor="role" className="text-lg font-medium">
-              Role
-            </label>
-            <select id="role" className="border p-2 rounded-lg">
-              <option value="admin">Admin</option>
-              <option value="user">User</option>
-            </select>
           </div>
           <div className="flex justify-center">
             <button
@@ -65,4 +74,4 @@ const UserAdd = () => {
   );
 };
 
-export default UserAdd;
+export default PartnerCreate;

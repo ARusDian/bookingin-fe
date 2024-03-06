@@ -14,6 +14,9 @@ import Hotel from "@pages/homes/hotels/Hotel";
 import FlightPayments from "@pages/homes/flights/payments/FlightPayments";
 import HotelPayments from "@pages/homes/hotels/payments/HotelPayments";
 import TopupList from "@pages/dashboard/users/top-up/TopupList";
+import UserEdit from "@pages/dashboard/users/UserEdit";
+import PartnerCreate from "@pages/dashboard/partners/PartnerCreate";
+import PartnerEdit from "@pages/dashboard/partners/PartnerEdit";
 
 const router = createBrowserRouter([
   {
@@ -64,17 +67,21 @@ const router = createBrowserRouter([
             element: <UserList />,
           },
           {
-            path: "top-up",
-            children: [
-              {
-                index: true,
-                element: <TopupList />,
-              },
-            ],
-          },
-          {
             path: "create",
             element: <UserAdd />,
+          },
+          {
+            path: "edit/:user_id",
+            element: <UserEdit />,
+          },
+        ],
+      },
+      {
+        path: "top-up",
+        children: [
+          {
+            index: true,
+            element: <TopupList />,
           },
         ],
       },
@@ -103,6 +110,14 @@ const router = createBrowserRouter([
             index: true,
             element: <PartnerList />,
           },
+          {
+            path: "create",
+            element: <PartnerCreate />,
+          },
+          {
+            path: "edit/:partner_id",
+            element: <PartnerEdit />,
+          }
         ],
       },
     ],

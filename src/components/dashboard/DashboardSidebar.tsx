@@ -22,6 +22,9 @@ const DashboardSidebar = ({ isOpen }: Props) => {
     return path;
   }, [pathname]);
 
+  console.log(currentPaths);
+  
+
   return (
     <div
       className={`z-50 w-64 h-screen fixed ${
@@ -39,31 +42,31 @@ const DashboardSidebar = ({ isOpen }: Props) => {
           linkTo="."
         />
         <SidebarTile
-          isActive={currentPaths[0] === "users"}
+          isActive={currentPaths[0] === "user"}
           Icon={TbUser}
           name="Users"
           linkTo="./user"
         />
         <SidebarTile
-          isActive={currentPaths[1] === "top-up"}
+          isActive={currentPaths[0] === "top-up"}
           Icon={MdAttachMoney}
           name="Top-up"
-          linkTo="./user/top-up"
+          linkTo="./top-up"
         />
         <SidebarTile
-          isActive={currentPaths[0] === "plane-tickets"}
+          isActive={currentPaths[0] === "plane-ticket"}
           Icon={TbTicket}
           name="Plane Tickets"
           linkTo="./plane-ticket"
         />
         <SidebarTile
-          isActive={currentPaths[0] === "hotel-tickets"}
+          isActive={currentPaths[0] === "hotel-ticket"}
           Icon={TbTicket}
           name="Hotel Tickets"
           linkTo="./hotel-ticket"
         />
         <SidebarTile
-          isActive={currentPaths[0] === "partners"}
+          isActive={currentPaths[0] === "partner"}
           Icon={TbSettings2}
           name="Partners"
           linkTo="partner"

@@ -1,6 +1,6 @@
 const TopupList = () => {
   return (
-    <div>TopupList</div>
+    <div className="py-4 px-6">Topup List</div>
   )
 }
 

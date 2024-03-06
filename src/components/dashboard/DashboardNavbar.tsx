@@ -54,15 +54,15 @@ const DashboardNavbar = ({ handleOpenSidebar, isSidebarOpen }: Props) => {
             ref={dropdownRef}
           >
             <div className="w-12 h-12 rounded-full border-2 flex items-center justify-center">
-              PP
+              AH
             </div>
-            <p className="font-medium">Ariq Ah Ah</p>
+            <p className="font-medium">Ariq Huwaidi</p>
             <button>
               <IoIosArrowDown />
             </button>
 
             {isProfileDropdownOpen && (
-              <div className="absolute top-16 right-0 w-36 bg-white shadow-md rounded-md py-2">
+              <div className="absolute top-16 right-0 w-36 shadow-md rounded-md py-2">
                 <div className="px-4 py-2 flex gap-2 items-center cursor-pointer">
                   <IoIosLogOut className="text-xl" />
                   <p>Logout</p>
