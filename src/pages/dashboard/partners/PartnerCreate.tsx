@@ -1,9 +1,25 @@
 import { useState } from "react";
 import { IoMdArrowBack } from "react-icons/io";
 import { Link } from "react-router-dom";
+import AsyncSelect from "react-select/async";
+
+const options = [
+  { value: "chocolate", label: "Chocolate" },
+  { value: "strawberry", label: "Strawberry" },
+  { value: "vanilla", label: "Vanilla" },
+];
 
 const PartnerCreate = () => {
   const [type, setType] = useState<string>("hotel");
+
+  const loadOptions = (
+    inputValue: string,
+    callback: (options: { value: string; label: string }[]) => void
+  ) => {
+    setTimeout(() => {
+      callback(options);
+    }, 1000);
+  };
 
   return (
     <div className="px-6 py-4">
@@ -59,6 +75,10 @@ const PartnerCreate = () => {
               className="border p-2 rounded-lg"
               disabled={type === "airline"}
             />
+          </div>
+          <div className="flex flex-col space-y-1">
+            <label htmlFor="">Tambahkan Akun Pengguna</label>
+            <AsyncSelect cacheOptions isMulti loadOptions={loadOptions} defaultOptions/>
           </div>
           <div className="flex justify-center">
             <button
