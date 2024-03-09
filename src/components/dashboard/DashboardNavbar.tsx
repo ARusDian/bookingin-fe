@@ -12,6 +12,7 @@ interface Props {
 const DashboardNavbar = ({ handleOpenSidebar, isSidebarOpen }: Props) => {
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] =
     useState<boolean>(false);
+  const { name } = useAuth();
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { logout } = useAuth();
@@ -47,7 +48,7 @@ const DashboardNavbar = ({ handleOpenSidebar, isSidebarOpen }: Props) => {
               <RxHamburgerMenu className="text-3xl" />
             </button>
             <p>
-              Welcome! <span className="font-medium">Admin</span>
+              Welcome! <span className="font-medium">{name ? name : "..."}</span>
             </p>
           </div>
           <div
@@ -58,7 +59,7 @@ const DashboardNavbar = ({ handleOpenSidebar, isSidebarOpen }: Props) => {
             <div className="w-12 h-12 rounded-full border-2 flex items-center justify-center">
               AH
             </div>
-            <p className="font-medium">Ariq Huwaidi</p>
+            <p className="font-medium">{name ? name : "..."}</p>
             <button>
               <IoIosArrowDown />
             </button>
