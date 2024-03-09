@@ -128,13 +128,6 @@ const UserList = () => {
         <Link
           to={`./edit/${row.original.id}`}
           relative="path"
-          className="px-4 py-2 bg-purple-200 font-medium items-center space-x-1 rounded-lg hover:bg-purple-300"
-        >
-          Lihat
-        </Link>
-        <Link
-          to={`./edit/${row.original.id}`}
-          relative="path"
           className="px-4 py-2 bg-blue-200 font-medium items-center space-x-1 rounded-lg hover:bg-blue-300"
         >
           <span>Edit</span>
