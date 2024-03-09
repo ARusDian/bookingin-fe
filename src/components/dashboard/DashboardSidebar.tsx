@@ -20,10 +20,7 @@ const DashboardSidebar = ({ isOpen }: Props) => {
       .filter((path) => path !== "");
     path.shift();
     return path;
-  }, [pathname]);
-
-  console.log(currentPaths);
-  
+  }, [pathname]);  
 
   return (
     <div

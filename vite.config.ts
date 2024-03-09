@@ -12,6 +12,7 @@ export default defineConfig({
       "@utils": "/src/utils",
       "@layouts": "/src/layouts",
       "@contexts": "/src/contexts",
+      "@lib": "/src/lib",
     }
   }
 })

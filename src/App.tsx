@@ -1,6 +1,7 @@
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { CookiesProvider } from "react-cookie";
 import Home from "@pages/homes/Home";
 import "./App.css";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import DashboardLayout from "@layouts/DashboardLayout";
 import DashboardIndex from "@pages/dashboard/DashboardIndex";
 import UserList from "@pages/dashboard/users/UserList";
@@ -16,6 +17,7 @@ import TopupList from "@pages/dashboard/users/top-up/TopupList";
 import UserEdit from "@pages/dashboard/users/UserEdit";
 import PartnerCreate from "@pages/dashboard/partners/PartnerCreate";
 import PartnerEdit from "@pages/dashboard/partners/PartnerEdit";
+import LoginAdmin from "@pages/LoginAdmin";
 
 const router = createBrowserRouter([
   {
@@ -49,6 +51,10 @@ const router = createBrowserRouter([
         element: <FlightPayments />,
       },
     ],
+  },
+  {
+    path: "login-admin",
+    element: <LoginAdmin />,
   },
   {
     path: "/dashboard",
@@ -128,7 +134,11 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <CookiesProvider defaultSetOptions={{ path: "/" }}>
+      <RouterProvider router={router} />;
+    </CookiesProvider>
+  );
 }
 
 export default App;

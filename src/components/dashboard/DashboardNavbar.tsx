@@ -2,6 +2,7 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { IoIosArrowDown } from "react-icons/io";
 import { IoIosLogOut } from "react-icons/io";
 import { useEffect, useState, useRef } from "react";
+import { useAuth } from "@contexts/providers/AuthContext";
 
 interface Props {
   handleOpenSidebar: () => void;
@@ -13,6 +14,7 @@ const DashboardNavbar = ({ handleOpenSidebar, isSidebarOpen }: Props) => {
     useState<boolean>(false);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { logout } = useAuth();
 
   useEffect(() => {
     const closeProfileDropdown = (e: MouseEvent) => {
@@ -63,10 +65,13 @@ const DashboardNavbar = ({ handleOpenSidebar, isSidebarOpen }: Props) => {
 
             {isProfileDropdownOpen && (
               <div className="absolute top-16 right-0 w-36 shadow-md rounded-md py-2 bg-white">
-                <div className="px-4 py-2 flex gap-2 items-center cursor-pointer">
+                <button
+                  onClick={logout}
+                  className="px-4 py-2 flex gap-2 items-center cursor-pointer"
+                >
                   <IoIosLogOut className="text-xl" />
                   <p>Logout</p>
-                </div>
+                </button>
               </div>
             )}
           </div>
