@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { IoMdAdd } from "react-icons/io";
 
 const UserList = () => {
+  console.log(import.meta.env.VITE_API_URL);
+
   return (
     <div className="py-4 px-6">
       <div className="flex justify-between items-center">
