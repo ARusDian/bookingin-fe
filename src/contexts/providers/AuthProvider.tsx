@@ -5,7 +5,7 @@ import AuthContext from "./AuthContext";
 import api from "@lib/api";
 
 const AuthProvider = ({ children }: PropsWithChildren) => {
-  const [data, setData] = useState({ id: 0, role: "" });
+  const [data, setData] = useState({ id: 0, name: "", role: "" });
   const [cookies, , removeCookie] = useCookies(["token"]);
   const navigate = useNavigate();
 
@@ -14,7 +14,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
       navigate("/login-admin");
     } else if (!data.id) {
       api
-        .get("/user/profile", {
+        .get("/me", {
           headers: {
             Authorization: `Bearer ${cookies.token}`,
           },
@@ -22,6 +22,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
         .then((res) => {
           setData({
             id: res.data.data.id,
+            name: res.data.data.name,
             role: res.data.data.role,
           });
         })
