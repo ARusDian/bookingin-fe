@@ -1,5 +1,6 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { CookiesProvider } from "react-cookie";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Home from "@pages/homes/Home";
 import "./App.css";
 import DashboardLayout from "@layouts/DashboardLayout";
@@ -18,6 +19,8 @@ import UserEdit from "@pages/dashboard/users/UserEdit";
 import PartnerCreate from "@pages/dashboard/partners/PartnerCreate";
 import PartnerEdit from "@pages/dashboard/partners/PartnerEdit";
 import LoginAdmin from "@pages/LoginAdmin";
+
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
@@ -135,9 +138,11 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <CookiesProvider defaultSetOptions={{ path: "/" }}>
-      <RouterProvider router={router} />;
-    </CookiesProvider>
+    <QueryClientProvider client={queryClient}>
+      <CookiesProvider defaultSetOptions={{ path: "/" }}>
+        <RouterProvider router={router} />;
+      </CookiesProvider>
+    </QueryClientProvider>
   );
 }
 

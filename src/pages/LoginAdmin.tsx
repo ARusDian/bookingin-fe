@@ -18,6 +18,7 @@ const LoginAdmin = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     api
       .post("/login", { email, password })
       .then((res) => {
