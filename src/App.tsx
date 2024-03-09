@@ -3,7 +3,6 @@ import "./App.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import DashboardLayout from "@layouts/DashboardLayout";
 import DashboardIndex from "@pages/dashboard/DashboardIndex";
-import OpenSidebarProvider from "@contexts/providers/OpenSidebarProvider";
 import UserList from "@pages/dashboard/users/UserList";
 import UserAdd from "@pages/dashboard/users/UserAdd";
 import PlaneTicketList from "@pages/dashboard/plane-tickets/PlaneTicketList";
@@ -117,7 +116,7 @@ const router = createBrowserRouter([
           {
             path: "edit/:partner_id",
             element: <PartnerEdit />,
-          }
+          },
         ],
       },
     ],
@@ -129,11 +128,7 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return (
-    <OpenSidebarProvider>
-      <RouterProvider router={router} />
-    </OpenSidebarProvider>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

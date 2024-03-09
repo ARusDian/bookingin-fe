@@ -1,10 +1,13 @@
 import DashboardNavbar from "@components/dashboard/DashboardNavbar";
 import DashboardSidebar from "@components/dashboard/DashboardSidebar";
-import { useOpenSidebar } from "@contexts/OpenSidebarContext";
+import { useState } from "react";
 import { Outlet } from "react-router-dom";
 
 const DashboardLayout = () => {
-  const { openSidebar, handleOpenSidebar } = useOpenSidebar();
+  const [openSidebar, setOpenSidebar] = useState<boolean>(true);
+  const handleOpenSidebar = () => {
+    setOpenSidebar(!openSidebar);
+  };
 
   return (
     <div className="bg-slate-50">
