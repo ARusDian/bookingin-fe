@@ -13,6 +13,7 @@ import { useCookies } from "react-cookie";
 import { currencyFormatter } from "@utils/currency_formatter";
 import { CiMoneyBill } from "react-icons/ci";
 import { MdDelete, MdOutlineEdit } from "react-icons/md";
+import FormModal from "../components/FormModal";
 
 type User = {
   id: number;
@@ -40,6 +41,7 @@ const UserList = () => {
     pageIndex: 0,
     pageSize: 10,
   });
+  const [selectedRowId, setSelectedRowId] = useState<number | null>(null);
   const {
     data: { data = [], meta } = {},
     isError,
@@ -97,9 +99,7 @@ const UserList = () => {
         size: 30,
         grow: false,
         Cell: ({ row }) => (
-          <span>
-            {currencyFormatter(row.original.balance)}
-          </span>
+          <span>{currencyFormatter(row.original.balance)}</span>
         ),
       },
       {
@@ -132,17 +132,20 @@ const UserList = () => {
           relative="path"
           className="px-3 py-1 bg-green-200 font-medium rounded-lg hover:bg-green-300"
         >
-          <CiMoneyBill className="text-2xl"/>
+          <CiMoneyBill className="text-2xl" />
         </Link>
         <Link
           to={`./edit/${row.original.id}`}
           relative="path"
           className="px-3 py-1 bg-blue-200 font-medium items-center space-x-1 rounded-lg hover:bg-blue-300"
         >
-          <MdOutlineEdit className="text-2xl"/>
+          <MdOutlineEdit className="text-2xl" />
         </Link>
-        <button className="px-3 py-1 bg-red-200 font-medium items-center space-x-1 rounded-lg hover:bg-red-300">
-          <MdDelete className="text-2xl"/>
+        <button
+          className="px-3 py-1 bg-red-200 font-medium items-center space-x-1 rounded-lg hover:bg-red-300"
+          onClick={() => setSelectedRowId(row.original.id)}
+        >
+          <MdDelete className="text-2xl" />
         </button>
       </div>
     ),
@@ -165,22 +168,46 @@ const UserList = () => {
   });
 
   return (
-    <div className="py-4 px-6">
-      <div className="flex justify-between items-center mb-2">
-        <p className="text-2xl font-medium">User List</p>
-        <Link
-          to="./create"
-          relative="path"
-          className="flex items-center space-x-1 bg-purple-200 font-medium px-4 py-2 rounded-lg hover:bg-purple-300"
-        >
-          <IoMdAdd className="text-xl" />
-          <span>Add User</span>
-        </Link>
+    <>
+      <FormModal open={!!selectedRowId} onClose={() => setSelectedRowId(null)}>
+        <div className="flex flex-col space-y-4 w-96">
+          <p className="text-lg font-medium">Are you sure want to delete user with id {selectedRowId}?</p>
+          <div className="flex justify-end space-x-4">
+            <button
+              onClick={() => setSelectedRowId(null)}
+              className="px-4 py-2 bg-red-200 font-medium items-center space-x-1 rounded-lg hover:bg-red-300"
+            >
+              No
+            </button>
+            <button
+              onClick={() => {
+                setSelectedRowId(null);
+                refetch();
+              }}
+              className="px-4 py-2 bg-green-200 font-medium items-center space-x-1 rounded-lg hover:bg-green-300"
+            >
+              Yes
+            </button>
+          </div>
+        </div>
+      </FormModal>
+      <div className="py-4 px-6">
+        <div className="flex justify-between items-center mb-2">
+          <p className="text-2xl font-medium">User List</p>
+          <Link
+            to="./create"
+            relative="path"
+            className="flex items-center space-x-1 bg-purple-200 font-medium px-4 py-2 rounded-lg hover:bg-purple-300"
+          >
+            <IoMdAdd className="text-xl" />
+            <span>Add User</span>
+          </Link>
+        </div>
+        <div className="">
+          <MaterialReactTable table={table} />
+        </div>
       </div>
-      <div className="">
-        <MaterialReactTable table={table} />
-      </div>
-    </div>
+    </>
   );
 };
 
