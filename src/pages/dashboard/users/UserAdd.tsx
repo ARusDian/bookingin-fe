@@ -4,7 +4,7 @@ import { useState } from "react";
 import api from "@lib/api";
 import { useMutation } from "@tanstack/react-query";
 import { useCookies } from "react-cookie";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AxiosError } from "axios";
 import { AxiosErrorResponse, UserForm } from "@lib/model";
@@ -57,7 +57,6 @@ const UserAdd = () => {
 
   return (
     <>
-      <ToastContainer />
       <div className="py-4 px-6">
         <div className="flex max-w-2xl justify-between mx-auto items-center relative">
           <Link
