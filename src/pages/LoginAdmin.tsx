@@ -11,7 +11,7 @@ const LoginAdmin = () => {
     if (cookie["token"]) {
       navigate("/dashboard");
     }
-  }, [cookie, navigate])
+  }, [cookie, navigate]);
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -22,7 +22,9 @@ const LoginAdmin = () => {
     api
       .post("/login", { email, password })
       .then((res) => {
-        setCookie("token", res.data.data.token);
+        setCookie("token", res.data.data.token, {
+          expires: new Date(res.data.data.expires_at),
+        });
       })
       .catch((err) => {
         console.log(err);
