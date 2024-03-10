@@ -55,17 +55,19 @@ const UserEdit = () => {
       });
     },
     onSuccess: (data) => {
-      toast.success(data.data, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
       navigate("../..", { relative: "path" });
+      setTimeout(() => {
+        toast.success(data, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }, 1);
     },
   });
 
