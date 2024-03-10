@@ -7,15 +7,7 @@ import { useCookies } from "react-cookie";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AxiosError } from "axios";
-import { AxiosErrorResponse } from "@lib/model";
-
-type UserForm = {
-  name: string;
-  email: string;
-  phone: string;
-  password: string;
-  role: "admin" | "user" | "partner";
-};
+import { AxiosErrorResponse, UserForm } from "@lib/model";
 
 const postUser = async (data: UserForm, token: string) => {
   const { data: response } = await api.post("/admin/user/create", data, {

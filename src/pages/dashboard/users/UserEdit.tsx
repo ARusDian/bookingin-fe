@@ -1,7 +1,19 @@
+// import { UserForm } from "@lib/model";
+// import { useState } from "react";
 import { useParams } from "react-router-dom";
+// import { useQuery } from "@tanstack/react-query";
+
+// type EditUserForm = Omit<UserForm, "password">;
 
 const UserEdit = () => {
   const { user_id } = useParams();
+
+  // const { data, setData } = useState<EditUserForm>({
+  //   name: "",
+  //   email: "",
+  //   phone: "",
+  //   role: "user",
+  // });
 
   return (
     <div className="px-6 py-4">
