@@ -11,6 +11,8 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import api from "@lib/api";
 import { useCookies } from "react-cookie";
 import { currencyFormatter } from "@utils/currency_formatter";
+import { CiMoneyBill } from "react-icons/ci";
+import { MdDelete, MdOutlineEdit } from "react-icons/md";
 
 type User = {
   id: number;
@@ -124,16 +126,23 @@ const UserList = () => {
     onPaginationChange: setPagination,
     onGlobalFilterChange: setGlobalFilter,
     renderRowActions: ({ row }) => (
-      <div className="space-x-1">
+      <div className="flex space-x-1">
+        <Link
+          to={`./top-up/${row.original.id}`}
+          relative="path"
+          className="px-3 py-1 bg-green-200 font-medium rounded-lg hover:bg-green-300"
+        >
+          <CiMoneyBill className="text-2xl"/>
+        </Link>
         <Link
           to={`./edit/${row.original.id}`}
           relative="path"
-          className="px-4 py-2 bg-blue-200 font-medium items-center space-x-1 rounded-lg hover:bg-blue-300"
+          className="px-3 py-1 bg-blue-200 font-medium items-center space-x-1 rounded-lg hover:bg-blue-300"
         >
-          <span>Edit</span>
+          <MdOutlineEdit className="text-2xl"/>
         </Link>
-        <button className="px-4 py-2 bg-red-200 font-medium items-center space-x-1 rounded-lg hover:bg-red-300">
-          Delete
+        <button className="px-3 py-1 bg-red-200 font-medium items-center space-x-1 rounded-lg hover:bg-red-300">
+          <MdDelete className="text-2xl"/>
         </button>
       </div>
     ),
