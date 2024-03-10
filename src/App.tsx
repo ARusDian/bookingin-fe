@@ -15,10 +15,12 @@ import Hotel from "@pages/homes/hotels/Hotel";
 import FlightPayments from "@pages/homes/flights/payments/FlightPayments";
 import HotelPayments from "@pages/homes/hotels/payments/HotelPayments";
 import TopupList from "@pages/dashboard/users/top-up/TopupList";
+import Topup from "@pages/dashboard/users/top-up/Topup";
 import UserEdit from "@pages/dashboard/users/UserEdit";
 import PartnerCreate from "@pages/dashboard/partners/PartnerCreate";
 import PartnerEdit from "@pages/dashboard/partners/PartnerEdit";
 import LoginAdmin from "@pages/LoginAdmin";
+import { ToastContainer } from "react-toastify";
 
 const queryClient = new QueryClient();
 
@@ -82,14 +84,14 @@ const router = createBrowserRouter([
             path: "edit/:user_id",
             element: <UserEdit />,
           },
-        ],
-      },
-      {
-        path: "top-up",
-        children: [
           {
-            index: true,
-            element: <TopupList />,
+            path: "top-up/:user_id",
+            children: [
+              {
+                index: true,
+                element: <Topup />,
+              },
+            ],
           },
         ],
       },
@@ -138,11 +140,14 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <CookiesProvider defaultSetOptions={{ path: "/" }}>
-        <RouterProvider router={router} />;
-      </CookiesProvider>
-    </QueryClientProvider>
+    <>
+      <ToastContainer />
+      <QueryClientProvider client={queryClient}>
+        <CookiesProvider defaultSetOptions={{ path: "/" }}>
+          <RouterProvider router={router} />;
+        </CookiesProvider>
+      </QueryClientProvider>
+    </>
   );
 }
 
