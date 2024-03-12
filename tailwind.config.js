@@ -8,6 +8,9 @@ export default {
     extend: {
       fontFamily: {
         "roboto": ["Roboto", "sans-serif"],
+      },
+      height: {
+        "dashboard-outlet": "calc(100vh - 8rem)"
       }
     },
   },

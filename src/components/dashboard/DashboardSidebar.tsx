@@ -30,7 +30,7 @@ const DashboardSidebar = ({ isOpen }: Props) => {
     <div
       className={`z-50 w-64 h-screen fixed ${
         isOpen ? "left-0" : "-left-64"
-      } top-0 border-r border-opacity-5 transition-all duration-300 `}
+      } top-0 border-r border-opacity-5 transition-all duration-300 bg-white`}
     >
       <p className="flex text-2xl font-bold h-20 items-center px-4 font-roboto tracking-wider">
         BOOKINGIN

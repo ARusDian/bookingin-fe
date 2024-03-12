@@ -25,13 +25,13 @@ Analisis Kebutuhan Sistem Booking Hotel dan Penerbangan
 > mitra dapat melihat semua status ketersediaan kamar hotel dan kursi penerbangan (khusus yang ia tambahkan sendiri)
 > mitra dapat melihat identitas user yang telah memesan kamar hotel dan kursi penerbangan
 
-> admin dapat menambahkan saldo uang elektronik
-> admin dapat mengurangi saldo uang elektronik
-> admin dapat menambahkan pengguna
-> admin dapat menyunting pengguna
-> admin dapat menghapus pengguna
-> admin dapat melihat semua pengguna
-> admin dapat menambahkan mitra
+> admin dapat menambahkan saldo uang elektronik (done)
+> admin dapat mengurangi saldo uang elektronik (done)
+> admin dapat menambahkan pengguna (done)
+> admin dapat menyunting pengguna 
+> admin dapat menghapus pengguna (done)
+> admin dapat melihat semua pengguna (done)
+> admin dapat menambahkan mitra 
 > admin dapat menyunting mitra
 > admin dapat menghapus mitra
 > admin dapat melihat semua mitra

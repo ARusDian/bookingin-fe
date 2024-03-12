@@ -62,7 +62,7 @@ const DashboardLayout = () => {
       <div
         className={`${
           openSidebar ? "pl-64" : ""
-        } pt-20  transition-all duration-300`}
+        } pt-20 transition-all duration-300 -mb-6`}
       >
         <Outlet />
       </div>
