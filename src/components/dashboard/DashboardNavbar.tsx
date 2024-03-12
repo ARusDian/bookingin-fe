@@ -2,7 +2,8 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { IoIosArrowDown } from "react-icons/io";
 import { IoIosLogOut } from "react-icons/io";
 import { useEffect, useState, useRef } from "react";
-import { useAuth } from "@contexts/AuthContext";
+import { useAuthStore } from "../../zustand/auth";
+import { useCookies } from "react-cookie";
 
 interface Props {
   handleOpenSidebar: () => void;
@@ -12,10 +13,10 @@ interface Props {
 const DashboardNavbar = ({ handleOpenSidebar, isSidebarOpen }: Props) => {
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] =
     useState<boolean>(false);
-  const { name } = useAuth();
-
+  const [, , removeCookie] = useCookies(["token"]);
+  const user = useAuthStore((state) => state.user);
+  const logout = useAuthStore((state) => state.logout);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const { logout } = useAuth();
 
   useEffect(() => {
     const closeProfileDropdown = (e: MouseEvent) => {
@@ -48,7 +49,10 @@ const DashboardNavbar = ({ handleOpenSidebar, isSidebarOpen }: Props) => {
               <RxHamburgerMenu className="text-3xl" />
             </button>
             <p>
-              Welcome! <span className="font-medium">{name ? name : "..."}</span>
+              Welcome!{" "}
+              <span className="font-medium">
+                {user?.name ? user?.name : "..."}
+              </span>
             </p>
           </div>
           <div
@@ -59,7 +63,7 @@ const DashboardNavbar = ({ handleOpenSidebar, isSidebarOpen }: Props) => {
             <div className="w-12 h-12 rounded-full border-2 flex items-center justify-center">
               AH
             </div>
-            <p className="font-medium">{name ? name : "..."}</p>
+            <p className="font-medium">{user?.name ? user?.name : "..."}</p>
             <button>
               <IoIosArrowDown />
             </button>
@@ -67,7 +71,10 @@ const DashboardNavbar = ({ handleOpenSidebar, isSidebarOpen }: Props) => {
             {isProfileDropdownOpen && (
               <div className="absolute top-16 right-0 w-36 shadow-md rounded-md py-2 bg-white">
                 <button
-                  onClick={logout}
+                  onClick={() => {
+                    logout();
+                    removeCookie("token");
+                  }}
                   className="px-4 py-2 flex gap-2 items-center cursor-pointer"
                 >
                   <IoIosLogOut className="text-xl" />

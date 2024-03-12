@@ -6,7 +6,7 @@ import SidebarTile from "./SidebarTile";
 import { useLocation } from "react-router-dom";
 import { useMemo } from "react";
 import { MdAttachMoney } from "react-icons/md";
-import { useAuth } from "@contexts/AuthContext";
+import { useAuthStore } from "../../zustand/auth";
 
 interface Props {
   isOpen: boolean;
@@ -22,7 +22,7 @@ const DashboardSidebar = ({ isOpen }: Props) => {
     path.shift();
     return path;
   }, [pathname]);
-  const { role } = useAuth();
+  const role = useAuthStore((state) => state.user?.role);
 
   return (
     <div
