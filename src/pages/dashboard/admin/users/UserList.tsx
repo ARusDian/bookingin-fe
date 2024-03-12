@@ -41,6 +41,7 @@ const UserList = () => {
     pageIndex: 0,
     pageSize: 10,
   });
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState<number | null>(null);
   const {
     data: { data = [], meta } = {},
@@ -68,6 +69,20 @@ const UserList = () => {
         .then((res) => res.data),
     placeholderData: keepPreviousData,
   });
+
+  const deleteUser = (id: number) => {
+    setDeleteLoading(true);
+    api
+      .delete(`/admin/user/delete/${id}`, {
+        headers: { Authorization: `Bearer ${cookies.token}` },
+      })
+      .then(() => refetch())
+      .catch((err) => console.error(err))
+      .finally(() => {
+        setDeleteLoading(false);
+        setSelectedRowId(null);
+      });
+  };
 
   const columns: MRT_ColumnDef<User>[] = useMemo(
     () => [
@@ -171,7 +186,9 @@ const UserList = () => {
     <>
       <FormModal open={!!selectedRowId} onClose={() => setSelectedRowId(null)}>
         <div className="flex flex-col space-y-4 w-96">
-          <p className="text-lg font-medium">Are you sure want to delete user with id {selectedRowId}?</p>
+          <p className="text-lg font-medium">
+            Are you sure want to delete user with id {selectedRowId}?
+          </p>
           <div className="flex justify-end space-x-4">
             <button
               onClick={() => setSelectedRowId(null)}
@@ -180,8 +197,9 @@ const UserList = () => {
               No
             </button>
             <button
+              disabled={deleteLoading}
               onClick={() => {
-                setSelectedRowId(null);
+                deleteUser(selectedRowId!);
                 refetch();
               }}
               className="px-4 py-2 bg-green-200 font-medium items-center space-x-1 rounded-lg hover:bg-green-300"
