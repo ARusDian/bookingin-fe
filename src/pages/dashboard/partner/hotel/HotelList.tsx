@@ -9,6 +9,7 @@ import {
 import { useMemo, useState } from "react";
 import { useCookies } from "react-cookie";
 import { IoMdAdd } from "react-icons/io";
+import { FaRegEye } from "react-icons/fa";
 import { MdOutlineEdit } from "react-icons/md";
 import { Link } from "react-router-dom";
 
@@ -100,6 +101,13 @@ const HotelList = () => {
     onGlobalFilterChange: setGlobalFilter,
     renderRowActions: ({ row }) => (
       <div className="flex space-x-1">
+        <Link
+          to={`./${row.original.id}`}
+          relative="path"
+          className="px-3 py-1 bg-green-200 font-medium items-center space-x-1 rounded-lg hover:bg-green-300"
+        >
+          <FaRegEye className="text-2xl" />
+        </Link>
         <Link
           to={`./edit/${row.original.id}`}
           relative="path"

@@ -33,6 +33,7 @@ import { ToastContainer } from "react-toastify";
 import LogList from "@pages/dashboard/admin/log/LogList";
 import HotelList from "@pages/dashboard/partner/hotel/HotelList";
 import HotelCreate from "@pages/dashboard/partner/hotel/HotelCreate";
+import HotelDetail from "@pages/dashboard/partner/hotel/HotelDetail";
 
 const queryClient = new QueryClient();
 
@@ -151,6 +152,10 @@ const router = createBrowserRouter([
                 path: "create",
                 element: <HotelCreate />,
               },
+              {
+                path: ":hotel_id",
+                element: <HotelDetail />,
+              }
             ],
           },
         ],

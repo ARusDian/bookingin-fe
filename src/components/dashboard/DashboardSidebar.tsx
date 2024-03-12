@@ -59,7 +59,7 @@ const DashboardSidebar = ({ isOpen }: Props) => {
               linkTo="./plane-ticket"
             />
             <SidebarTile
-              isActive={currentPaths[0] === "hotel"}
+              isActive={currentPaths[1] === "hotel"}
               Icon={TbTicket}
               name="Hotel"
               linkTo="./partner/hotel"
