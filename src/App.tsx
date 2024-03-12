@@ -30,6 +30,7 @@ import PartnerCreate from "@pages/dashboard/admin/partners/PartnerCreate";
 import PartnerEdit from "@pages/dashboard/admin/partners/PartnerEdit";
 import LoginAdmin from "@pages/LoginAdmin";
 import { ToastContainer } from "react-toastify";
+import LogList from "@pages/dashboard/admin/log/LogList";
 
 const queryClient = new QueryClient();
 
@@ -138,6 +139,10 @@ const router = createBrowserRouter([
             element: <PartnerEdit />,
           },
         ],
+      },
+      {
+        path: "log",
+        element: <LogList />,
       },
     ],
   },

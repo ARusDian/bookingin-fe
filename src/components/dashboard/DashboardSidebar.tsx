@@ -6,7 +6,8 @@ import { RiProfileLine } from "react-icons/ri";
 import SidebarTile from "./SidebarTile";
 import { useLocation } from "react-router-dom";
 import { useMemo } from "react";
-import { MdAttachMoney } from "react-icons/md";
+import { IoDocumentOutline } from "react-icons/io5";
+// import { MdAttachMoney } from "react-icons/md";
 import { useAuthStore } from "../../zustand/auth";
 
 interface Props {
@@ -71,17 +72,23 @@ const DashboardSidebar = ({ isOpen }: Props) => {
                   name="Users"
                   linkTo="./user"
                 />
-                <SidebarTile
+                {/* <SidebarTile
                   isActive={currentPaths[0] === "top-up"}
                   Icon={MdAttachMoney}
                   name="Top-up"
                   linkTo="./top-up"
-                />
+                /> */}
                 <SidebarTile
                   isActive={currentPaths[0] === "partner"}
                   Icon={TbSettings2}
                   name="Partners"
                   linkTo="partner"
+                />
+                <SidebarTile
+                  isActive={currentPaths[0] === "log"}
+                  Icon={IoDocumentOutline}
+                  name="Log"
+                  linkTo="log"
                 />
               </>
             )}
