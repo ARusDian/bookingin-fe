@@ -2,7 +2,7 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { IoIosArrowDown } from "react-icons/io";
 import { IoIosLogOut } from "react-icons/io";
 import { useEffect, useState, useRef } from "react";
-import { useAuth } from "@contexts/providers/AuthContext";
+import { useAuth } from "@contexts/AuthContext";
 
 interface Props {
   handleOpenSidebar: () => void;

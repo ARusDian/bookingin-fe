@@ -1,7 +1,7 @@
 import { PropsWithChildren, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
-import AuthContext from "./AuthContext";
+import AuthContext from "../AuthContext";
 import api from "@lib/api";
 
 const AuthProvider = ({ children }: PropsWithChildren) => {
