@@ -17,3 +17,5 @@ export type HotelForm = {
   address: string, 
   description: string
 }
+
+export type AirlineForm = HotelForm;
