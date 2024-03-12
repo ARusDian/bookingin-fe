@@ -50,7 +50,7 @@ const LogList = () => {
           headers: { Authorization: `Bearer ${cookies.token}` },
           params: {
             page: pagination.pageIndex + 1,
-            limit: pagination.pageSize,
+            item: pagination.pageSize,
             search: globalFilter,
           },
         })
@@ -92,7 +92,6 @@ const LogList = () => {
           children: "Error loading data",
         }
       : undefined,
-    enableRowActions: true,
     manualPagination: true,
     onPaginationChange: setPagination,
     onGlobalFilterChange: setGlobalFilter,
