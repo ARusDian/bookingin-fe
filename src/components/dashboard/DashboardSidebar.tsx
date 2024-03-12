@@ -6,6 +6,7 @@ import SidebarTile from "./SidebarTile";
 import { useLocation } from "react-router-dom";
 import { useMemo } from "react";
 import { MdAttachMoney } from "react-icons/md";
+import { useAuth } from "@contexts/AuthContext";
 
 interface Props {
   isOpen: boolean;
@@ -20,7 +21,8 @@ const DashboardSidebar = ({ isOpen }: Props) => {
       .filter((path) => path !== "");
     path.shift();
     return path;
-  }, [pathname]);  
+  }, [pathname]);
+  const { role } = useAuth();
 
   return (
     <div
@@ -39,18 +41,6 @@ const DashboardSidebar = ({ isOpen }: Props) => {
           linkTo="."
         />
         <SidebarTile
-          isActive={currentPaths[0] === "user"}
-          Icon={TbUser}
-          name="Users"
-          linkTo="./user"
-        />
-        <SidebarTile
-          isActive={currentPaths[0] === "top-up"}
-          Icon={MdAttachMoney}
-          name="Top-up"
-          linkTo="./top-up"
-        />
-        <SidebarTile
           isActive={currentPaths[0] === "plane-ticket"}
           Icon={TbTicket}
           name="Plane Tickets"
@@ -62,12 +52,28 @@ const DashboardSidebar = ({ isOpen }: Props) => {
           name="Hotel Tickets"
           linkTo="./hotel-ticket"
         />
-        <SidebarTile
-          isActive={currentPaths[0] === "partner"}
-          Icon={TbSettings2}
-          name="Partners"
-          linkTo="partner"
-        />
+        {role && role === "ADMIN" && (
+          <>
+            <SidebarTile
+              isActive={currentPaths[0] === "user"}
+              Icon={TbUser}
+              name="Users"
+              linkTo="./user"
+            />
+            <SidebarTile
+              isActive={currentPaths[0] === "top-up"}
+              Icon={MdAttachMoney}
+              name="Top-up"
+              linkTo="./top-up"
+            />
+            <SidebarTile
+              isActive={currentPaths[0] === "partner"}
+              Icon={TbSettings2}
+              name="Partners"
+              linkTo="partner"
+            />
+          </>
+        )}
       </div>
     </div>
   );
