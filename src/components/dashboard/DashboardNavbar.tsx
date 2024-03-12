@@ -40,7 +40,7 @@ const DashboardNavbar = ({ handleOpenSidebar, isSidebarOpen }: Props) => {
     <div
       className={`z-40 absolute left-0 top-0 ${
         isSidebarOpen && "pl-64"
-      }  w-full transition-all duration-300`}
+      }  w-full transition-all duration-300 bg-white`}
     >
       <div className="h-20 shadow-md flex items-center px-6">
         <div className="w-full flex justify-between items-center">
