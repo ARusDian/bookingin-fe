@@ -13,7 +13,7 @@ import { useCookies } from "react-cookie";
 import { currencyFormatter } from "@utils/currency_formatter";
 import { CiMoneyBill } from "react-icons/ci";
 import { MdDelete, MdOutlineEdit } from "react-icons/md";
-import FormModal from "../components/FormModal";
+import FormModal from "../../components/FormModal";
 
 type User = {
   id: number;

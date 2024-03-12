@@ -19,6 +19,15 @@ import Topup from "@pages/dashboard/users/top-up/Topup";
 import UserEdit from "@pages/dashboard/users/UserEdit";
 import PartnerCreate from "@pages/dashboard/partners/PartnerCreate";
 import PartnerEdit from "@pages/dashboard/partners/PartnerEdit";
+import UserList from "@pages/dashboard/admin/users/UserList";
+import UserAdd from "@pages/dashboard/admin/users/UserAdd";
+import PlaneTicketList from "@pages/dashboard/admin/plane-tickets/PlaneTicketList";
+import HotelTicketList from "@pages/dashboard/admin/hotel-tickets/HotelTicketList";
+import PartnerList from "@pages/dashboard/admin/partners/PartnerList";
+import Topup from "@pages/dashboard/admin/users/top-up/Topup";
+import UserEdit from "@pages/dashboard/admin/users/UserEdit";
+import PartnerCreate from "@pages/dashboard/admin/partners/PartnerCreate";
+import PartnerEdit from "@pages/dashboard/admin/partners/PartnerEdit";
 import LoginAdmin from "@pages/LoginAdmin";
 import { ToastContainer } from "react-toastify";
 
