@@ -1,16 +1,23 @@
-import { useState } from 'react';
-import Modal from 'react-modal';
-import Login from './auth/Login';
+import React, { useState } from "react";
+import Modal from "react-modal";
+import Login from "./auth/Login";
+import Register from "./auth/Register";
 
 const Navbar = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [showLogin, setShowLogin] = React.useState(true);
 
   const openModal = () => {
     setIsModalOpen(true);
+    setShowLogin(true);
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
+  };
+
+  const toggleModalContent = () => {
+    setShowLogin(!showLogin);
   };
 
   return (
@@ -27,7 +34,7 @@ const Navbar = () => {
             className="ml-4 bg-pink-400 hover:bg-pink-500 text-white font-bold py-2 px-4 rounded"
             onClick={openModal}
           >
-            Sign In
+            Masuk
           </button>
         </div>
       </div>
@@ -35,13 +42,42 @@ const Navbar = () => {
       <Modal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
-        contentLabel="Example Modal"
+        contentLabel="Card Details"
+        ariaHideApp={false}
+        className="modal mt-2"
       >
-        <div>
-          <h2>Modal Content</h2>
-          <p>Put your modal content here.</p>
-          <Login />
-          <button onClick={closeModal}>Close Modal</button>
+        <div className="flex justify-end">
+          <button
+            className="text-gray-500 text-md hover:text-gray-700 mr-2"
+            onClick={closeModal}
+          >
+            X
+          </button>
+        </div>
+        <div className="p-8">
+          {showLogin ? (
+            <>
+              <Login />
+              <div>
+                <h1 onClick={toggleModalContent}>
+                  <span className="hover:italic hover:text-pink-400 cursor-pointer">
+                    Belum daftar akun ?
+                  </span>
+                </h1>
+              </div>
+            </>
+          ) : (
+            <>
+              <Register />
+              <div>
+                <h1 onClick={toggleModalContent}>
+                  <span className="hover:italic hover:text-pink-400 cursor-pointer">
+                    Masuk ?
+                  </span>
+                </h1>
+              </div>
+            </>
+          )}
         </div>
       </Modal>
     </nav>
