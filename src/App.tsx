@@ -9,8 +9,10 @@ import UserAdd from "@pages/dashboard/users/UserAdd";
 import PlaneTicketList from "@pages/dashboard/plane-tickets/PlaneTicketList";
 import HotelTicketList from "@pages/dashboard/hotel-tickets/HotelTicketList";
 import PartnerList from "@pages/dashboard/partners/PartnerList";
-import Flight from "@pages/flights/Flight";
-import Hotel from "@pages/hotels/Hotel";
+import Flight from "@pages/homes/flights/Flight";
+import Hotel from "@pages/homes/hotels/Hotel"; 
+import FlightPayments from "@pages/homes/flights/payments/FlightPayments";
+import HotelPayments from "@pages/homes/hotels/payments/HotelPayments";
 
 const router = createBrowserRouter([
   {
@@ -20,13 +22,30 @@ const router = createBrowserRouter([
   },
   {
     path: "/hotel",
-    index: true,
-    element: <Hotel />,
+    children: [
+      {
+        index: true,
+        element: <Hotel />,
+      },
+      {
+        index: true,
+        path: "payments",
+        element: <HotelPayments />,
+      },
+    ],
   },
   {
     path: "/flight",
-    index: true,
-    element: <Flight />,
+    children:[
+      {
+        index: true,
+        element: <Flight />,
+      },
+      {
+        path: "payments",
+        element: <FlightPayments />,
+      },
+    ],
   },
   {
     path: "/dashboard",
