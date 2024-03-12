@@ -2,6 +2,7 @@ import { TbUser } from "react-icons/tb";
 import { TbTicket } from "react-icons/tb";
 import { TbSettings2 } from "react-icons/tb";
 import { TbHome } from "react-icons/tb";
+import { RiProfileLine } from "react-icons/ri";
 import SidebarTile from "./SidebarTile";
 import { useLocation } from "react-router-dom";
 import { useMemo } from "react";
@@ -40,38 +41,50 @@ const DashboardSidebar = ({ isOpen }: Props) => {
           name="Home"
           linkTo="."
         />
-        <SidebarTile
-          isActive={currentPaths[0] === "plane-ticket"}
-          Icon={TbTicket}
-          name="Plane Tickets"
-          linkTo="./plane-ticket"
-        />
-        <SidebarTile
-          isActive={currentPaths[0] === "hotel-ticket"}
-          Icon={TbTicket}
-          name="Hotel Tickets"
-          linkTo="./hotel-ticket"
-        />
-        {role && role === "ADMIN" && (
+        {role && (
           <>
+            {role === "PARTNER" && (
+              <SidebarTile
+                isActive={currentPaths[0] === "partner-profile"}
+                Icon={RiProfileLine}
+                name="Partner Profile"
+                linkTo="./partner-profile"
+              />
+            )}
             <SidebarTile
-              isActive={currentPaths[0] === "user"}
-              Icon={TbUser}
-              name="Users"
-              linkTo="./user"
+              isActive={currentPaths[0] === "plane-ticket"}
+              Icon={TbTicket}
+              name="Plane Tickets"
+              linkTo="./plane-ticket"
             />
             <SidebarTile
-              isActive={currentPaths[0] === "top-up"}
-              Icon={MdAttachMoney}
-              name="Top-up"
-              linkTo="./top-up"
+              isActive={currentPaths[0] === "hotel-ticket"}
+              Icon={TbTicket}
+              name="Hotel Tickets"
+              linkTo="./hotel-ticket"
             />
-            <SidebarTile
-              isActive={currentPaths[0] === "partner"}
-              Icon={TbSettings2}
-              name="Partners"
-              linkTo="partner"
-            />
+            {role === "ADMIN" && (
+              <>
+                <SidebarTile
+                  isActive={currentPaths[0] === "user"}
+                  Icon={TbUser}
+                  name="Users"
+                  linkTo="./user"
+                />
+                <SidebarTile
+                  isActive={currentPaths[0] === "top-up"}
+                  Icon={MdAttachMoney}
+                  name="Top-up"
+                  linkTo="./top-up"
+                />
+                <SidebarTile
+                  isActive={currentPaths[0] === "partner"}
+                  Icon={TbSettings2}
+                  name="Partners"
+                  linkTo="partner"
+                />
+              </>
+            )}
           </>
         )}
       </div>
