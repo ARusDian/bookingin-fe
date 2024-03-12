@@ -20,6 +20,8 @@ import LogList from "@pages/dashboard/admin/log/LogList";
 import HotelList from "@pages/dashboard/partner/hotel/HotelList";
 import HotelCreate from "@pages/dashboard/partner/hotel/HotelCreate";
 import HotelDetail from "@pages/dashboard/partner/hotel/HotelDetail";
+import AirlineList from "@pages/dashboard/partner/airline/AirlineList";
+import AirlineCreate from "@pages/dashboard/partner/airline/AirlineCreate";
 
 const queryClient = new QueryClient();
 
@@ -115,6 +117,23 @@ const router = createBrowserRouter([
                 path: ":hotel_id",
                 element: <HotelDetail />,
               }
+            ],
+          },
+          {
+            path: "airline",
+            children: [
+              {
+                index: true,
+                element: <AirlineList />,
+              },
+              {
+                path: "create",
+                element: <AirlineCreate />,
+              },
+              // {
+              //   path: ":hotel_id",
+              //   element: <HotelDetail />,
+              // }
             ],
           },
         ],
