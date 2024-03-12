@@ -31,6 +31,8 @@ import PartnerEdit from "@pages/dashboard/admin/partners/PartnerEdit";
 import LoginAdmin from "@pages/LoginAdmin";
 import { ToastContainer } from "react-toastify";
 import LogList from "@pages/dashboard/admin/log/LogList";
+import HotelList from "@pages/dashboard/partner/hotel/HotelList";
+import HotelCreate from "@pages/dashboard/partner/hotel/HotelCreate";
 
 const queryClient = new QueryClient();
 
@@ -137,6 +139,19 @@ const router = createBrowserRouter([
           {
             path: "edit/:partner_id",
             element: <PartnerEdit />,
+          },
+          {
+            path: "hotel",
+            children: [
+              {
+                index: true,
+                element: <HotelList />,
+              },
+              {
+                path: "create",
+                element: <HotelCreate />,
+              },
+            ],
           },
         ],
       },

@@ -11,3 +11,9 @@ export type UserForm = {
   password: string;
   role: "admin" | "user" | "partner";
 };
+
+export type HotelForm = {
+  name: string,
+  address: string, 
+  description: string
+}
