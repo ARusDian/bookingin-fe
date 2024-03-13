@@ -1,5 +1,6 @@
 import api from "@lib/api";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { HotelWithRoom, HotelWithRoomResponse } from "@lib/model";
+import { useQuery } from "@tanstack/react-query";
 import {
   MRT_ColumnDef,
   MRT_PaginationState,
@@ -9,51 +10,33 @@ import {
 import { useMemo, useState } from "react";
 import { useCookies } from "react-cookie";
 import { IoMdAdd } from "react-icons/io";
-import { FaRegEye } from "react-icons/fa";
-import { MdOutlineEdit } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
-type Hotel = {
-  id: number;
-  name: string;
-  address: string;
-  description: string;
-};
-
-type HotelResponse = {
-  data: Hotel[];
-  meta: {
-    currentPage: number;
-    items: number;
-    totalItems: number;
-    totalPages: number;
-  };
-};
-
-const HotelList = () => {
+const HotelRoomList = () => {
+  const { hotel_id } = useParams();
   const [cookies] = useCookies(["token"]);
+  // const [selectedRowId, setSelectedRowId] = useState<number | null>(null);
   const [globalFilter, setGlobalFilter] = useState("");
+  // const [deleteLoading, setDeleteLoading] = useState(false);
   const [pagination, setPagination] = useState<MRT_PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
+
   const {
     data: { data = [], meta } = {},
+    isLoading,
     isError,
     isRefetching,
-    isLoading,
     refetch,
-  } = useQuery<HotelResponse>({
-    queryKey: [
-      "users",
-      pagination.pageIndex,
-      pagination.pageSize,
-      globalFilter,
-    ],
+  } = useQuery<HotelWithRoomResponse>({
+    queryKey: ["hotel_by_id", hotel_id],
     queryFn: () =>
       api
-        .get("/partner/hotel/get", {
-          headers: { Authorization: `Bearer ${cookies.token}` },
+        .get(`/hotel/get/${hotel_id}`, {
+          headers: {
+            Authorization: `Bearer ${cookies.token}`,
+          },
           params: {
             page: pagination.pageIndex + 1,
             item: pagination.pageSize,
@@ -61,10 +44,9 @@ const HotelList = () => {
           },
         })
         .then((res) => res.data),
-    placeholderData: keepPreviousData,
   });
 
-  const columns: MRT_ColumnDef<Hotel>[] = useMemo(
+  const columns: MRT_ColumnDef<HotelWithRoom>[] = useMemo(
     () => [
       {
         header: "ID",
@@ -81,6 +63,11 @@ const HotelList = () => {
       {
         header: "Description",
         accessorKey: "description",
+      },
+      {
+        header: "Total Rooms",
+        accessorKey: "rooms[]",
+        Cell: ({ row }) => row.original.rooms.length,
       },
     ],
     []
@@ -99,24 +86,6 @@ const HotelList = () => {
     manualPagination: true,
     onPaginationChange: setPagination,
     onGlobalFilterChange: setGlobalFilter,
-    renderRowActions: ({ row }) => (
-      <div className="flex space-x-1">
-        <Link
-          to={`./${row.original.id}`}
-          relative="path"
-          className="px-3 py-1 bg-green-200 font-medium items-center space-x-1 rounded-lg hover:bg-green-300"
-        >
-          <FaRegEye className="text-2xl" />
-        </Link>
-        <Link
-          to={`./edit/${row.original.id}`}
-          relative="path"
-          className="px-3 py-1 bg-blue-200 font-medium items-center space-x-1 rounded-lg hover:bg-blue-300"
-        >
-          <MdOutlineEdit className="text-2xl" />
-        </Link>
-      </div>
-    ),
     state: {
       isLoading,
       pagination,
@@ -138,14 +107,14 @@ const HotelList = () => {
   return (
     <div className="px-4 py-6 h-dashboard-outlet">
       <div className="flex justify-between items-center mb-2">
-        <p className="text-2xl font-medium">Hotel List</p>
+        <p className="text-2xl font-medium">Room List</p>
         <Link
           to="./create"
           relative="path"
           className="flex items-center space-x-1 bg-purple-200 font-medium px-4 py-2 rounded-lg hover:bg-purple-300"
         >
           <IoMdAdd className="text-xl" />
-          <span>Add Hotel</span>
+          <span>Add Room</span>
         </Link>
       </div>
       <div className="">
@@ -155,4 +124,4 @@ const HotelList = () => {
   );
 };
 
-export default HotelList;
+export default HotelRoomList;

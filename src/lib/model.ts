@@ -13,9 +13,39 @@ export type UserForm = {
 };
 
 export type HotelForm = {
-  name: string,
-  address: string, 
-  description: string
-}
+  name: string;
+  address: string;
+  description: string;
+};
 
 export type AirlineForm = HotelForm;
+
+export interface Hotel {
+  id: number;
+  name: string;
+  address: string;
+  description: string;
+}
+
+export type Room = {
+  name: string;
+  description: string;
+};
+
+export interface HotelWithRoom extends Hotel {
+  rooms: Room[];
+}
+
+export interface HotelResponse {
+  data: Hotel[];
+  meta: {
+    currentPage: number;
+    items: number;
+    totalItems: number;
+    totalPages: number;
+  };
+}
+
+export interface HotelWithRoomResponse extends HotelResponse {
+  data: HotelWithRoom[];
+}

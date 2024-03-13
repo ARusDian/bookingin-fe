@@ -34,7 +34,7 @@ Analisis Kebutuhan Sistem Booking Hotel dan Penerbangan
 > admin dapat menambahkan mitra 
 > admin dapat menyunting mitra
 > admin dapat menghapus mitra
-> admin dapat melihat semua mitra
+> admin dapat melihat semua mitra (done)
 > admin dapat melihat semua status ketersediaan kamar hotel dan kursi penerbangan
 > admin dapat menyunting ketersediaan kamar hotel dan kursi penerbangan
 > admin dapat menghapus ketersediaan kamar hotel dan kursi penerbangan
