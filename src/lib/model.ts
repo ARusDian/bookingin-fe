@@ -49,3 +49,28 @@ export interface HotelResponse {
 export interface HotelWithRoomResponse extends HotelResponse {
   data: HotelWithRoom[];
 }
+
+export interface CreateHotelRoom {
+  room: {
+    name: string;
+    description: string;
+  };
+  type: {
+    hotel_id: number;
+    name: string;
+    description: string;
+    price: number;
+    facilities: number[];
+  }
+  facility: {
+    hotel_id: number;
+    name: string;
+    description: string;
+  }
+}
+
+export interface FacilityCreate {
+  hotel_id: number;
+  name: string;
+  description: string;
+}
