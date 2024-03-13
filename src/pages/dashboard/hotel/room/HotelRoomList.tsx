@@ -109,7 +109,7 @@ const HotelRoomList = () => {
       <div className="flex justify-between items-center mb-2">
         <p className="text-2xl font-medium">Room List</p>
         <Link
-          to="./create"
+          to="./add"
           relative="path"
           className="flex items-center space-x-1 bg-purple-200 font-medium px-4 py-2 rounded-lg hover:bg-purple-300"
         >
