@@ -47,30 +47,45 @@ export interface HotelResponse {
 }
 
 export interface HotelWithRoomResponse extends HotelResponse {
-  data: HotelWithRoom[];
+  id: number;
+  user_id: number;
+  name: string;
+  address: string;
+  description: string;
+  created_at: string;
+  updated_at: string;
+  rooms: Room[];
 }
 
 export interface CreateHotelRoom {
-  room: {
-    name: string;
-    description: string;
-  };
-  type: {
-    hotel_id: number;
-    name: string;
-    description: string;
-    price: number;
-    facilities: number[];
-  }
-  facility: {
-    hotel_id: number;
-    name: string;
-    description: string;
-  }
+  hotel_id: number;
+  type_id: number | null;
+  name: string;
+  description: string;
 }
 
 export interface FacilityCreate {
   hotel_id: number;
   name: string;
   description: string;
+}
+
+export interface FacilityResponse extends FacilityCreate {
+  id: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface HotelTypeCreate {
+  hotel_id: number;
+  name: string;
+  description: string;
+  price: number;
+  facilities: number[];
+}
+
+export interface TypeResponse extends HotelTypeCreate {
+  id: number;
+  created_at: string;
+  updated_at: string;
 }
