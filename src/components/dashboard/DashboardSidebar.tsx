@@ -1,6 +1,6 @@
 import { TbUser } from "react-icons/tb";
 import { TbTicket } from "react-icons/tb";
-import { TbSettings2 } from "react-icons/tb";
+// import { TbSettings2 } from "react-icons/tb";
 import { TbHome } from "react-icons/tb";
 import { RiProfileLine } from "react-icons/ri";
 import SidebarTile from "./SidebarTile";
@@ -78,12 +78,12 @@ const DashboardSidebar = ({ isOpen }: Props) => {
                   name="Top-up"
                   linkTo="./top-up"
                 /> */}
-                <SidebarTile
-                  isActive={currentPaths[0] === "partner"}
+                {/* <SidebarTile
+                  isActive={currentPaths[0] === "partner" && !currentPaths[1]}
                   Icon={TbSettings2}
                   name="Partners"
                   linkTo="partner"
-                />
+                /> */}
                 <SidebarTile
                   isActive={currentPaths[0] === "log"}
                   Icon={IoDocumentOutline}

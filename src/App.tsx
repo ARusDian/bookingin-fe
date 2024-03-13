@@ -17,11 +17,12 @@ import PartnerEdit from "@pages/dashboard/admin/partners/PartnerEdit";
 import LoginAdmin from "@pages/LoginAdmin";
 import { ToastContainer } from "react-toastify";
 import LogList from "@pages/dashboard/admin/log/LogList";
-import HotelList from "@pages/dashboard/partner/hotel/HotelList";
-import HotelCreate from "@pages/dashboard/partner/hotel/HotelCreate";
-import HotelDetail from "@pages/dashboard/partner/hotel/HotelDetail";
-import AirlineList from "@pages/dashboard/partner/airline/AirlineList";
-import AirlineCreate from "@pages/dashboard/partner/airline/AirlineCreate";
+import HotelList from "@pages/dashboard/hotel/HotelList";
+import HotelCreate from "@pages/dashboard/hotel/HotelCreate";
+import HotelDetail from "@pages/dashboard/hotel/HotelDetail";
+import AirlineList from "@pages/dashboard/airline/AirlineList";
+import AirlineCreate from "@pages/dashboard/airline/AirlineCreate";
+import HotelRoomList from "@pages/dashboard/hotel/room/HotelRoomList";
 
 const queryClient = new QueryClient();
 
@@ -115,8 +116,22 @@ const router = createBrowserRouter([
               },
               {
                 path: ":hotel_id",
-                element: <HotelDetail />,
-              }
+                children: [
+                  {
+                    index: true,
+                    element: <HotelDetail />,
+                  },
+                  {
+                    path: "room",
+                    children: [
+                      {
+                        index: true,
+                        element: <HotelRoomList />,
+                      },
+                    ],
+                  },
+                ],
+              },
             ],
           },
           {
