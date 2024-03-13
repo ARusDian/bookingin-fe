@@ -1,5 +1,5 @@
 import api from "@lib/api";
-import { HotelWithRoom, HotelWithRoomResponse } from "@lib/model";
+import { HotelWithRoomResponse, Room } from "@lib/model";
 import { useQuery } from "@tanstack/react-query";
 import {
   MRT_ColumnDef,
@@ -9,7 +9,7 @@ import {
 } from "material-react-table";
 import { useMemo, useState } from "react";
 import { useCookies } from "react-cookie";
-import { IoMdAdd } from "react-icons/io";
+import { IoMdAdd, IoMdArrowBack } from "react-icons/io";
 import { Link, useParams } from "react-router-dom";
 
 const HotelRoomList = () => {
@@ -24,7 +24,7 @@ const HotelRoomList = () => {
   });
 
   const {
-    data: { data = [], meta } = {},
+    data: { rooms = [] } = {},
     isLoading,
     isError,
     isRefetching,
@@ -43,10 +43,12 @@ const HotelRoomList = () => {
             search: globalFilter,
           },
         })
-        .then((res) => res.data),
+        .then((res) => res.data.data),
   });
 
-  const columns: MRT_ColumnDef<HotelWithRoom>[] = useMemo(
+  console.log(rooms);
+
+  const columns: MRT_ColumnDef<Room>[] = useMemo(
     () => [
       {
         header: "ID",
@@ -57,32 +59,28 @@ const HotelRoomList = () => {
         accessorKey: "name",
       },
       {
-        header: "Address",
-        accessorKey: "address",
-      },
-      {
         header: "Description",
         accessorKey: "description",
       },
-      {
-        header: "Total Rooms",
-        accessorKey: "rooms[]",
-        Cell: ({ row }) => row.original.rooms.length,
-      },
+      // {
+      //   header: "Total Rooms",
+      //   accessorKey: "rooms[]",
+      //   Cell: ({ row }) => row.original.rooms.length,
+      // },
     ],
     []
   );
 
   const table = useMaterialReactTable({
     columns,
-    data: data,
+    data: rooms || [],
     muiToolbarAlertBannerProps: isError
       ? {
           color: "error",
           children: "Error loading data",
         }
       : undefined,
-    enableRowActions: true,
+    // enableRowActions: true,
     manualPagination: true,
     onPaginationChange: setPagination,
     onGlobalFilterChange: setGlobalFilter,
@@ -92,7 +90,7 @@ const HotelRoomList = () => {
       showAlertBanner: isError,
       showProgressBars: isRefetching,
     },
-    rowCount: meta?.totalItems,
+    rowCount: rooms?.length || 0,
     positionActionsColumn: "last",
     renderTopToolbarCustomActions: () => (
       <button
@@ -107,7 +105,14 @@ const HotelRoomList = () => {
   return (
     <div className="px-4 py-6 h-dashboard-outlet">
       <div className="flex justify-between items-center mb-2">
-        <p className="text-2xl font-medium">Room List</p>
+        <Link
+          to={"../.."}
+          relative="path"
+          className="text-2xl font-medium flex items-center gap-2 hover:text-purple-800"
+        >
+          <IoMdArrowBack />
+          Room List
+        </Link>
         <Link
           to="./add"
           relative="path"

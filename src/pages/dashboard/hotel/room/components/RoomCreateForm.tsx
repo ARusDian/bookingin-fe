@@ -1,78 +1,76 @@
 import React, { useState } from "react";
-import { CreateHotelRoom } from "@lib/model";
-import FormModal from "@pages/dashboard/components/FormModal";
+import { CreateHotelRoom, FacilityResponse, TypeResponse } from "@lib/model";
 import { IoMdAdd } from "react-icons/io";
-import { Link } from "react-router-dom";
-
+import CreateTypeModal from "./CreateTypeModal";
+import { useQuery } from "@tanstack/react-query";
+import api from "@lib/api";
 interface Props {
   state: {
     data: CreateHotelRoom;
     setData: React.Dispatch<React.SetStateAction<CreateHotelRoom>>;
+    token: string;
+    hotel_id: string;
   };
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
-const RoomCreateForm = ({ state: { data, setData }, onSubmit }: Props) => {
+const RoomCreateForm = ({
+  state: { data, setData, hotel_id, token },
+  onSubmit,
+}: Props) => {
   const [openAddRoomTypeModal, setOpenAddRoomTypeModal] =
     useState<boolean>(false);
 
+  const {
+    data: typeData = [],
+    isLoading,
+    refetch,
+    isRefetching,
+  } = useQuery<TypeResponse[]>({
+    queryKey: ["type", hotel_id],
+    queryFn: () =>
+      api
+        .get("/partner/hotel/type/get", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            hotel_id,
+          },
+        })
+        .then((res) => res.data.data),
+  });
+
+  const { data: facilityData = [], isLoading: isLoadingFacility } = useQuery<
+    FacilityResponse[]
+  >({
+    queryKey: ["facility", hotel_id],
+    queryFn: () =>
+      api
+        .get("/partner/hotel/facility/get", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            hotel_id,
+          },
+        })
+        .then((res) => res.data.data),
+  });
+
   return (
     <>
-      <FormModal
+      <CreateTypeModal
         open={openAddRoomTypeModal}
-        onClose={() => setOpenAddRoomTypeModal(false)}
-      >
-        <div className="w-[400px]">
-          <p className="text-2xl font-bold mb-4">Add Type</p>
-          <form className="mt-2 flex flex-col gap-2">
-            <div className="flex flex-col gap-2">
-              <label className="font-semibold">Type Name</label>
-              <input
-                type="text"
-                className="border p-2 rounded-lg"
-                placeholder="Type Name"
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label className="font-semibold">Type Description</label>
-              <textarea
-                className="border p-2 rounded-lg"
-                placeholder="Type Description"
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label className="font-semibold">Price</label>
-              <input
-                type="text"
-                className="border p-2 rounded-lg"
-                placeholder="Type Name"
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label className="font-semibold">Select Facilities</label>
-              <div className="flex flex-row gap-2">
-                <select
-                  id="type"
-                  className="border p-2 rounded-lg w-10/12"
-                  required
-                >
-                  <option value="single">Single</option>
-                </select>
-                <Link
-                  to={"../../facility/add"}
-                  relative="path"
-                  className="flex-1 flex justify-center items-center rounded-lg bg-green-200"
-                >
-                  <IoMdAdd className="text-2xl" />
-                </Link>
-              </div>
-            </div>
-            <button type="submit" className="bg-green-200 p-2 rounded-lg mt-2">
-              Add
-            </button>
-          </form>
-        </div>
-      </FormModal>
+        setOpen={setOpenAddRoomTypeModal}
+        refetch={refetch}
+        states={{
+          data: facilityData,
+          isLoading: isLoadingFacility,
+          hotel_id,
+          token: token,
+        }}
+      />
       <form className="flex flex-col px-4 pb-4 space-y-4" onSubmit={onSubmit}>
         <div className="flex flex-col space-y-1">
           <label htmlFor="name" className="text-lg font-medium">
@@ -82,13 +80,8 @@ const RoomCreateForm = ({ state: { data, setData }, onSubmit }: Props) => {
             type="text"
             id="name"
             className="border p-2 rounded-lg"
-            value={data.room.name}
-            onChange={(e) =>
-              setData({
-                ...data,
-                room: { ...data.room, name: e.target.value },
-              })
-            }
+            value={data.name}
+            onChange={(e) => setData({ ...data, name: e.target.value })}
             required
           />
         </div>
@@ -99,11 +92,11 @@ const RoomCreateForm = ({ state: { data, setData }, onSubmit }: Props) => {
           <textarea
             id="description"
             className="border p-2 rounded-lg"
-            value={data.room.description}
+            value={data.description}
             onChange={(e) =>
               setData({
                 ...data,
-                room: { ...data.room, description: e.target.value },
+                description: e.target.value,
               })
             }
             required
@@ -117,9 +110,25 @@ const RoomCreateForm = ({ state: { data, setData }, onSubmit }: Props) => {
             <select
               id="type"
               className="border p-2 rounded-lg w-11/12"
+              disabled={typeData.length === 0 || isLoading || isRefetching}
+              value={data.type_id || ""}
+              onChange={(e) =>
+                setData({
+                  ...data,
+                  type_id: parseInt(e.target.value),
+                })
+              }
               required
             >
-              <option value="single">Single</option>
+              {typeData.length > 0 ? (
+                typeData.map((type) => (
+                  <option key={type.id} value={type.id}>
+                    {type.name}
+                  </option>
+                ))
+              ) : (
+                <option value="">No Type Available</option>
+              )}
             </select>
             <button
               type="button"
