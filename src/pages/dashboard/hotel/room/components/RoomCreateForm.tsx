@@ -10,12 +10,13 @@ interface Props {
     setData: React.Dispatch<React.SetStateAction<CreateHotelRoom>>;
     token: string;
     hotel_id: string;
+    isPending: boolean;
   };
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
 const RoomCreateForm = ({
-  state: { data, setData, hotel_id, token },
+  state: { data, setData, hotel_id, token, isPending },
   onSubmit,
 }: Props) => {
   const [openAddRoomTypeModal, setOpenAddRoomTypeModal] =
@@ -38,7 +39,13 @@ const RoomCreateForm = ({
             hotel_id,
           },
         })
-        .then((res) => res.data.data),
+        .then((res) => {
+          setData({
+            ...data,
+            type_id: res.data.data[0].id,
+          });
+          return res.data.data;
+        }),
   });
 
   const { data: facilityData = [], isLoading: isLoadingFacility } = useQuery<
@@ -111,7 +118,7 @@ const RoomCreateForm = ({
               id="type"
               className="border p-2 rounded-lg w-11/12"
               disabled={typeData.length === 0 || isLoading || isRefetching}
-              value={data.type_id || ""}
+              value={data.type_id ?? 0}
               onChange={(e) =>
                 setData({
                   ...data,
@@ -139,7 +146,7 @@ const RoomCreateForm = ({
             </button>
           </div>
         </div>
-        <button type="submit" className="bg-purple-200 p-2 rounded-lg">
+        <button disabled={isPending} type="submit" className="bg-purple-200 p-2 rounded-lg">
           Add Room
         </button>
       </form>

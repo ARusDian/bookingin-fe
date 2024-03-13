@@ -38,11 +38,6 @@ const HotelRoomAdd = () => {
     mutate(data);
   };
 
-  console.log({
-    data,
-    isPending
-  })
-
   return (
     <div className="px-4 py-6 h-dashboard-outlet">
       <FormHead
@@ -62,6 +57,7 @@ const HotelRoomAdd = () => {
           state={{
             hotel_id: hotel_id!,
             token: cookies.token,
+            isPending,
             data,
             setData,
           }}
