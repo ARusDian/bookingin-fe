@@ -20,8 +20,8 @@ Analisis Kebutuhan Sistem Booking Hotel dan Penerbangan
 > pengguna dapat memesan paling lambat H-1
 > pengguna dapat membatalkan pesanan paling lambat H-2
 
-> mitra dapat menambahkan banyaknya ketersediaan kamar hotel atau kursi penerbangan
-> mitra dapat mengurangi banyaknya ketersediaan kamar hotel atau kursi penerbangan
+> mitra dapat menambahkan banyaknya ketersediaan kamar hotel atau kursi penerbangan (kamar hotel done)
+> mitra dapat mengurangi banyaknya ketersediaan kamar hotel atau kursi penerbangan (kamar hotel done)
 > mitra dapat melihat semua status ketersediaan kamar hotel dan kursi penerbangan (khusus yang ia tambahkan sendiri)
 > mitra dapat melihat identitas user yang telah memesan kamar hotel dan kursi penerbangan
 
