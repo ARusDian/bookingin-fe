@@ -1,5 +1,6 @@
 import api from "@lib/api";
 import { HotelWithRoomResponse, Room } from "@lib/model";
+import FormModal from "@pages/dashboard/components/FormModal";
 import { useQuery } from "@tanstack/react-query";
 import {
   MRT_ColumnDef,
@@ -10,14 +11,15 @@ import {
 import { useMemo, useState } from "react";
 import { useCookies } from "react-cookie";
 import { IoMdAdd, IoMdArrowBack } from "react-icons/io";
+import { MdDelete, MdOutlineEdit } from "react-icons/md";
 import { Link, useParams } from "react-router-dom";
 
 const HotelRoomList = () => {
   const { hotel_id } = useParams();
   const [cookies] = useCookies(["token"]);
-  // const [selectedRowId, setSelectedRowId] = useState<number | null>(null);
+  const [selectedRowId, setSelectedRowId] = useState<number | null>(null);
   const [globalFilter, setGlobalFilter] = useState("");
-  // const [deleteLoading, setDeleteLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const [pagination, setPagination] = useState<MRT_PaginationState>({
     pageIndex: 0,
     pageSize: 10,
@@ -80,7 +82,7 @@ const HotelRoomList = () => {
           children: "Error loading data",
         }
       : undefined,
-    // enableRowActions: true,
+    enableRowActions: true,
     manualPagination: true,
     onPaginationChange: setPagination,
     onGlobalFilterChange: setGlobalFilter,
@@ -92,6 +94,23 @@ const HotelRoomList = () => {
     },
     rowCount: rooms?.length || 0,
     positionActionsColumn: "last",
+    renderRowActions: ({ row }) => (
+      <div className="flex space-x-1">
+        <Link
+          to={`./edit/${row.original.id}`}
+          relative="path"
+          className="px-3 py-1 bg-blue-200 font-medium items-center space-x-1 rounded-lg hover:bg-blue-300"
+        >
+          <MdOutlineEdit className="text-2xl" />
+        </Link>
+        <button
+          className="px-3 py-1 bg-red-200 font-medium items-center space-x-1 rounded-lg hover:bg-red-300"
+          onClick={() => setSelectedRowId(row.original.id)}
+        >
+          <MdDelete className="text-2xl" />
+        </button>
+      </div>
+    ),
     renderTopToolbarCustomActions: () => (
       <button
         onClick={() => refetch()}
@@ -102,8 +121,48 @@ const HotelRoomList = () => {
     ),
   });
 
+  const deleteRoom = (id: number) => {
+    setDeleteLoading(true);
+    api
+      .delete(`/partner/hotel/room/delete/${id}`, {
+        headers: { Authorization: `Bearer ${cookies.token}` },
+      })
+      .then(() => refetch())
+      .catch((err) => console.error(err))
+      .finally(() => {
+        setDeleteLoading(false);
+        setSelectedRowId(null);
+      });
+  };
+
+
   return (
     <div className="px-4 py-6 h-dashboard-outlet">
+      <FormModal open={!!selectedRowId} onClose={() => setSelectedRowId(null)}>
+        <div className="flex flex-col space-y-4 w-96">
+          <p className="text-lg font-medium">
+            Are you sure want to delete room with id {selectedRowId}?
+          </p>
+          <div className="flex justify-end space-x-4">
+            <button
+              onClick={() => setSelectedRowId(null)}
+              className="px-4 py-2 bg-red-200 font-medium items-center space-x-1 rounded-lg hover:bg-red-300"
+            >
+              No
+            </button>
+            <button
+              disabled={deleteLoading}
+              onClick={() => {
+                deleteRoom(selectedRowId!);
+                refetch();
+              }}
+              className="px-4 py-2 bg-green-200 font-medium items-center space-x-1 rounded-lg hover:bg-green-300"
+            >
+              Yes
+            </button>
+          </div>
+        </div>
+      </FormModal>
       <div className="flex justify-between items-center mb-2">
         <Link
           to={"../.."}

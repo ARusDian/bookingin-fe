@@ -2,16 +2,19 @@
 import FormHead from "@pages/dashboard/components/FormHead";
 import { useState } from "react";
 import RoomCreateForm from "./components/RoomCreateForm";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { IoMdArrowForward } from "react-icons/io";
-import { CreateHotelRoom } from "@lib/model";
+import { AxiosErrorResponse, CreateHotelRoom } from "@lib/model";
 import { useMutation } from "@tanstack/react-query";
 import api from "@lib/api";
 import { useCookies } from "react-cookie";
+import { showErrorToast, showSuccessToast } from "@utils/toast";
+import { AxiosError } from "axios";
 
 const HotelRoomAdd = () => {
   const { hotel_id } = useParams();
   const [cookies] = useCookies(["token"]);
+  const navigate = useNavigate();
   const [data, setData] = useState<CreateHotelRoom>({
     hotel_id: parseInt(hotel_id!),
     type_id: null,
@@ -20,18 +23,22 @@ const HotelRoomAdd = () => {
   });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (data: CreateHotelRoom) => api.post("/partner/hotel/room/create", data, {
-      headers: {
-        Authorization: `Bearer ${cookies.token}`,
-      },
-    }),
-    onError: (error) => {
-      console.error(error);
+    mutationFn: (data: CreateHotelRoom) =>
+      api.post("/partner/hotel/room/create", data, {
+        headers: {
+          Authorization: `Bearer ${cookies.token}`,
+        },
+      }),
+    onError: (error: AxiosError) => {
+      const errorData: AxiosErrorResponse = error.response
+        ?.data as AxiosErrorResponse;
+      setTimeout(() => showErrorToast(errorData.message), 1);
     },
     onSuccess: (data) => {
-      console.log(data);
+      navigate(`..`, { relative: "path" });
+      setTimeout(() => showSuccessToast(data.data.message), 1);
     },
-  })
+  });
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
