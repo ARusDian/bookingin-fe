@@ -135,7 +135,7 @@ const HotelList = () => {
       </button>
     ),
   });
-
+  console.log(selectedRowId);
   const deleteHotel = (id: number) => {
     setDeleteLoading(true);
     api
