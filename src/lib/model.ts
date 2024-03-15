@@ -1,3 +1,10 @@
+type Meta = {
+  currentPage: number;
+  items: number;
+  totalItems: number;
+  totalPages: number;
+};
+
 export type AxiosErrorResponse = {
   status: string;
   code: number;
@@ -39,12 +46,7 @@ export interface HotelWithRoom extends Hotel {
 
 export interface HotelResponse {
   data: Hotel[];
-  meta: {
-    currentPage: number;
-    items: number;
-    totalItems: number;
-    totalPages: number;
-  };
+  meta: Meta;
 }
 
 export interface HotelWithRoomResponse extends HotelResponse {
@@ -89,4 +91,40 @@ export interface TypeResponse extends HotelTypeCreate {
   id: number;
   created_at: string;
   updated_at: string;
+}
+
+export type Airline = {
+  id: number;
+  name: string;
+  address: string;
+  description: string;
+};
+
+export type AirlineResponse = {
+  data: Airline[];
+  meta: Meta;
+};
+
+export type AirlinePlane = {
+  id: number;
+  airline_id: number;
+  plane_type_id: number | null;
+  name: string;
+  description: string;
+};
+
+export type AirlinePlaneCreate = Omit<AirlinePlane, "id">;
+
+export type AirlinePlaneResponse = {
+  data: AirlinePlane[];
+  meta: Meta;
+};
+
+export type AirlineTypeCreate = Omit<AirlinePlane, "id" | "plane_type_id">;
+
+export type AirlineType = Omit<AirlinePlane, "plane_type_id">
+
+export interface AirlineTypeResponse{
+  data: AirlineType[];
+  meta: Meta;
 }

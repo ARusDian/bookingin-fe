@@ -25,6 +25,9 @@ import AirlineCreate from "@pages/dashboard/airline/AirlineCreate";
 import HotelRoomList from "@pages/dashboard/hotel/room/HotelRoomList";
 import HotelRoomAdd from "@pages/dashboard/hotel/room/HotelRoomAdd";
 import FacilityCreate from "@pages/dashboard/hotel/facility/FacilityCreate";
+import AirlineEdit from "@pages/dashboard/airline/AirlineEdit";
+import PlaneList from "@pages/dashboard/airline/plane/PlaneList";
+import PlaneCreate from "@pages/dashboard/airline/plane/PlaneCreate";
 
 const queryClient = new QueryClient();
 
@@ -133,13 +136,13 @@ const router = createBrowserRouter([
                       {
                         path: "add",
                         element: <HotelRoomAdd />,
-                      }
+                      },
                     ],
                   },
                   {
                     path: "facility/add",
-                    element: <FacilityCreate />
-                  }
+                    element: <FacilityCreate />,
+                  },
                 ],
               },
             ],
@@ -155,10 +158,28 @@ const router = createBrowserRouter([
                 path: "create",
                 element: <AirlineCreate />,
               },
-              // {
-              //   path: ":hotel_id",
-              //   element: <HotelEdit />,
-              // }
+              {
+                path: "edit/:airline_id",
+                element: <AirlineEdit />,
+              },
+              {
+                path: ":airline_id",
+                children: [
+                  {
+                    path: "plane",
+                    children: [
+                      {
+                        index: true,
+                        element: <PlaneList />,
+                      },
+                      {
+                        path: "create",
+                        element: <PlaneCreate />
+                      }
+                    ],
+                  },
+                ],
+              },
             ],
           },
         ],

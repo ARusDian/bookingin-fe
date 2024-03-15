@@ -30,7 +30,7 @@ const AirlineEdit = () => {
 
   return (
     <div className="py-6 px-4 h-dashboard-outlet">
-      <FormHead title="Edit Airline" />
+      <FormHead title="Edit Airline" linkBack="../.."/>
       <div className="max-w-2xl mx-auto border rounded-lg shadow-md">
         <PartnerFillForm
           state={{ data: airline, setData: setAirline, isPending: false }}
