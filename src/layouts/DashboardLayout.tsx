@@ -55,7 +55,6 @@ const DashboardLayout = () => {
 
     if (!cookies.token) {
       navigate("/login-admin");
-      expiredSessionToast();
     } else {
       getProfile();
     }
