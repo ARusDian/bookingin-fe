@@ -6,7 +6,7 @@ import api from "@lib/api";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import { showSuccessToast } from "@utils/toast";
-import HotelFillForm from "./components/HotelFillForm";
+import PartnerFillForm from "../components/PartnerFillForm";
 
 const postHotel = async (data: HotelForm, token: string) => {
   const { data: response } = await api.post("/partner/hotel/create", data, {
@@ -45,7 +45,7 @@ const HotelCreate = () => {
     <div className="py-6 px-4 h-dashboard-outlet">
       <FormHead title="Create Hotel" />
       <div className="max-w-2xl mx-auto border rounded-lg shadow-md">
-        <HotelFillForm state={{ hotel, setHotel, isPending }} onSubmit={onSubmit} type="create"/>
+        <PartnerFillForm state={{ data: hotel, setData: setHotel, isPending }} onSubmit={onSubmit} type="create"/>
       </div>
     </div>
   );

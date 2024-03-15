@@ -1,19 +1,19 @@
-import { HotelForm } from "@lib/model";
+import { AirlineForm, HotelForm } from "@lib/model";
 import { capitalizeFirstLetter } from "@utils/capitalize_first_letter";
 import React from "react";
 
 interface Props {
   state: {
-    hotel: HotelForm;
-    setHotel: React.Dispatch<React.SetStateAction<HotelForm>>;
+    data: HotelForm | AirlineForm;
+    setData: React.Dispatch<React.SetStateAction<HotelForm>> | React.Dispatch<React.SetStateAction<AirlineForm>>;
     isPending: boolean;
   };
   type: "create" | "edit";
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
-const HotelFillForm = ({
-  state: { hotel, setHotel, isPending },
+const PartnerFillForm = ({
+  state: { data, setData, isPending },
   type,
   onSubmit,
 }: Props) => {
@@ -26,8 +26,8 @@ const HotelFillForm = ({
         <input
           type="text"
           className="border p-2 rounded-lg"
-          value={hotel.name}
-          onChange={(e) => setHotel({ ...hotel, name: e.target.value })}
+          value={data.name}
+          onChange={(e) => setData({ ...data, name: e.target.value })}
         />
       </div>
       <div className="flex flex-col space-y-1">
@@ -37,8 +37,8 @@ const HotelFillForm = ({
         <input
           type="text"
           className="border p-2 rounded-lg"
-          value={hotel.address}
-          onChange={(e) => setHotel({ ...hotel, address: e.target.value })}
+          value={data.address}
+          onChange={(e) => setData({ ...data, address: e.target.value })}
         />
       </div>
       <div className="flex flex-col space-y-1">
@@ -47,8 +47,8 @@ const HotelFillForm = ({
         </label>
         <textarea
           className="border p-2 rounded-lg"
-          value={hotel.description}
-          onChange={(e) => setHotel({ ...hotel, description: e.target.value })}
+          value={data.description}
+          onChange={(e) => setData({ ...data, description: e.target.value })}
         />
       </div>
       <button
@@ -61,4 +61,4 @@ const HotelFillForm = ({
   );
 };
 
-export default HotelFillForm;
+export default PartnerFillForm;
