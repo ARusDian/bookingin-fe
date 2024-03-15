@@ -1,10 +1,11 @@
 import DashboardNavbar from "@components/dashboard/DashboardNavbar";
 import DashboardSidebar from "@components/dashboard/DashboardSidebar";
 import api from "@lib/api";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../zustand/auth";
+import { showErrorToast } from "@utils/toast";
 
 const DashboardLayout = () => {
   const [cookies, , removeCookie] = useCookies(["token"]);
@@ -20,6 +21,10 @@ const DashboardLayout = () => {
     setUser: state.setUser,
     logout: state.logout,
   }));
+
+  const expiredSessionToast = useCallback(() => {
+    showErrorToast("Your session has expired. Please login again.");
+  }, []);
 
   useEffect(() => {
     const getProfile = () => {
@@ -40,6 +45,9 @@ const DashboardLayout = () => {
             if (err.response.status === 401) {
               removeCookie("token");
               logout();
+              setTimeout(() => {
+                expiredSessionToast();
+              }, 1);
             }
             console.log(err);
           });
@@ -47,10 +55,19 @@ const DashboardLayout = () => {
 
     if (!cookies.token) {
       navigate("/login-admin");
+      expiredSessionToast();
     } else {
       getProfile();
     }
-  }, [navigate, cookies.token, removeCookie, setUser, logout, user]);
+  }, [
+    navigate,
+    cookies.token,
+    removeCookie,
+    setUser,
+    logout,
+    user,
+    expiredSessionToast,
+  ]);
 
   return (
     <div className="bg-slate-50">
