@@ -100,7 +100,7 @@ const HotelList = () => {
           <FaRegEye className="text-2xl" />
         </Link>
         <Link
-          to={`./edit/${row.original.id}`}
+          to={`./${row.original.id}`}
           relative="path"
           className="px-3 py-1 bg-blue-200 font-medium items-center space-x-1 rounded-lg hover:bg-blue-300"
         >

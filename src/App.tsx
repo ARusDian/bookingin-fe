@@ -19,7 +19,7 @@ import { ToastContainer } from "react-toastify";
 import LogList from "@pages/dashboard/admin/log/LogList";
 import HotelList from "@pages/dashboard/hotel/HotelList";
 import HotelCreate from "@pages/dashboard/hotel/HotelCreate";
-import HotelDetail from "@pages/dashboard/hotel/HotelDetail";
+import HotelEdit from "@pages/dashboard/hotel/HotelEdit";
 import AirlineList from "@pages/dashboard/airline/AirlineList";
 import AirlineCreate from "@pages/dashboard/airline/AirlineCreate";
 import HotelRoomList from "@pages/dashboard/hotel/room/HotelRoomList";
@@ -121,7 +121,7 @@ const router = createBrowserRouter([
                 children: [
                   {
                     index: true,
-                    element: <HotelDetail />,
+                    element: <HotelEdit />,
                   },
                   {
                     path: "room",
@@ -157,7 +157,7 @@ const router = createBrowserRouter([
               },
               // {
               //   path: ":hotel_id",
-              //   element: <HotelDetail />,
+              //   element: <HotelEdit />,
               // }
             ],
           },
