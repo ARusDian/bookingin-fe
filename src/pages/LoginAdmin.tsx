@@ -2,6 +2,7 @@ import api from "@lib/api";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
+import Loading from "react-loading";
 
 const LoginAdmin = () => {
   const [cookie, setCookie] = useCookies(["token"]);
@@ -15,11 +16,12 @@ const LoginAdmin = () => {
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    api
+    setLoading(true);
+      api
       .post("/login", { email, password })
       .then((res) => {
         setCookie("token", res.data.data.token, {
@@ -28,6 +30,8 @@ const LoginAdmin = () => {
       })
       .catch((err) => {
         console.log(err);
+      }).finally(() => {
+        setLoading(false);
       });
   };
 
@@ -67,9 +71,10 @@ const LoginAdmin = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-purple-600 text-white font-medium py-2 rounded-lg hover:bg-purple-700"
+            disabled={loading}
+            className="flex justify-center items-center w-full bg-purple-600 text-white font-medium py-2 rounded-lg hover:bg-purple-700"
           >
-            Login
+            {loading ? <Loading type="spin" color="#fff" width={25} height={25}/> : "Login"}
           </button>
         </form>
       </div>
