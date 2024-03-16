@@ -128,3 +128,22 @@ export interface AirlineTypeResponse{
   data: AirlineType[];
   meta: Meta;
 }
+
+export type PlaneSeat = {
+  id: number;
+  plane_id: number;
+  name: string;
+};
+
+export type PlaneSeatCreate = {
+  plane_id: string;
+  seat_line: string;
+  start_number: number;
+  end_number: number;
+};
+
+export type PlaneSeatResponse = {
+  data: PlaneSeat[];
+  meta: Meta;
+};
+

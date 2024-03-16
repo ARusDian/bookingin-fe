@@ -28,6 +28,8 @@ import FacilityCreate from "@pages/dashboard/hotel/facility/FacilityCreate";
 import AirlineEdit from "@pages/dashboard/airline/AirlineEdit";
 import PlaneList from "@pages/dashboard/airline/plane/PlaneList";
 import PlaneCreate from "@pages/dashboard/airline/plane/PlaneCreate";
+import AirlineSeatList from "@pages/dashboard/airline/plane/seat/AirlineSeatList";
+import AirlineSeatCreate from "@pages/dashboard/airline/plane/seat/AirlineSeatCreate";
 
 const queryClient = new QueryClient();
 
@@ -175,6 +177,19 @@ const router = createBrowserRouter([
                       {
                         path: "create",
                         element: <PlaneCreate />
+                      },
+                      {
+                        path: ":plane_id",
+                        children: [
+                          {
+                            path: "seat",
+                            element: <AirlineSeatList />
+                          },
+                          {
+                            path: "seat/create",
+                            element: <AirlineSeatCreate />
+                          },
+                        ]
                       }
                     ],
                   },

@@ -87,7 +87,7 @@ const PlaneList = () => {
     renderRowActions: ({ row }) => (
       <div className="flex space-x-1">
         <Link
-          to={`./${row.original.id}`}
+          to={`./${row.original.id}/seat`}
           relative="path"
           className="px-3 py-1 bg-green-200 font-medium items-center space-x-1 rounded-lg hover:bg-green-300"
         >
