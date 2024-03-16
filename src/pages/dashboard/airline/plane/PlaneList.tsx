@@ -149,7 +149,6 @@ const PlaneList = () => {
         deleteHandler={deletePlane}
         state={{ id: selectedRowId!, isLoading: deleteLoading, name: "Plane" }}
         onClose={() => setSelectedRowId(null)}
-        setSelectedRowId={setSelectedRowId}
       />
       <div className="px-4 py-6 h-dashboard-outlet">
         <TableListHead

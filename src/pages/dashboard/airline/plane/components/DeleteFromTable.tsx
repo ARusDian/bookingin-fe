@@ -1,6 +1,4 @@
 import FormModal from "@pages/dashboard/components/FormModal";
-import React from "react";
-
 interface Props {
   open: number | null;
   onClose: () => void;
@@ -10,14 +8,14 @@ interface Props {
     name: string;
     isLoading: boolean;
   };
-  setSelectedRowId: React.Dispatch<React.SetStateAction<number | null>>;
+  cancel?: () => void;
 }
 
 const DeleteFromTable = ({
   open,
   onClose,
   state,
-  setSelectedRowId,
+  cancel,
   deleteHandler,
 }: Props) => {
   return (
@@ -28,14 +26,14 @@ const DeleteFromTable = ({
         </p>
         <div className="flex justify-end space-x-4">
           <button
-            onClick={() => setSelectedRowId(null)}
+            onClick={cancel ?? onClose}
             className="px-4 py-2 bg-red-200 font-medium items-center space-x-1 rounded-lg hover:bg-red-300"
           >
             No
           </button>
           <button
             disabled={state.isLoading}
-            onClick={() => deleteHandler()}
+            onClick={deleteHandler}
             className="px-4 py-2 bg-green-200 font-medium items-center space-x-1 rounded-lg hover:bg-green-300"
           >
             Yes
