@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import Loading from "react-loading";
+import { AxiosError } from "axios";
+import { AxiosErrorResponse } from "@lib/model";
+import { showErrorToast } from "@utils/toast";
 
 const LoginAdmin = () => {
   const [cookie, setCookie] = useCookies(["token"]);
@@ -28,8 +31,11 @@ const LoginAdmin = () => {
           expires: new Date(res.data.data.expires_at),
         });
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((err: AxiosError) => {
+        const errorResponse: AxiosErrorResponse = err.response?.data as AxiosErrorResponse;
+        if (errorResponse.code === 401) {
+          showErrorToast(errorResponse.message);
+        }
       }).finally(() => {
         setLoading(false);
       });
