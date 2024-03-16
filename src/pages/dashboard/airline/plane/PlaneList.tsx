@@ -13,10 +13,13 @@ import { useCookies } from "react-cookie";
 import { MdDelete, MdOutlineEdit } from "react-icons/md";
 import { Link, useParams } from "react-router-dom";
 import { MdOutlineEventSeat } from "react-icons/md";
+import DeleteFromTable from "./components/DeleteFromTable";
 
 const PlaneList = () => {
   const [cookies] = useCookies(["token"]);
   const { airline_id } = useParams<{ airline_id: string }>();
+  const [selectedRowId, setSelectedRowId] = useState<number | null>(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const [globalFilter, setGlobalFilter] = useState("");
   const [pagination, setPagination] = useState<MRT_PaginationState>({
     pageIndex: 0,
@@ -100,12 +103,7 @@ const PlaneList = () => {
         <button
           className="px-3 py-1 bg-red-200 font-medium items-center space-x-1 rounded-lg hover:bg-red-300"
           onClick={() => {
-            api
-              .delete("/hotel/delete", {
-                headers: { Authorization: `Bearer ${cookies.token}` },
-                params: { id: row.original.id },
-              })
-              .then(() => refetch());
+            setSelectedRowId(row.original.id);
           }}
         >
           <MdDelete className="text-2xl" />
@@ -130,18 +128,41 @@ const PlaneList = () => {
     ),
   });
 
+  const deletePlane = () => {
+    setDeleteLoading(true);
+    api
+      .delete(`/partner/airline/plane/delete/${selectedRowId}`, {
+        headers: { Authorization: `Bearer ${cookies.token}` },
+      })
+      .then(() => refetch())
+      .catch((err) => console.error(err))
+      .finally(() => {
+        setDeleteLoading(false);
+        setSelectedRowId(null);
+      });
+  };
+
   return (
-    <div className="px-4 py-6 h-dashboard-outlet">
-      <TableListHead
-        linkTo="../.."
-        title="Plane List"
-        button={{
-          linkTo: "./create",
-          text: "Create Plane",
-        }}
+    <>
+      <DeleteFromTable
+        open={selectedRowId}
+        deleteHandler={deletePlane}
+        state={{ id: selectedRowId!, isLoading: deleteLoading, name: "Plane" }}
+        onClose={() => setSelectedRowId(null)}
+        setSelectedRowId={setSelectedRowId}
       />
-      <MaterialReactTable table={table} />
-    </div>
+      <div className="px-4 py-6 h-dashboard-outlet">
+        <TableListHead
+          linkTo="../.."
+          title="Plane List"
+          button={{
+            linkTo: "./create",
+            text: "Create Plane",
+          }}
+        />
+        <MaterialReactTable table={table} />
+      </div>
+    </>
   );
 };
 
