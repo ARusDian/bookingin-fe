@@ -1,6 +1,7 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { CookiesProvider } from "react-cookie";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { HelmetProvider } from "react-helmet-async";
 import Home from "@pages/homes/Home";
 import "./App.css";
 import DashboardLayout from "@layouts/DashboardLayout";
@@ -176,21 +177,21 @@ const router = createBrowserRouter([
                       },
                       {
                         path: "create",
-                        element: <PlaneCreate />
+                        element: <PlaneCreate />,
                       },
                       {
                         path: ":plane_id",
                         children: [
                           {
                             path: "seat",
-                            element: <AirlineSeatList />
+                            element: <AirlineSeatList />,
                           },
                           {
                             path: "seat/create",
-                            element: <AirlineSeatCreate />
+                            element: <AirlineSeatCreate />,
                           },
-                        ]
-                      }
+                        ],
+                      },
                     ],
                   },
                 ],
@@ -213,14 +214,14 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <>
+    <HelmetProvider>
       <ToastContainer />
       <QueryClientProvider client={queryClient}>
         <CookiesProvider defaultSetOptions={{ path: "/" }}>
           <RouterProvider router={router} />;
         </CookiesProvider>
       </QueryClientProvider>
-    </>
+    </HelmetProvider>
   );
 }
 

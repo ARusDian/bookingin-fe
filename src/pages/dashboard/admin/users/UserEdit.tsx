@@ -1,8 +1,8 @@
 import api from "@lib/api";
-import { AxiosErrorResponse, UserForm } from "@lib/model";
-import { useMutation } from "@tanstack/react-query";
+import { AxiosErrorResponse, User, UserForm } from "@lib/model";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -37,6 +37,26 @@ const UserEdit = () => {
     phone: "",
     role: "user",
   });
+
+  const { data: user } = useQuery<User>({
+    queryKey: ["user", user_id],
+    queryFn: () => api.get(`/admin/user/get/${user_id}`, {
+      headers: {
+        Authorization: `Bearer ${cookies.token}`,
+      },
+    }).then((res) => res.data.data),
+  });
+
+  useEffect(() => {
+    if (user) {
+      setData({
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        role: user.role.toLowerCase() as "admin" | "user" | "partner",
+      });
+    }
+  }, [user]);
 
   const { mutate, isPending } = useMutation({
     mutationFn: (data: EditUserForm) => putUser(user_id!, data, cookies.token),
@@ -136,23 +156,6 @@ const UserEdit = () => {
               <option value="partner">Partner</option>
             </select>
           </div>
-          {/* <div className="flex flex-col space-y-1">
-            <label htmlFor="password" className="text-lg font-medium">
-              Currency Amount
-            </label>
-            <input
-              type="text"
-              id="currency"
-              className="border p-2 rounded-lg"
-              value={currencyFormatter(data.currency as number)}
-              onChange={(e) => {
-                setData({
-                  ...data,
-                  currency: currencyDeformatter(e.target.value),
-                });
-              }}
-            />
-          </div> */}
           <div className="flex justify-center">
             <button
               type="submit"

@@ -6,6 +6,7 @@ import { useCookies } from "react-cookie";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../zustand/auth";
 import { showErrorToast } from "@utils/toast";
+import { Helmet } from "react-helmet-async";
 
 const DashboardLayout = () => {
   const [cookies, , removeCookie] = useCookies(["token"]);
@@ -69,6 +70,10 @@ const DashboardLayout = () => {
   ]);
 
   return (
+    <>
+    <Helmet>
+      <title>Dashboard</title>
+    </Helmet>
     <div className="bg-slate-50">
       <DashboardNavbar
         handleOpenSidebar={handleOpenSidebar}
@@ -83,6 +88,7 @@ const DashboardLayout = () => {
         <Outlet />
       </div>
     </div>
+    </>
   );
 };
 
