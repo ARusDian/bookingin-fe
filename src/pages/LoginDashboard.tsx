@@ -7,7 +7,7 @@ import { AxiosError } from "axios";
 import { AxiosErrorResponse } from "@lib/model";
 import { showErrorToast } from "@utils/toast";
 
-const LoginAdmin = () => {
+const LoginDashboard = () => {
   const [cookie, setCookie] = useCookies(["token"]);
   const navigate = useNavigate();
 
@@ -44,7 +44,7 @@ const LoginAdmin = () => {
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="w-96">
-        <h1 className="text-3xl font-medium mb-4">Login Admin</h1>
+        <h1 className="text-3xl font-medium mb-4">Login to Dashboard</h1>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label htmlFor="email" className="block text-sm font-medium mb-2">
@@ -88,4 +88,4 @@ const LoginAdmin = () => {
   );
 };
 
-export default LoginAdmin;
+export default LoginDashboard;

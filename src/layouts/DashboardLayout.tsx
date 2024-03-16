@@ -55,7 +55,7 @@ const DashboardLayout = () => {
     };
 
     if (!cookies.token) {
-      navigate("/login-admin");
+      navigate("/login-dashboard");
     } else {
       getProfile();
     }

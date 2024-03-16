@@ -2,6 +2,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { CookiesProvider } from "react-cookie";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HelmetProvider } from "react-helmet-async";
+import { ToastContainer } from "react-toastify";
 import Home from "@pages/homes/Home";
 import "./App.css";
 import DashboardLayout from "@layouts/DashboardLayout";
@@ -15,8 +16,7 @@ import Topup from "@pages/dashboard/admin/users/top-up/Topup";
 import UserEdit from "@pages/dashboard/admin/users/UserEdit";
 import PartnerCreate from "@pages/dashboard/admin/partners/PartnerCreate";
 import PartnerEdit from "@pages/dashboard/admin/partners/PartnerEdit";
-import LoginAdmin from "@pages/LoginAdmin";
-import { ToastContainer } from "react-toastify";
+import LoginDashboard from "@pages/LoginDashboard";
 import LogList from "@pages/dashboard/admin/log/LogList";
 import HotelList from "@pages/dashboard/hotel/HotelList";
 import HotelCreate from "@pages/dashboard/hotel/HotelCreate";
@@ -41,8 +41,8 @@ const router = createBrowserRouter([
     element: <Home />,
   },
   {
-    path: "login-admin",
-    element: <LoginAdmin />,
+    path: "login-dashboard",
+    element: <LoginDashboard />,
   },
   {
     path: "/dashboard",
