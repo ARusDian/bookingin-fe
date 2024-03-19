@@ -31,6 +31,8 @@ import PlaneList from "@pages/dashboard/airline/plane/PlaneList";
 import PlaneCreate from "@pages/dashboard/airline/plane/PlaneCreate";
 import AirlineSeatList from "@pages/dashboard/airline/plane/seat/AirlineSeatList";
 import AirlineSeatCreate from "@pages/dashboard/airline/plane/seat/AirlineSeatCreate";
+import PlaneFlightList from "@pages/dashboard/airline/plane/flight/PlaneFlightList";
+import PlaneFlightAdd from "@pages/dashboard/airline/plane/flight/PlaneFlightAdd";
 
 const queryClient = new QueryClient();
 
@@ -189,6 +191,14 @@ const router = createBrowserRouter([
                           {
                             path: "seat/create",
                             element: <AirlineSeatCreate />,
+                          },
+                          {
+                            path: "flight",
+                            element: <PlaneFlightList />,
+                          },
+                          {
+                            path: "flight/create",
+                            element: <PlaneFlightAdd />,
                           },
                         ],
                       },

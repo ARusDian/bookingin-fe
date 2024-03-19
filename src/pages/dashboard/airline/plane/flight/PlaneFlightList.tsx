@@ -1,7 +1,8 @@
 import api from "@lib/api";
-import { AirlinePlane, AirlinePlaneResponse } from "@lib/model";
+import { PlaneFlight, PlaneFlightResponse } from "@lib/model";
 import TableListHead from "@pages/dashboard/components/TableListHead";
 import { useQuery } from "@tanstack/react-query";
+import { currencyFormatter } from "@utils/currency_formatter";
 import {
   MRT_ColumnDef,
   MRT_PaginationState,
@@ -10,15 +11,13 @@ import {
 } from "material-react-table";
 import { useMemo, useState } from "react";
 import { useCookies } from "react-cookie";
-import { MdDelete, MdOutlineEdit } from "react-icons/md";
-import { Link, useParams } from "react-router-dom";
-import { MdOutlineEventSeat } from "react-icons/md";
-import { ImTicket } from "react-icons/im";
-import DeleteFromTable from "./components/DeleteFromTable";
+import { MdDelete } from "react-icons/md";
+import { useParams } from "react-router-dom";
+import DeleteFromTable from "../components/DeleteFromTable";
 
-const PlaneList = () => {
+const PlaneFlightList = () => {
   const [cookies] = useCookies(["token"]);
-  const { airline_id } = useParams<{ airline_id: string }>();
+  const { plane_id } = useParams<{ plane_id: string }>();
   const [selectedRowId, setSelectedRowId] = useState<number | null>(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [globalFilter, setGlobalFilter] = useState("");
@@ -33,7 +32,7 @@ const PlaneList = () => {
     isRefetching,
     isLoading,
     refetch,
-  } = useQuery<AirlinePlaneResponse>({
+  } = useQuery<PlaneFlightResponse>({
     queryKey: [
       "users",
       pagination.pageIndex,
@@ -42,10 +41,10 @@ const PlaneList = () => {
     ],
     queryFn: () =>
       api
-        .get("/partner/airline/plane/get", {
+        .get("/partner/airline/plane/flight/get", {
           headers: { Authorization: `Bearer ${cookies.token}` },
           params: {
-            airline_id,
+            plane_id,
             page: pagination.pageIndex + 1,
             item: pagination.pageSize,
             search: globalFilter,
@@ -54,23 +53,54 @@ const PlaneList = () => {
         .then((res) => res.data),
   });
 
-  const columns: MRT_ColumnDef<AirlinePlane>[] = useMemo(
+  const columns: MRT_ColumnDef<PlaneFlight>[] = useMemo(
     () => [
       {
         header: "ID",
         accessorKey: "id",
       },
       {
-        header: "Name",
-        accessorKey: "name",
+        header: "Last Check In",
+        accessorKey: "last_check_in",
       },
       {
-        header: "Description",
-        accessorKey: "description",
+        header: "Departure Time",
+        accessorKey: "departure_time",
+      },
+      {
+        header: "Departure Airport",
+        accessorKey: "departure_airport",
+      },
+      {
+        header: "Arrival Time",
+        accessorKey: "arrival_time",
+      },
+      {
+        header: "Arrival Airport",
+        accessorKey: "arrival_airport",
+      },
+      {
+        header: "Price",
+        accessorKey: "price",
+        Cell: ({ row }) => <span>{currencyFormatter(row.original.price)}</span>,
       },
     ],
     []
   );
+
+  const deleteFlight = () => {
+    setDeleteLoading(true);
+    api
+      .delete(`/partner/airline/plane/flight/delete/${selectedRowId}`, {
+        headers: { Authorization: `Bearer ${cookies.token}` },
+      })
+      .then(() => refetch())
+      .catch((err) => console.error(err))
+      .finally(() => {
+        setDeleteLoading(false);
+        setSelectedRowId(null);
+      });
+  };
 
   const table = useMaterialReactTable({
     columns,
@@ -87,27 +117,6 @@ const PlaneList = () => {
     onGlobalFilterChange: setGlobalFilter,
     renderRowActions: ({ row }) => (
       <div className="flex space-x-1">
-        <Link
-          to={`./${row.original.id}/seat`}
-          relative="path"
-          className="px-3 py-1 bg-green-200 font-medium items-center space-x-1 rounded-lg hover:bg-green-300"
-        >
-          <MdOutlineEventSeat className="text-2xl" />
-        </Link>
-        <Link
-          to={`./${row.original.id}/flight`}
-          relative="path"
-          className="px-3 py-1 bg-yellow-200 font-medium items-center space-x-1 rounded-lg hover:bg-yellow-300"
-        >
-          <ImTicket className="text-2xl" />
-        </Link>
-        <Link
-          to={`./edit/${row.original.id}`}
-          relative="path"
-          className="px-3 py-1 bg-blue-200 font-medium items-center space-x-1 rounded-lg hover:bg-blue-300"
-        >
-          <MdOutlineEdit className="text-2xl" />
-        </Link>
         <button
           className="px-3 py-1 bg-red-200 font-medium items-center space-x-1 rounded-lg hover:bg-red-300"
           onClick={() => {
@@ -136,35 +145,21 @@ const PlaneList = () => {
     ),
   });
 
-  const deletePlane = () => {
-    setDeleteLoading(true);
-    api
-      .delete(`/partner/airline/plane/delete/${selectedRowId}`, {
-        headers: { Authorization: `Bearer ${cookies.token}` },
-      })
-      .then(() => refetch())
-      .catch((err) => console.error(err))
-      .finally(() => {
-        setDeleteLoading(false);
-        setSelectedRowId(null);
-      });
-  };
-
   return (
     <>
       <DeleteFromTable
         open={selectedRowId}
-        deleteHandler={deletePlane}
+        deleteHandler={deleteFlight}
         state={{ id: selectedRowId!, isLoading: deleteLoading, name: "Plane" }}
         onClose={() => setSelectedRowId(null)}
       />
       <div className="px-4 py-6 h-dashboard-outlet">
         <TableListHead
           linkTo="../.."
-          title="Plane List"
+          title="Flight List"
           button={{
             linkTo: "./create",
-            text: "Create Plane",
+            text: "Add Flight",
           }}
         />
         <MaterialReactTable table={table} />
@@ -173,4 +168,4 @@ const PlaneList = () => {
   );
 };
 
-export default PlaneList;
+export default PlaneFlightList;

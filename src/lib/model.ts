@@ -147,6 +147,24 @@ export type PlaneSeatResponse = {
   meta: Meta;
 };
 
+export type PlaneFlight = {
+  id: number;
+  plane_id: number;
+  last_check_in: string;
+  departure_time: string;
+  arrival_time: string;
+  departure_airport: string;
+  arrival_airport: string;
+  price: number;
+}
+
+export type PlaneFlightResponse = {
+  data: PlaneFlight[];
+  meta: Meta;
+};
+
+export type PlaneFlightCreate = Omit<PlaneFlight, "id">;
+
 export type User = {
   id: number;
   name: string;
