@@ -13,7 +13,7 @@ import { useMemo, useState } from "react";
 import { useCookies } from "react-cookie";
 import { MdDelete } from "react-icons/md";
 import { useParams } from "react-router-dom";
-import DeleteFromTable from "../components/DeleteFromTable";
+import DeleteFromTable from "../../../components/DeleteFromTable";
 
 const PlaneFlightList = () => {
   const [cookies] = useCookies(["token"]);

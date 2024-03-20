@@ -15,9 +15,12 @@ import { MdOutlineEdit } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { useAuthStore } from "../../../zustand/auth";
 import { Airline, AirlineResponse } from "@lib/model";
+import DeleteFromTable from "../components/DeleteFromTable";
 
 const AirlineList = () => {
   const [cookies] = useCookies(["token"]);
+  const [selectedRowId, setSelectedRowId] = useState<number | null>(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const [globalFilter, setGlobalFilter] = useState("");
   const [pagination, setPagination] = useState<MRT_PaginationState>({
     pageIndex: 0,
@@ -106,12 +109,7 @@ const AirlineList = () => {
           <button
             className="px-3 py-1 bg-red-200 font-medium items-center space-x-1 rounded-lg hover:bg-red-300"
             onClick={() => {
-              api
-                .delete("/hotel/delete", {
-                  headers: { Authorization: `Bearer ${cookies.token}` },
-                  params: { id: row.original.id },
-                })
-                .then(() => refetch());
+              setSelectedRowId(row.original.id);
             }}
           >
             <MdDelete className="text-2xl" />
@@ -137,23 +135,50 @@ const AirlineList = () => {
     ),
   });
 
+  const deleteAirline = () => {
+    setDeleteLoading(true);
+    api
+      .delete(`/partner/airline/delete/${selectedRowId}`, {
+        headers: { Authorization: `Bearer ${cookies.token}` },
+      })
+      .then(() => {
+        refetch();
+        setSelectedRowId(null);
+      })
+      .finally(() => {
+        setDeleteLoading(false);
+      });
+  };
+
   return (
-    <div className="px-4 py-6 h-dashboard-outlet">
-      <div className="flex justify-between items-center mb-2">
-        <p className="text-2xl font-medium">Airline List</p>
-        <Link
-          to="./create"
-          relative="path"
-          className="flex items-center space-x-1 bg-purple-200 font-medium px-4 py-2 rounded-lg hover:bg-purple-300"
-        >
-          <IoMdAdd className="text-xl" />
-          <span>Add Airline</span>
-        </Link>
+    <>
+      <DeleteFromTable
+        open={selectedRowId}
+        onClose={() => setSelectedRowId(null)}
+        state={{
+          id: selectedRowId!,
+          name: "Airline",
+          isLoading: deleteLoading,
+        }}
+        deleteHandler={deleteAirline}
+      />
+      <div className="px-4 py-6 h-dashboard-outlet">
+        <div className="flex justify-between items-center mb-2">
+          <p className="text-2xl font-medium">Airline List</p>
+          <Link
+            to="./create"
+            relative="path"
+            className="flex items-center space-x-1 bg-purple-200 font-medium px-4 py-2 rounded-lg hover:bg-purple-300"
+          >
+            <IoMdAdd className="text-xl" />
+            <span>Add Airline</span>
+          </Link>
+        </div>
+        <div className="">
+          <MaterialReactTable table={table} />
+        </div>
       </div>
-      <div className="">
-        <MaterialReactTable table={table} />
-      </div>
-    </div>
+    </>
   );
 };
 

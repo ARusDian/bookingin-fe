@@ -9,14 +9,12 @@ import {
 import { useMemo, useState } from "react";
 import { useCookies } from "react-cookie";
 import { IoMdAdd } from "react-icons/io";
-import { FaRegEye } from "react-icons/fa";
 import { MdDelete, MdOutlineEdit } from "react-icons/md";
+import { PiDoorOpenLight } from "react-icons/pi";
 import { Link } from "react-router-dom";
 import { useAuthStore } from "../../../zustand/auth";
 import FormModal from "../components/FormModal";
 import { Hotel, HotelResponse } from "@lib/model";
-
-
 
 const HotelList = () => {
   const [cookies] = useCookies(["token"]);
@@ -97,7 +95,7 @@ const HotelList = () => {
           relative="path"
           className="px-3 py-1 bg-green-200 font-medium items-center space-x-1 rounded-lg hover:bg-green-300"
         >
-          <FaRegEye className="text-2xl" />
+          <PiDoorOpenLight className="text-2xl" />
         </Link>
         <Link
           to={`./${row.original.id}`}

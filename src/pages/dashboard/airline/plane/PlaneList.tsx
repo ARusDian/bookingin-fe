@@ -14,7 +14,7 @@ import { MdDelete, MdOutlineEdit } from "react-icons/md";
 import { Link, useParams } from "react-router-dom";
 import { MdOutlineEventSeat } from "react-icons/md";
 import { ImTicket } from "react-icons/im";
-import DeleteFromTable from "./components/DeleteFromTable";
+import DeleteFromTable from "../../components/DeleteFromTable";
 
 const PlaneList = () => {
   const [cookies] = useCookies(["token"]);
