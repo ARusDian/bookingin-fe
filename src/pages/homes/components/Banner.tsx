@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Banner = () => {
   return (
     <div className="h-screen pt-20">
@@ -12,12 +14,16 @@ const Banner = () => {
             nesciunt fugiat! Ipsam, est.
           </p>
           <div className="flex space-x-4">
-            <button className="bg-pink-500 text-white px-6 py-3 rounded-lg hover:bg-pink-400">
-              Booking Tiket Pesawat
-            </button>
-            <button className="bg-pink-500 text-white px-6 py-3 rounded-lg hover:bg-pink-400">
-              Booking Kamar Hotel
-            </button>
+            <Link to="/flight">
+              <button className="bg-pink-500 text-white px-6 py-3 rounded-lg hover:bg-pink-400">
+                Booking Tiket Pesawat
+              </button>
+            </Link>
+            <Link to="/hotel">
+              <button className="bg-pink-500 text-white px-6 py-3 rounded-lg hover:bg-pink-400">
+                Booking Kamar Hotel
+              </button>
+            </Link>
           </div>
         </div>
         <div className="bg-gray-800 flex-1"></div>

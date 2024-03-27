@@ -13,6 +13,7 @@ import Flight from "@pages/homes/flights/Flight";
 import Hotel from "@pages/homes/hotels/Hotel"; 
 import FlightPayments from "@pages/homes/flights/payments/FlightPayments";
 import HotelPayments from "@pages/homes/hotels/payments/HotelPayments";
+import PostPayments from "@pages/homes/PostPayments";
 
 const router = createBrowserRouter([
   {
@@ -96,6 +97,10 @@ const router = createBrowserRouter([
         ]
       },
     ],
+  },
+  {
+    path: "post-payments",
+    element: <PostPayments />,
   },
   {
     path: "*",
