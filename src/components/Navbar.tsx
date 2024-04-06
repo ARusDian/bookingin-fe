@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
 import Login from "./auth/Login";
+import accounting from 'accounting';
 import Register from "./auth/Register";
 import Topup_Form from "./user/topup/Topup_Form";
 import Riwayat_Transaksi from "./user/riwayat_transaksi/Riwayat_Transaksi";
@@ -31,6 +32,8 @@ const Navbar = () => {
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
+
+  const saldo = 456789;
 
   const openTopUpModal = () => {
     setIsTopUpModalOpen(true);
@@ -63,7 +66,7 @@ const Navbar = () => {
             >
               <ul>
                 <li className="py-2 px-4 text-green-500 font-bold hover:bg-gray-100">
-                  Saldo: <span>456789</span>
+                Saldo: <span>{accounting.formatMoney(saldo, "Rp ", 0, ".", ",")}</span>
                 </li>
                 <li
                   className="py-2 px-4 hover:bg-gray-100 cursor-pointer"
