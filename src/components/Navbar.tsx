@@ -164,7 +164,7 @@ const Navbar = () => {
         ariaHideApp={false}
         className="modal mt-2"
       >
-        <div className="p-8">
+        <div className="p-8 bg-pink-100 rounded-lg">
           <div className="flex justify-between">
             <div>
               <h1 className="font-bold text-2xl">Riwayat Transaksi</h1>

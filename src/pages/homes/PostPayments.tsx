@@ -1,37 +1,53 @@
+import React, { useRef } from 'react';
 import Navbar from "@components/Navbar";
 import Footer from "@components/Footer";
 import { FaCheckCircle } from "react-icons/fa";
+import ReactToPrint from 'react-to-print';
 
 const PostPayments = () => {
+  const componentRef = useRef<HTMLDivElement>(null);
+
   return (
-    <div>
+    <div className="min-h-screen">
       <Navbar />
-      <div className="my-24 flex justify-center">
-        <div className="bg-gray-200 rounded-lg px-10 py-8 text-center">
-          <h2 className="font-bold text-green-500 text-xl mb-4">
+      <div className="flex justify-center items-center py-32">
+        <div className="bg-white bg-pink-100 shadow-md rounded-lg p-8 max-w-lg w-full mx-4" ref={componentRef}>
+          <h2 className="font-bold text-pink-500 text-2xl mb-4 text-center">
             Pemesanan Tiket Sukses !!
           </h2>
-          <p className="mb-4">Terima kasih telah memesan tiket!</p>
-          <div className="text-5xl text-green-500 mb-4 flex justify-center">
+          <p className="mb-4 text-center">Terima kasih telah memesan tiket!</p>
+          <div className="text-6xl text-pink-500 mb-6 flex justify-center">
             <FaCheckCircle />
           </div>
-          <p className="mb-2">
-            <span className="font-bold">ID Pesanan:</span> ABC123
-          </p>
-          <p className="mb-2">
-            <span className="font-bold">Nama Pesanan:</span> TSX
-          </p>
-          <p className="mb-2">
-            <span className="font-bold">Tanggal Mulai:</span> 1/1/2024
-          </p>
-          <p className="mb-2">
-            <span className="font-bold">Tanggal Selesai:</span> 2/1/2024
-          </p>
+          <div className="mb-4">
+            <p className="font-semibold">ID Pesanan:</p>
+            <p className="text-gray-700">ABC123</p>
+          </div>
+          <div className="mb-4">
+            <p className="font-semibold">Nama Pesanan:</p>
+            <p className="text-gray-700">TSX</p>
+          </div>
+          <div className="mb-4">
+            <p className="font-semibold">Tanggal Mulai:</p>
+            <p className="text-gray-700">1/1/2024</p>
+          </div>
+          <div className="mb-4">
+            <p className="font-semibold">Tanggal Selesai:</p>
+            <p className="text-gray-700">2/1/2024</p>
+          </div>
+          <div className="text-center">
+            <ReactToPrint
+              trigger={() => (
+                <button className="bg-pink-500 text-white py-2 px-4 rounded-lg hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2">
+                  Cetak PDF
+                </button>
+              )}
+              content={() => componentRef.current}
+            />
+          </div>
         </div>
       </div>
-      <div className="fixed bottom-0 w-full">
-        <Footer />
-      </div>
+      <Footer />
     </div>
   );
 };

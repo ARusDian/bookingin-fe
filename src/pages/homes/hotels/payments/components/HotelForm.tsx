@@ -109,7 +109,7 @@ const HotelForm: React.FC = () => {
         type="submit"
         className="w-full bg-pink-500 text-white py-2 px-4 rounded-md hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 focus:ring-offset-gray-100"
       >
-        Order
+        Pesan Tiket Hotel !
       </button>
     </form>
   );
