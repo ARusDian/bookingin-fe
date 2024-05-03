@@ -58,16 +58,10 @@ const FlightForm: React.FC = () => {
   return (
     <form onSubmit={handleSubmit} className="mt-4 p-6 rounded-lg bg-gray-200 shadow-md">
       <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">Check In pada:</label>
+        <label className="block text-sm font-medium text-gray-700">Penerbangan Pada:</label>
         <DatePicker
           selected={selectedDateIn}
           onChange={handleDateChangeIn}
-          className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-pink-500 focus:border-pink-500"
-        />
-        <label className="block text-sm font-medium text-gray-700">Check Out pada:</label>
-        <DatePicker
-          selected={selectedDateOut}
-          onChange={handleDateChangeOut}
           className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-pink-500 focus:border-pink-500"
         />
         <div className="mt-4">

@@ -21,7 +21,7 @@ const HotelChoices = () => {
       </div>
       <div className="grid grid-cols-3 gap-8">
         <div className="h-[500px] rounded-lg flex flex-col space-y-4">
-          <div className="h-3/4 bg-gray-800 rounded-t-lg"></div>
+          <div className="h-3/4 bg-gray-800 rounded-t-lg"><img className="h-96 w-screen" src="public/image/hotel.jpg" /></div>
           <div className="">
             <h3 className="text-2xl font-bold">Hotel 1</h3>
             <p>
@@ -31,7 +31,7 @@ const HotelChoices = () => {
           </div>
         </div>
         <div className="h-[500px] rounded-lg flex flex-col space-y-4">
-          <div className="h-3/4 bg-gray-800 rounded-t-lg"></div>
+          <div className="h-3/4 bg-gray-800 rounded-t-lg"><img className="h-96 w-screen" src="public/image/hotel.jpg" /></div>
           <div className="">
             <h3 className="text-2xl font-bold">Hotel 2</h3>
             <p>
@@ -41,7 +41,7 @@ const HotelChoices = () => {
           </div>
         </div>
         <div className="h-[500px] rounded-lg flex flex-col space-y-4">
-          <div className="h-3/4 bg-gray-800 rounded-t-lg"></div>
+          <div className="h-3/4 bg-gray-800 rounded-t-lg"><img className="h-96 w-screen" src="public/image/hotel.jpg" /></div>
           <div className="">
             <h3 className="text-2xl font-bold">Hotel 3</h3>
             <p>

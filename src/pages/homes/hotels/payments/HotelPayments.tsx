@@ -17,7 +17,7 @@ const HotelPayments = () => {
   const hotels: Hotel[] = [
     {
       id: 1,
-      image: "hotel1.jpg",
+      image: "public/image/hotel.jpg",
       name: "Example Hotel 1",
       availability: 2,
       location: "asdasd",
