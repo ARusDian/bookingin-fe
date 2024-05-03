@@ -114,6 +114,7 @@ export type AirlinePlane = {
 };
 
 export type AirlinePlaneCreate = Omit<AirlinePlane, "id">;
+export type AirlinePlaneEdit = Omit<AirlinePlane, "id" | "airline_id">;
 
 export type AirlinePlaneResponse = {
   data: AirlinePlane[];

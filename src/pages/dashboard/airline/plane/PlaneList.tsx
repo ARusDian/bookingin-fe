@@ -15,9 +15,11 @@ import { Link, useParams } from "react-router-dom";
 import { MdOutlineEventSeat } from "react-icons/md";
 import { ImTicket } from "react-icons/im";
 import DeleteFromTable from "../../components/DeleteFromTable";
+import { useAuthStore } from "../../../../zustand/auth";
 
 const PlaneList = () => {
   const [cookies] = useCookies(["token"]);
+  const { user } = useAuthStore((state) => state);
   const { airline_id } = useParams<{ airline_id: string }>();
   const [selectedRowId, setSelectedRowId] = useState<number | null>(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
@@ -26,7 +28,7 @@ const PlaneList = () => {
     pageIndex: 0,
     pageSize: 10,
   });
-
+  const fetchUrl = user?.role == "ADMIN" ? `/admin/partner/${airline_id}/airline/plane/get` : "/partner/airline/plane/get";
   const {
     data: { data = [], meta } = {},
     isError,
@@ -42,7 +44,7 @@ const PlaneList = () => {
     ],
     queryFn: () =>
       api
-        .get("/partner/airline/plane/get", {
+        .get(fetchUrl, {
           headers: { Authorization: `Bearer ${cookies.token}` },
           params: {
             airline_id,

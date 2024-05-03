@@ -71,6 +71,12 @@ const DashboardSidebar = ({ isOpen }: Props) => {
                   name="Users"
                   linkTo="./user"
                 />
+                <SidebarTile
+                  isActive={currentPaths[0] === "transactions"}
+                  Icon={TbUser}
+                  name="Transactions"
+                  linkTo="./transactions"
+                />
                 {/* <SidebarTile
                   isActive={currentPaths[0] === "top-up"}
                   Icon={MdAttachMoney}
