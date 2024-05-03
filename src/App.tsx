@@ -14,6 +14,7 @@ import Hotel from "@pages/homes/hotels/Hotel";
 import FlightPayments from "@pages/homes/flights/payments/FlightPayments";
 import HotelPayments from "@pages/homes/hotels/payments/HotelPayments";
 import PostPayments from "@pages/homes/PostPayments";
+import ResetPassword from "@components/auth/ResetPassword";
 
 const router = createBrowserRouter([
   {
@@ -48,6 +49,7 @@ const router = createBrowserRouter([
       },
     ],
   },
+  
   {
     path: "/dashboard",
     element: <DashboardLayout />,
@@ -101,6 +103,10 @@ const router = createBrowserRouter([
   {
     path: "post-payments",
     element: <PostPayments />,
+  },
+  {
+    path: "reset-password",
+    element: <ResetPassword />,
   },
   {
     path: "*",

@@ -63,21 +63,6 @@ const Register = () => {
           />
 
           <label
-            htmlFor="username"
-            className="block mt-4 text-gray-700 text-sm font-bold mb-2"
-          >
-            Nama Pengguna
-          </label>
-          <input
-            type="text"
-            className="bg-gray-200 appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-pink-500"
-            placeholder="Isi Nama Pengguna"
-            onChange={handleInput}
-            name="username"
-            required
-          />
-
-          <label
             htmlFor="email"
             className="block mt-4 text-gray-700 text-sm font-bold mb-2"
           >

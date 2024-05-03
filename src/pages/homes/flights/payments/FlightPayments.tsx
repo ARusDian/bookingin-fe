@@ -39,7 +39,9 @@ const FlightPayments = () => {
           ))}
         </div>
       </div>
-      <Footer />
+      <div className="absolute bottom-0 w-full">
+        <Footer />
+      </div>
     </>
   );
 };

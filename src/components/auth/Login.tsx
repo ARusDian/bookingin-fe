@@ -32,13 +32,13 @@ const Login = () => {
             htmlFor="username"
             className="block text-gray-700 text-sm font-bold mb-2"
           >
-            Nama Pengguna
+            E-mail
           </label>
           <input
             type="text"
             id="username"
             className="bg-gray-200 appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-pink-500"
-            placeholder="Isi Nama Pengguna"
+            placeholder="Isi Email Pengguna"
             value={username}
             onChange={handleUsernameChange}
             required

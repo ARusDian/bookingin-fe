@@ -5,6 +5,8 @@ import accounting from 'accounting';
 import Register from "./auth/Register";
 import Topup_Form from "./user/topup/Topup_Form";
 import Riwayat_Transaksi from "./user/riwayat_transaksi/Riwayat_Transaksi";
+import ResetPassword from "./auth/ResetPassword";
+import ResetPasswordForm from "./auth/ResetPasswordForm";
 
 const Navbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -13,6 +15,7 @@ const Navbar = () => {
   const [isTopUpModalOpen, setIsTopUpModalOpen] = useState(false);
   const [isTransactionHistoryModalOpen, setIsTransactionHistoryModalOpen] =
     useState(false);
+    const [isResetPasswordModalOpen, setIsResetPasswordModalOpen] = useState(false);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -23,6 +26,7 @@ const Navbar = () => {
     setIsModalOpen(false);
     setIsTopUpModalOpen(false);
     setIsTransactionHistoryModalOpen(false);
+    setIsResetPasswordModalOpen(false);
   };
 
   const toggleModalContent = () => {
@@ -41,6 +45,10 @@ const Navbar = () => {
 
   const openTransactionHistoryModal = () => {
     setIsTransactionHistoryModalOpen(true);
+  };
+
+  const openResetPasswordModal = () => {
+    setIsResetPasswordModalOpen(true);
   };
 
   return (
@@ -117,6 +125,11 @@ const Navbar = () => {
                     Belum daftar akun ?
                   </span>
                 </h1>
+                <h1 onClick={openResetPasswordModal}>
+                  <span className="hover:italic hover:text-pink-400 cursor-pointer">
+                    Lupa Password ?
+                  </span>
+                </h1>
               </div>
             </>
           ) : (
@@ -131,6 +144,30 @@ const Navbar = () => {
               </div>
             </>
           )}
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={isResetPasswordModalOpen}
+        onRequestClose={() => setIsResetPasswordModalOpen(false)}
+        contentLabel="Reset Password Modal"
+        ariaHideApp={false}
+        className="modal"
+      >
+        <div className="p-8">
+          <div className="flex justify-between">
+            <div className="font-bold text-2xl`">Reset Password</div>
+            <div>
+              <button
+                className="text-gray-500 text-md hover:text-gray-700 mr-2"
+                onClick={() => setIsResetPasswordModalOpen(false)}
+              >
+                X
+              </button>
+            </div>
+          </div>
+          <ResetPasswordForm />
+
         </div>
       </Modal>
 

@@ -3,15 +3,13 @@ import { Link } from "react-router-dom";
 const Banner = () => {
   return (
     <div className="h-screen pt-20">
-      <div className="container mx-auto h-full flex">
-        <div className="flex flex-col space-y-8 justify-center w-[55%] pr-4">
+      <div className="container mx-auto w-full h-full flex ">
+        <div className="flex flex-col space-y-8 justify-center pr-10 w-[55%] ">
           <h1 className="text-7xl font-bold leading-tight">
             Website Booking Terbaik di Alam Semesta
           </h1>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum
-            doloremque ipsam facilis, consectetur voluptas maxime pariatur
-            nesciunt fugiat! Ipsam, est.
+          Website terbaik untuk memesan tiket hotel dan pesawat sesuai tujuan anda untuk keseluruh dunia !
           </p>
           <div className="flex space-x-4">
             <Link to="/flight">
@@ -26,7 +24,9 @@ const Banner = () => {
             </Link>
           </div>
         </div>
-        <div className="bg-gray-800 flex-1"></div>
+        <div className="bg-gray-700 flex-1 ">
+          <img className="h-full w-full" src="public/image/banner.png"/>
+        </div>
       </div>
     </div>
   );
