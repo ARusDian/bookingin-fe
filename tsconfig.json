@@ -27,6 +27,7 @@
       "@pages/*": ["./pages/*"],
       "@layouts/*": ["./layouts/*"],
       "@contexts/*": ["./contexts/*"],
+      "@lib/*": ["./lib/*"],
     },
   },
   "include": ["src"],

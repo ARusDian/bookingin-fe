@@ -1,6 +1,10 @@
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { CookiesProvider } from "react-cookie";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { HelmetProvider } from "react-helmet-async";
+import { ToastContainer } from "react-toastify";
 import Home from "@pages/homes/Home";
 import "./App.css";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import DashboardLayout from "@layouts/DashboardLayout";
 import DashboardIndex from "@pages/dashboard/DashboardIndex";
 import OpenSidebarProvider from "@contexts/providers/OpenSidebarProvider";
@@ -15,6 +19,8 @@ import FlightPayments from "@pages/homes/flights/payments/FlightPayments";
 import HotelPayments from "@pages/homes/hotels/payments/HotelPayments";
 import PostPayments from "@pages/homes/PostPayments";
 import ResetPassword from "@components/auth/ResetPassword";
+
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
@@ -116,9 +122,14 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <OpenSidebarProvider>
-      <RouterProvider router={router} />
-    </OpenSidebarProvider>
+    <HelmetProvider>
+      <ToastContainer />
+      <QueryClientProvider client={queryClient}>
+        <CookiesProvider defaultSetOptions={{ path: "/" }}>
+          <RouterProvider router={router} />;
+        </CookiesProvider>
+      </QueryClientProvider>
+    </HelmetProvider>
   );
 }
 
