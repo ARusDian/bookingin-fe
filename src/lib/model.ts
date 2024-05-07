@@ -98,6 +98,10 @@ export type Airline = {
   name: string;
   address: string;
   description: string;
+  user?: {
+    id: number;
+    name: string;
+  };
 };
 
 export type AirlineResponse = {
@@ -123,9 +127,9 @@ export type AirlinePlaneResponse = {
 
 export type AirlineTypeCreate = Omit<AirlinePlane, "id" | "plane_type_id">;
 
-export type AirlineType = Omit<AirlinePlane, "plane_type_id">
+export type AirlineType = Omit<AirlinePlane, "plane_type_id">;
 
-export interface AirlineTypeResponse{
+export interface AirlineTypeResponse {
   data: AirlineType[];
   meta: Meta;
 }
@@ -133,6 +137,7 @@ export interface AirlineTypeResponse{
 export type PlaneSeat = {
   id: number;
   plane_id: number;
+  available?: boolean;
   name: string;
 };
 
@@ -157,7 +162,7 @@ export type PlaneFlight = {
   departure_airport: string;
   arrival_airport: string;
   price: number;
-}
+};
 
 export type PlaneFlightResponse = {
   data: PlaneFlight[];
@@ -171,6 +176,22 @@ export type User = {
   name: string;
   email: string;
   phone: string;
-  role: "admin" | "user" | "partner"
-}
+  role: "admin" | "user" | "partner";
+};
 
+export type FlightTicket = {
+  id: number;
+  code: string;
+  transaction_id: number;
+  user_id: number;
+  plane_flight_id: number;
+  plane_seat_id: number;
+  deleted_at: null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type FlightTicketResponse = {
+  data: FlightTicket[];
+  meta: Meta;
+};

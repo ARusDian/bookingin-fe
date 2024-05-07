@@ -11,8 +11,8 @@ import {
 } from "material-react-table";
 import { useMemo, useState } from "react";
 import { useCookies } from "react-cookie";
-import { MdDelete } from "react-icons/md";
-import { useParams } from "react-router-dom";
+import { MdDelete, MdOutlineEventSeat } from "react-icons/md";
+import { Link, useParams } from "react-router-dom";
 import DeleteFromTable from "../../../components/DeleteFromTable";
 
 const PlaneFlightList = () => {
@@ -117,6 +117,14 @@ const PlaneFlightList = () => {
     onGlobalFilterChange: setGlobalFilter,
     renderRowActions: ({ row }) => (
       <div className="flex space-x-1">
+        <Link
+          to={`./${row.original.id}/booked-ticket`}
+          relative="path"
+          className="px-3 py-1 bg-blue-200 font-medium items-center space-x-1 rounded-lg hover:bg-blue-300"
+        >
+          <MdOutlineEventSeat className="text-2xl" />
+        </Link>
+
         <button
           className="px-3 py-1 bg-red-200 font-medium items-center space-x-1 rounded-lg hover:bg-red-300"
           onClick={() => {

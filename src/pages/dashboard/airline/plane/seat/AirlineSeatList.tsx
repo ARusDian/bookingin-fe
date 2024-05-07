@@ -13,10 +13,14 @@ import { useCookies } from "react-cookie";
 import { MdDelete } from "react-icons/md";
 import { useParams } from "react-router-dom";
 import DeleteFromTable from "../../../components/DeleteFromTable";
+import { useAdminStore } from "../../../../../zustand/admin_access_partner";
+import { useAuthStore } from "../../../../../zustand/auth";
 
 const AirlineSeatList = () => {
   const [cookies] = useCookies(["token"]);
   const { plane_id } = useParams<{ plane_id: string }>();
+  const { user } = useAuthStore((state) => state);
+  const { partner } = useAdminStore((state) => state);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState<number | null>(null);
   const [globalFilter, setGlobalFilter] = useState("");
@@ -25,6 +29,11 @@ const AirlineSeatList = () => {
     pageSize: 10,
   });
 
+  const fetchUrl =
+    user?.role == "ADMIN"
+      ? `/admin/partner/${partner?.id}/airline/plane/seat/get`
+      : "/partner/airline/plane/seat/get";
+
   const {
     data: { data: planeSeats = [], meta } = {},
     isError,
@@ -32,10 +41,16 @@ const AirlineSeatList = () => {
     isLoading,
     refetch,
   } = useQuery<PlaneSeatResponse>({
-    queryKey: ["plane", plane_id, pagination.pageIndex, pagination.pageSize, globalFilter],
+    queryKey: [
+      "plane",
+      plane_id,
+      pagination.pageIndex,
+      pagination.pageSize,
+      globalFilter,
+    ],
     queryFn: () =>
       api
-        .get(`/partner/airline/plane/seat/get`, {
+        .get(fetchUrl, {
           params: {
             plane_id,
             page: pagination.pageIndex + 1,

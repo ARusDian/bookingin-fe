@@ -35,6 +35,7 @@ import PlaneFlightList from "@pages/dashboard/airline/plane/flight/PlaneFlightLi
 import PlaneFlightAdd from "@pages/dashboard/airline/plane/flight/PlaneFlightAdd";
 import TransactionList from "@pages/dashboard/admin/transactions/TransactionList";
 import PlaneEdit from "@pages/dashboard/airline/plane/PlaneEdit";
+import TicketTransactionList from "@pages/dashboard/airline/plane/transactions/TicketTransactionList";
 
 const queryClient = new QueryClient();
 
@@ -200,11 +201,20 @@ const router = createBrowserRouter([
                           },
                           {
                             path: "flight",
-                            element: <PlaneFlightList />,
-                          },
-                          {
-                            path: "flight/create",
-                            element: <PlaneFlightAdd />,
+                            children: [
+                              {
+                                index: true,
+                                element: <PlaneFlightList />,
+                              },
+                              {
+                                path: "create",
+                                element: <PlaneFlightAdd />,
+                              },
+                              {
+                                path: ":flight_id/booked-ticket",
+                                element: <TicketTransactionList />,
+                              },
+                            ],
                           },
                         ],
                       },
@@ -218,7 +228,7 @@ const router = createBrowserRouter([
       },
       {
         path: "transactions",
-        element: <TransactionList />
+        element: <TransactionList />,
       },
       {
         path: "log",

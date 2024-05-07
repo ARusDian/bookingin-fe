@@ -6,7 +6,7 @@ import {
   MaterialReactTable,
   useMaterialReactTable,
 } from "material-react-table";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useCookies } from "react-cookie";
 import { IoMdAdd } from "react-icons/io";
 import { MdFlight } from "react-icons/md";
@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 import { useAuthStore } from "../../../zustand/auth";
 import { Airline, AirlineResponse } from "@lib/model";
 import DeleteFromTable from "../components/DeleteFromTable";
+import { useAdminStore } from "../../../zustand/admin_access_partner";
 
 const AirlineList = () => {
   const [cookies] = useCookies(["token"]);
@@ -27,6 +28,12 @@ const AirlineList = () => {
     pageSize: 10,
   });
   const role = useAuthStore((state) => state.user?.role);
+  const { setPartner, deletePartner } = useAdminStore((state) => state);
+
+  useEffect(() => {
+    deletePartner();
+  }, [deletePartner]);
+
   const {
     data: { data = [], meta } = {},
     isError,
@@ -95,6 +102,13 @@ const AirlineList = () => {
           to={`./${row.original.id}/plane`}
           relative="path"
           className="px-3 py-1 bg-yellow-200 font-medium items-center space-x-1 rounded-lg hover:bg-yellow-300"
+          onClick={() => {
+            if (role === "ADMIN" && row.original.user)
+              setPartner({
+                id: row.original.user.id,
+                name: row.original.user.name,
+              });
+          }}
         >
           <MdFlight className="text-2xl" />
         </Link>
@@ -102,6 +116,13 @@ const AirlineList = () => {
           to={`./edit/${row.original.id}`}
           relative="path"
           className="px-3 py-1 bg-blue-200 font-medium items-center space-x-1 rounded-lg hover:bg-blue-300"
+          onClick={() => {
+            if (role === "ADMIN" && row.original.user)
+              setPartner({
+                id: row.original.user.id,
+                name: row.original.user.name,
+              });
+          }}
         >
           <MdOutlineEdit className="text-2xl" />
         </Link>

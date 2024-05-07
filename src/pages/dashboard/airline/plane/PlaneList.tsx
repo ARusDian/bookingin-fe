@@ -12,14 +12,15 @@ import { useMemo, useState } from "react";
 import { useCookies } from "react-cookie";
 import { MdDelete, MdOutlineEdit } from "react-icons/md";
 import { Link, useParams } from "react-router-dom";
-import { MdOutlineEventSeat } from "react-icons/md";
-import { ImTicket } from "react-icons/im";
+import { MdOutlineEventSeat, MdOutlineFlightTakeoff  } from "react-icons/md";
 import DeleteFromTable from "../../components/DeleteFromTable";
 import { useAuthStore } from "../../../../zustand/auth";
+import { useAdminStore } from "../../../../zustand/admin_access_partner";
 
 const PlaneList = () => {
   const [cookies] = useCookies(["token"]);
   const { user } = useAuthStore((state) => state);
+  const { partner } = useAdminStore((state) => state);
   const { airline_id } = useParams<{ airline_id: string }>();
   const [selectedRowId, setSelectedRowId] = useState<number | null>(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
@@ -28,7 +29,8 @@ const PlaneList = () => {
     pageIndex: 0,
     pageSize: 10,
   });
-  const fetchUrl = user?.role == "ADMIN" ? `/admin/partner/${airline_id}/airline/plane/get` : "/partner/airline/plane/get";
+  
+  const fetchUrl = user?.role == "ADMIN" ? `/admin/partner/${partner?.id}/airline/plane/get` : "/partner/airline/plane/get";
   const {
     data: { data = [], meta } = {},
     isError,
@@ -101,7 +103,7 @@ const PlaneList = () => {
           relative="path"
           className="px-3 py-1 bg-yellow-200 font-medium items-center space-x-1 rounded-lg hover:bg-yellow-300"
         >
-          <ImTicket className="text-2xl" />
+          <MdOutlineFlightTakeoff className="text-2xl" />
         </Link>
         <Link
           to={`./edit/${row.original.id}`}
