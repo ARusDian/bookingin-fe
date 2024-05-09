@@ -186,14 +186,16 @@ const AirlineList = () => {
       <div className="px-4 py-6 h-dashboard-outlet">
         <div className="flex justify-between items-center mb-2">
           <p className="text-2xl font-medium">Airline List</p>
-          <Link
-            to="./create"
-            relative="path"
-            className="flex items-center space-x-1 bg-purple-200 font-medium px-4 py-2 rounded-lg hover:bg-purple-300"
-          >
-            <IoMdAdd className="text-xl" />
-            <span>Add Airline</span>
-          </Link>
+          {role !== "ADMIN" && (
+            <Link
+              to="./create"
+              relative="path"
+              className="flex items-center space-x-1 bg-purple-200 font-medium px-4 py-2 rounded-lg hover:bg-purple-300"
+            >
+              <IoMdAdd className="text-xl" />
+              <span>Add Airline</span>
+            </Link>
+          )}
         </div>
         <div className="">
           <MaterialReactTable table={table} />

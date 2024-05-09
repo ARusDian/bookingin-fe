@@ -1,7 +1,7 @@
 import { TbUser } from "react-icons/tb";
 import { LuHotel } from "react-icons/lu";
 import { TbHome } from "react-icons/tb";
-import { RiProfileLine } from "react-icons/ri";
+// import { RiProfileLine } from "react-icons/ri";
 import SidebarTile from "./SidebarTile";
 import { useLocation } from "react-router-dom";
 import { useMemo } from "react";
@@ -43,14 +43,14 @@ const DashboardSidebar = ({ isOpen }: Props) => {
         />
         {role && (
           <>
-            {role === "PARTNER" && (
+            {/* {role === "PARTNER" && (
               <SidebarTile
                 isActive={currentPaths[0] === "partner-profile"}
                 Icon={RiProfileLine}
                 name="Partner Profile"
                 linkTo="./partner-profile"
               />
-            )}
+            )} */}
             <SidebarTile
               isActive={currentPaths[1] === "airline"}
               Icon={SiEthiopianairlines}

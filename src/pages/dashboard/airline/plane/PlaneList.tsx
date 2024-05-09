@@ -12,7 +12,7 @@ import { useMemo, useState } from "react";
 import { useCookies } from "react-cookie";
 import { MdDelete, MdOutlineEdit } from "react-icons/md";
 import { Link, useParams } from "react-router-dom";
-import { MdOutlineEventSeat, MdOutlineFlightTakeoff  } from "react-icons/md";
+import { MdOutlineEventSeat, MdOutlineFlightTakeoff } from "react-icons/md";
 import DeleteFromTable from "../../components/DeleteFromTable";
 import { useAuthStore } from "../../../../zustand/auth";
 import { useAdminStore } from "../../../../zustand/admin_access_partner";
@@ -29,8 +29,11 @@ const PlaneList = () => {
     pageIndex: 0,
     pageSize: 10,
   });
-  
-  const fetchUrl = user?.role == "ADMIN" ? `/admin/partner/${partner?.id}/airline/plane/get` : "/partner/airline/plane/get";
+
+  const fetchUrl =
+    user?.role == "ADMIN"
+      ? `/admin/partner/${partner?.id}/airline/plane/get`
+      : "/partner/airline/plane/get";
   const {
     data: { data = [], meta } = {},
     isError,
@@ -163,14 +166,18 @@ const PlaneList = () => {
         onClose={() => setSelectedRowId(null)}
       />
       <div className="px-4 py-6 h-dashboard-outlet">
-        <TableListHead
-          linkTo="../.."
-          title="Plane List"
-          button={{
-            linkTo: "./create",
-            text: "Create Plane",
-          }}
-        />
+        {user!.role === "PARTNER" ? (
+          <TableListHead
+            linkTo="../.."
+            title="Plane List"
+            button={{
+              linkTo: "./create",
+              text: "Create Plane",
+            }}
+          />
+        ) : (
+          <TableListHead linkTo="../.." title="Plane List" />
+        )}
         <MaterialReactTable table={table} />
       </div>
     </>

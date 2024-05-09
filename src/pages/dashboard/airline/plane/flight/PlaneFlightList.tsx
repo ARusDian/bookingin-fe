@@ -14,10 +14,14 @@ import { useCookies } from "react-cookie";
 import { MdDelete, MdOutlineEventSeat } from "react-icons/md";
 import { Link, useParams } from "react-router-dom";
 import DeleteFromTable from "../../../components/DeleteFromTable";
+import { useAuthStore } from "@zustand/auth";
+import { useAdminStore } from "@zustand/admin_access_partner";
 
 const PlaneFlightList = () => {
   const [cookies] = useCookies(["token"]);
   const { plane_id } = useParams<{ plane_id: string }>();
+  const user = useAuthStore((state) => state.user);
+  const partner = useAdminStore((state) => state.partner);
   const [selectedRowId, setSelectedRowId] = useState<number | null>(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [globalFilter, setGlobalFilter] = useState("");
@@ -25,6 +29,11 @@ const PlaneFlightList = () => {
     pageIndex: 0,
     pageSize: 10,
   });
+
+  const fetchUrl =
+    user?.role == "ADMIN"
+      ? `/admin/partner/${partner?.id}/airline/plane/flight/get`
+      : "/partner/airline/plane/flight/get";
 
   const {
     data: { data = [], meta } = {},
@@ -41,7 +50,7 @@ const PlaneFlightList = () => {
     ],
     queryFn: () =>
       api
-        .get("/partner/airline/plane/flight/get", {
+        .get(fetchUrl, {
           headers: { Authorization: `Bearer ${cookies.token}` },
           params: {
             plane_id,
@@ -162,14 +171,18 @@ const PlaneFlightList = () => {
         onClose={() => setSelectedRowId(null)}
       />
       <div className="px-4 py-6 h-dashboard-outlet">
-        <TableListHead
-          linkTo="../.."
-          title="Flight List"
-          button={{
-            linkTo: "./create",
-            text: "Add Flight",
-          }}
-        />
+        {user!.role === "PARTNER" ? (
+          <TableListHead
+            linkTo="../.."
+            title="Flight List"
+            button={{
+              linkTo: "./create",
+              text: "Add Flight",
+            }}
+          />
+        ) : (
+          <TableListHead linkTo="../.." title="Flight List" />
+        )}
         <MaterialReactTable table={table} />
       </div>
     </>

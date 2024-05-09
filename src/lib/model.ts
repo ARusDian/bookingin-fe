@@ -139,6 +139,7 @@ export type PlaneSeat = {
   plane_id: number;
   available?: boolean;
   name: string;
+  user?: string
 };
 
 export type PlaneSeatCreate = {
@@ -189,6 +190,9 @@ export type FlightTicket = {
   deleted_at: null;
   created_at: string;
   updated_at: string;
+  user: {
+    name: string;
+  }
 };
 
 export type FlightTicketResponse = {

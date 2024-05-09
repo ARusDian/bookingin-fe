@@ -101,13 +101,16 @@ const TicketTransactionList = () => {
         .then((res) => res.data),
   });
 
-  
+  // console.log(ticketData)
+
   const seatWithMarkedTicket = useMemo(() => {
     return seatData.map((seat) => {
-      const ticket = ticketData.find((ticket) => ticket.plane_seat_id == seat.id);
+      const ticket = ticketData.find(
+        (ticket) => ticket.plane_seat_id == seat.id
+      );
       if (ticket) {
-        return { ...seat, available: false };
-      }      
+        return { ...seat, available: false, user: ticket.user.name };
+      }
       return { ...seat, available: true };
     });
   }, [seatData, ticketData]);
@@ -121,21 +124,36 @@ const TicketTransactionList = () => {
       header: "Available",
       accessorKey: "available",
       Cell: ({ row }) => {
-        return row.original.available ? <label className="text-green-600">Available</label> : <label className="text-red-600">Unavailable</label>;
+        return row.original.available ? (
+          <label className="text-green-600">Available</label>
+        ) : (
+          <label className="text-red-600">Unavailable</label>
+        );
       },
-
-    }
+    },
+    {
+      header: "Booked by",
+      accessorKey: "user",
+      Cell: ({ row }) => {
+        return row.original.user ? (
+          <label className="font-bold">{row.original.user}</label>
+        ) : (
+          "N/A"
+        );
+      },
+    },
   ];
 
   const table = useMaterialReactTable({
     columns,
     data: seatWithMarkedTicket,
-    muiToolbarAlertBannerProps: isSeatError || isTicketError
-      ? {
-          color: "error",
-          children: "Error loading data",
-        }
-      : undefined,
+    muiToolbarAlertBannerProps:
+      isSeatError || isTicketError
+        ? {
+            color: "error",
+            children: "Error loading data",
+          }
+        : undefined,
     manualPagination: true,
     onPaginationChange: setPagination,
     onGlobalFilterChange: setGlobalFilter,
