@@ -24,7 +24,6 @@ const PlaneFlightList = () => {
   const partner = useAdminStore((state) => state.partner);
   const [selectedRowId, setSelectedRowId] = useState<number | null>(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
-  const [globalFilter, setGlobalFilter] = useState("");
   const [pagination, setPagination] = useState<MRT_PaginationState>({
     pageIndex: 0,
     pageSize: 10,
@@ -46,7 +45,6 @@ const PlaneFlightList = () => {
       "users",
       pagination.pageIndex,
       pagination.pageSize,
-      globalFilter,
     ],
     queryFn: () =>
       api
@@ -56,7 +54,6 @@ const PlaneFlightList = () => {
             plane_id,
             page: pagination.pageIndex + 1,
             item: pagination.pageSize,
-            search: globalFilter,
           },
         })
         .then((res) => res.data),
@@ -121,9 +118,9 @@ const PlaneFlightList = () => {
         }
       : undefined,
     enableRowActions: true,
+    enableGlobalFilter: false,
     manualPagination: true,
     onPaginationChange: setPagination,
-    onGlobalFilterChange: setGlobalFilter,
     renderRowActions: ({ row }) => (
       <div className="flex space-x-1">
         <Link
