@@ -1,0 +1,40 @@
+Analisis Kebutuhan Sistem Booking Hotel dan Penerbangan
+
+> hasil analisis kebutuhan berikut harus dipenuhi
+> saran untuk penambahan fitur baru harus melalui persetujuan dulu
+> semua saran yang disampaikan (disetujui atau tidak) akan mendapatkan nilai tambah
+> segala kesalahpahaman atas hasil analisis kebutuhan dapat ditoleransi
+
+> aktor terdiri dari pengguna, mitra, dan admin
+> seluruh aktor memiliki akun uang elektronik sendiri, dan seluruh transaksi harus menggunakan uang elektronik yang disedikan
+> uang elektronik dapat di>top>up dan ditarik hanya dengan metode manual
+> status ketersediaan kamar hotel dan kursi penerbangan hanya "tersedia" dan "tidak tersedia"
+> pemesanan kamar hotel dan kursi penerbangan harus bisa dipesan paling lama 7 hari ke depan
+> pemesanan hanya akan disimpan jika telah dibayar lunas
+> ketika pemesanan telah dibayar lunas maka uang elektronik pengguna berkurang sebesar biaya pemesanan
+> ketika pemesanan telah melewati hari tanpa ada permintaan pembatalan maka uang elektronik mitra akan bertambah sesuai harga sewa (opsional)
+
+> pengguna dapat melihat semua ketersediaan kamar hotel atau kursi penerbangan
+> pengguna dapat memesan kamar hotel atau kursi penerbangan untuk tanggal tertentu
+> pengguna tidak dapat memesan kamar hotel atau kursi penerbangan yang sudah dipesan pengguna lain
+> pengguna dapat memesan paling lambat H-1
+> pengguna dapat membatalkan pesanan paling lambat H-2
+
+> mitra dapat menambahkan banyaknya ketersediaan kamar hotel atau kursi penerbangan (kamar hotel done)
+> mitra dapat mengurangi banyaknya ketersediaan kamar hotel atau kursi penerbangan (kamar hotel done)
+> mitra dapat melihat semua status ketersediaan kamar hotel dan kursi penerbangan (khusus yang ia tambahkan sendiri)
+> mitra dapat melihat identitas user yang telah memesan kamar hotel dan kursi penerbangan
+
+> admin dapat menambahkan saldo uang elektronik (done)
+> admin dapat mengurangi saldo uang elektronik (done)
+> admin dapat menambahkan pengguna (done)
+> admin dapat menyunting pengguna 
+> admin dapat menghapus pengguna (done)
+> admin dapat melihat semua pengguna (done)
+> admin dapat menambahkan mitra 
+> admin dapat menyunting mitra
+> admin dapat menghapus mitra
+> admin dapat melihat semua mitra (done)
+> admin dapat melihat semua status ketersediaan kamar hotel dan kursi penerbangan
+> admin dapat menyunting ketersediaan kamar hotel dan kursi penerbangan
+> admin dapat menghapus ketersediaan kamar hotel dan kursi penerbangan

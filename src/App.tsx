@@ -65,7 +65,7 @@ const router = createBrowserRouter([
         element: <DashboardIndex />,
       },
       {
-        path: "users",
+        path: "user",
         children: [
           {
             index: true,
@@ -75,34 +75,115 @@ const router = createBrowserRouter([
             path: "create",
             element: <UserAdd />,
           },
+          {
+            path: "edit/:user_id",
+            element: <UserEdit />,
+          },
+          {
+            path: "top-up/:user_id",
+            children: [
+              {
+                index: true,
+                element: <Topup />,
+              },
+            ],
+          },
         ],
       },
       {
-        path: "plane-tickets",
+        path: "plane-ticket",
         children: [
           {
             index: true,
-            element: <PlaneTicketList />
-          }
-        ]
+            element: <PlaneTicketList />,
+          },
+        ],
       },
       {
-        path: "hotel-tickets",
+        path: "hotel-ticket",
         children: [
           {
             index: true,
-            element: <HotelTicketList />
-          }
-        ]
+            element: <HotelTicketList />,
+          },
+        ],
       },
       {
-        path: "partners",
+        path: "partner",
         children: [
           {
             index: true,
-            element: <PartnerList />
-          }
-        ]
+            element: <PartnerList />,
+          },
+          {
+            path: "create",
+            element: <PartnerCreate />,
+          },
+          {
+            path: "edit/:partner_id",
+            element: <PartnerEdit />,
+          },
+          {
+            path: "hotel",
+            children: [
+              {
+                index: true,
+                element: <HotelList />,
+              },
+              {
+                path: "create",
+                element: <HotelCreate />,
+              },
+              {
+                path: ":hotel_id",
+                children: [
+                  {
+                    index: true,
+                    element: <HotelDetail />,
+                  },
+                  {
+                    path: "room",
+                    children: [
+                      {
+                        index: true,
+                        element: <HotelRoomList />,
+                      },
+                      {
+                        path: "add",
+                        element: <HotelRoomAdd />,
+                      }
+                    ],
+                  },
+                  {
+                    path: "facility/add",
+                    element: <FacilityCreate />
+                  }
+                ],
+              },
+            ],
+          },
+          {
+            path: "airline",
+            children: [
+              {
+                index: true,
+                element: <AirlineList />,
+              },
+              {
+                path: "create",
+                element: <AirlineCreate />,
+              },
+              // {
+              //   path: ":hotel_id",
+              //   element: <HotelDetail />,
+              // }
+            ],
+          },
+        ],
+      },
+      {
+        path: "log",
+        element: <LogList />,
       },
     ],
   },
