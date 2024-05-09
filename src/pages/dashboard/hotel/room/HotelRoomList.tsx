@@ -2,6 +2,8 @@ import api from "@lib/api";
 import { HotelWithRoomResponse, Room } from "@lib/model";
 import FormModal from "@pages/dashboard/components/FormModal";
 import { useQuery } from "@tanstack/react-query";
+import { useAdminStore } from "@zustand/admin_access_partner";
+import { useAuthStore } from "@zustand/auth";
 import {
   MRT_ColumnDef,
   MRT_PaginationState,
@@ -17,6 +19,8 @@ import { Link, useParams } from "react-router-dom";
 const HotelRoomList = () => {
   const { hotel_id } = useParams();
   const [cookies] = useCookies(["token"]);
+  const role = useAuthStore((state) => state.user!.role);
+  const { partner } = useAdminStore((state) => state);
   const [selectedRowId, setSelectedRowId] = useState<number | null>(null);
   const [globalFilter, setGlobalFilter] = useState("");
   const [deleteLoading, setDeleteLoading] = useState(false);
@@ -121,8 +125,12 @@ const HotelRoomList = () => {
 
   const deleteRoom = (id: number) => {
     setDeleteLoading(true);
+    const url =
+      role === "PARTNER"
+        ? `/partner/hotel/room/delete/${id}`
+        : `/admin/partner/${partner?.id}/hotel/room/delete/${id}`;
     api
-      .delete(`/partner/hotel/room/delete/${id}`, {
+      .delete(url, {
         headers: { Authorization: `Bearer ${cookies.token}` },
       })
       .then(() => refetch())
@@ -132,7 +140,6 @@ const HotelRoomList = () => {
         setSelectedRowId(null);
       });
   };
-
 
   return (
     <div className="px-4 py-6 h-dashboard-outlet">
@@ -170,14 +177,16 @@ const HotelRoomList = () => {
           <IoMdArrowBack />
           Room List
         </Link>
-        <Link
-          to="./add"
-          relative="path"
-          className="flex items-center space-x-1 bg-purple-200 font-medium px-4 py-2 rounded-lg hover:bg-purple-300"
-        >
-          <IoMdAdd className="text-xl" />
-          <span>Add Room</span>
-        </Link>
+        {role === "PARTNER" && (
+          <Link
+            to="./add"
+            relative="path"
+            className="flex items-center space-x-1 bg-purple-200 font-medium px-4 py-2 rounded-lg hover:bg-purple-300"
+          >
+            <IoMdAdd className="text-xl" />
+            <span>Add Room</span>
+          </Link>
+        )}
       </div>
       <div className="">
         <MaterialReactTable table={table} />

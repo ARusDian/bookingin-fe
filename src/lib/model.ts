@@ -32,6 +32,10 @@ export interface Hotel {
   name: string;
   address: string;
   description: string;
+  user?: {
+    id: number;
+    name: string;
+  };
 }
 
 export type Room = {
@@ -139,7 +143,8 @@ export type PlaneSeat = {
   plane_id: number;
   available?: boolean;
   name: string;
-  user?: string
+  code?: string;
+  user?: string;
 };
 
 export type PlaneSeatCreate = {
@@ -180,22 +185,37 @@ export type User = {
   role: "admin" | "user" | "partner";
 };
 
-export type FlightTicket = {
+export type Transaction = {
   id: number;
   code: string;
   transaction_id: number;
   user_id: number;
-  plane_flight_id: number;
-  plane_seat_id: number;
-  deleted_at: null;
   created_at: string;
   updated_at: string;
   user: {
     name: string;
-  }
+  };
+};
+
+export type FlightTicket = Transaction & {
+  plane_flight_id: number;
+  plane_seat_id: number;
+  deleted_at: null;
 };
 
 export type FlightTicketResponse = {
   data: FlightTicket[];
+  meta: Meta;
+};
+
+export type RoomTransaction = Transaction & {
+  hotel_id: number;
+  room_id: number;
+  check_in: string;
+  check_out: string;
+};
+
+export type RoomTransactionResponse = {
+  data: RoomTransaction[];
   meta: Meta;
 };

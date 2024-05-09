@@ -22,8 +22,8 @@ Analisis Kebutuhan Sistem Booking Hotel dan Penerbangan
 
 > mitra dapat menambahkan banyaknya ketersediaan kamar hotel atau kursi penerbangan (done)
 > mitra dapat mengurangi banyaknya ketersediaan kamar hotel atau kursi penerbangan (done)
-> mitra dapat melihat semua status ketersediaan kamar hotel dan kursi penerbangan (khusus yang ia tambahkan sendiri)
-> mitra dapat melihat identitas user yang telah memesan kamar hotel dan kursi penerbangan
+> mitra dapat melihat semua status ketersediaan kamar hotel dan kursi penerbangan (khusus yang ia tambahkan sendiri) (done)
+> mitra dapat melihat identitas user yang telah memesan kamar hotel dan kursi penerbangan (done only nama)
 
 > admin dapat menambahkan saldo uang elektronik (done)
 > admin dapat mengurangi saldo uang elektronik (done)
@@ -35,6 +35,6 @@ Analisis Kebutuhan Sistem Booking Hotel dan Penerbangan
 > admin dapat menyunting mitra (done)
 > admin dapat menghapus mitra (done)
 > admin dapat melihat semua mitra (done)
-> admin dapat melihat semua status ketersediaan kamar hotel dan kursi penerbangan 
-> admin dapat menyunting ketersediaan kamar hotel dan kursi penerbangan
-> admin dapat menghapus ketersediaan kamar hotel dan kursi penerbangan
+> admin dapat melihat semua status ketersediaan kamar hotel dan kursi penerbangan (done)
+> admin dapat menyunting ketersediaan kamar hotel dan kursi penerbangan  (gatau)
+> admin dapat menghapus ketersediaan kamar hotel dan kursi penerbangan (sisa hotel)
