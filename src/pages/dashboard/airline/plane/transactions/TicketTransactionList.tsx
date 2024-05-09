@@ -109,7 +109,7 @@ const TicketTransactionList = () => {
         (ticket) => ticket.plane_seat_id == seat.id
       );
       if (ticket) {
-        return { ...seat, available: false, user: ticket.user.name };
+        return { ...seat, available: false, code: ticket.code, user: ticket.user.name };
       }
       return { ...seat, available: true };
     });
@@ -142,6 +142,17 @@ const TicketTransactionList = () => {
         );
       },
     },
+    {
+      header: "Code",
+      accessorKey: "code",
+      Cell: ({ row }) => {
+        return row.original.code ? (
+          <label className="font-bold">{row.original.code}</label>
+        ) : (
+          "N/A"
+        );
+      },
+    }
   ];
 
   const table = useMaterialReactTable({

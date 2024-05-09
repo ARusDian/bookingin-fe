@@ -116,8 +116,12 @@ const AirlineSeatList = () => {
 
   const deleteSeat = () => {
     setDeleteLoading(true);
+    const url =
+      user?.role == "ADMIN"
+        ? `/admin/partner/${partner?.id}/airline/plane/seat/delete/${selectedRowId}`
+        : `/partner/airline/plane/seat/delete/${selectedRowId}`;
     api
-      .delete(`/partner/airline/plane/seat/delete/${selectedRowId}`, {
+      .delete(url, {
         headers: { Authorization: `Bearer ${cookies.token}` },
       })
       .then(() => refetch())

@@ -8,6 +8,7 @@ import { useMemo } from "react";
 import { IoDocumentOutline } from "react-icons/io5";
 import { SiEthiopianairlines } from "react-icons/si";
 import { useAuthStore } from "../../zustand/auth";
+import { CiCreditCard1 } from "react-icons/ci";
 
 interface Props {
   isOpen: boolean;
@@ -73,7 +74,7 @@ const DashboardSidebar = ({ isOpen }: Props) => {
                 />
                 <SidebarTile
                   isActive={currentPaths[0] === "transactions"}
-                  Icon={TbUser}
+                  Icon={CiCreditCard1}
                   name="Transactions"
                   linkTo="./transactions"
                 />
