@@ -9,14 +9,12 @@ import {
 import { useMemo, useState } from "react";
 import { useCookies } from "react-cookie";
 import { IoMdAdd } from "react-icons/io";
-import { FaRegEye } from "react-icons/fa";
 import { MdDelete, MdOutlineEdit } from "react-icons/md";
+import { PiDoorOpenLight } from "react-icons/pi";
 import { Link } from "react-router-dom";
 import { useAuthStore } from "../../../zustand/auth";
 import FormModal from "../components/FormModal";
 import { Hotel, HotelResponse } from "@lib/model";
-
-
 
 const HotelList = () => {
   const [cookies] = useCookies(["token"]);
@@ -97,10 +95,10 @@ const HotelList = () => {
           relative="path"
           className="px-3 py-1 bg-green-200 font-medium items-center space-x-1 rounded-lg hover:bg-green-300"
         >
-          <FaRegEye className="text-2xl" />
+          <PiDoorOpenLight className="text-2xl" />
         </Link>
         <Link
-          to={`./edit/${row.original.id}`}
+          to={`./${row.original.id}`}
           relative="path"
           className="px-3 py-1 bg-blue-200 font-medium items-center space-x-1 rounded-lg hover:bg-blue-300"
         >
@@ -135,7 +133,7 @@ const HotelList = () => {
       </button>
     ),
   });
-  console.log(selectedRowId);
+
   const deleteHotel = (id: number) => {
     setDeleteLoading(true);
     api
@@ -180,14 +178,16 @@ const HotelList = () => {
       <div className="px-4 py-6 h-dashboard-outlet">
         <div className="flex justify-between items-center mb-2">
           <p className="text-2xl font-medium">Hotel List</p>
-          <Link
-            to="./create"
-            relative="path"
-            className="flex items-center space-x-1 bg-purple-200 font-medium px-4 py-2 rounded-lg hover:bg-purple-300"
-          >
-            <IoMdAdd className="text-xl" />
-            <span>Add Hotel</span>
-          </Link>
+          {role === "PARTNER" && (
+            <Link
+              to="./create"
+              relative="path"
+              className="flex items-center space-x-1 bg-purple-200 font-medium px-4 py-2 rounded-lg hover:bg-purple-300"
+            >
+              <IoMdAdd className="text-xl" />
+              <span>Add Hotel</span>
+            </Link>
+          )}
         </div>
         <div className="">
           <MaterialReactTable table={table} />

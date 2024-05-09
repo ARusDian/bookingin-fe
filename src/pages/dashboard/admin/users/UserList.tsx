@@ -209,7 +209,7 @@ const UserList = () => {
           </div>
         </div>
       </FormModal>
-      <div className="py-4 px-6">
+      <div className="py-4 px-6 h-dashboard-outlet">
         <div className="flex justify-between items-center mb-2">
           <p className="text-2xl font-medium">User List</p>
           <Link

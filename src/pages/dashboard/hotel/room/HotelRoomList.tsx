@@ -48,8 +48,6 @@ const HotelRoomList = () => {
         .then((res) => res.data.data),
   });
 
-  console.log(rooms);
-
   const columns: MRT_ColumnDef<Room>[] = useMemo(
     () => [
       {

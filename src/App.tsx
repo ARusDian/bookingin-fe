@@ -1,6 +1,8 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { CookiesProvider } from "react-cookie";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { HelmetProvider } from "react-helmet-async";
+import { ToastContainer } from "react-toastify";
 import Home from "@pages/homes/Home";
 import "./App.css";
 import DashboardLayout from "@layouts/DashboardLayout";
@@ -14,17 +16,26 @@ import Topup from "@pages/dashboard/admin/users/top-up/Topup";
 import UserEdit from "@pages/dashboard/admin/users/UserEdit";
 import PartnerCreate from "@pages/dashboard/admin/partners/PartnerCreate";
 import PartnerEdit from "@pages/dashboard/admin/partners/PartnerEdit";
-import LoginAdmin from "@pages/LoginAdmin";
-import { ToastContainer } from "react-toastify";
+import LoginDashboard from "@pages/LoginDashboard";
 import LogList from "@pages/dashboard/admin/log/LogList";
 import HotelList from "@pages/dashboard/hotel/HotelList";
 import HotelCreate from "@pages/dashboard/hotel/HotelCreate";
-import HotelDetail from "@pages/dashboard/hotel/HotelDetail";
+import HotelEdit from "@pages/dashboard/hotel/HotelEdit";
 import AirlineList from "@pages/dashboard/airline/AirlineList";
 import AirlineCreate from "@pages/dashboard/airline/AirlineCreate";
 import HotelRoomList from "@pages/dashboard/hotel/room/HotelRoomList";
 import HotelRoomAdd from "@pages/dashboard/hotel/room/HotelRoomAdd";
 import FacilityCreate from "@pages/dashboard/hotel/facility/FacilityCreate";
+import AirlineEdit from "@pages/dashboard/airline/AirlineEdit";
+import PlaneList from "@pages/dashboard/airline/plane/PlaneList";
+import PlaneCreate from "@pages/dashboard/airline/plane/PlaneCreate";
+import AirlineSeatList from "@pages/dashboard/airline/plane/seat/AirlineSeatList";
+import AirlineSeatCreate from "@pages/dashboard/airline/plane/seat/AirlineSeatCreate";
+import PlaneFlightList from "@pages/dashboard/airline/plane/flight/PlaneFlightList";
+import PlaneFlightAdd from "@pages/dashboard/airline/plane/flight/PlaneFlightAdd";
+import TransactionList from "@pages/dashboard/admin/transactions/TransactionList";
+import PlaneEdit from "@pages/dashboard/airline/plane/PlaneEdit";
+import TicketTransactionList from "@pages/dashboard/airline/plane/transactions/TicketTransactionList";
 
 const queryClient = new QueryClient();
 
@@ -35,8 +46,8 @@ const router = createBrowserRouter([
     element: <Home />,
   },
   {
-    path: "login-admin",
-    element: <LoginAdmin />,
+    path: "login-dashboard",
+    element: <LoginDashboard />,
   },
   {
     path: "/dashboard",
@@ -121,7 +132,7 @@ const router = createBrowserRouter([
                 children: [
                   {
                     index: true,
-                    element: <HotelDetail />,
+                    element: <HotelEdit />,
                   },
                   {
                     path: "room",
@@ -133,13 +144,13 @@ const router = createBrowserRouter([
                       {
                         path: "add",
                         element: <HotelRoomAdd />,
-                      }
+                      },
                     ],
                   },
                   {
                     path: "facility/add",
-                    element: <FacilityCreate />
-                  }
+                    element: <FacilityCreate />,
+                  },
                 ],
               },
             ],
@@ -155,13 +166,69 @@ const router = createBrowserRouter([
                 path: "create",
                 element: <AirlineCreate />,
               },
-              // {
-              //   path: ":hotel_id",
-              //   element: <HotelDetail />,
-              // }
+              {
+                path: "edit/:airline_id",
+                element: <AirlineEdit />,
+              },
+              {
+                path: ":airline_id",
+                children: [
+                  {
+                    path: "plane",
+                    children: [
+                      {
+                        index: true,
+                        element: <PlaneList />,
+                      },
+                      {
+                        path: "create",
+                        element: <PlaneCreate />,
+                      },
+                      {
+                        path: "edit/:plane_id",
+                        element: <PlaneEdit />,
+                      },
+                      {
+                        path: ":plane_id",
+                        children: [
+                          {
+                            path: "seat",
+                            element: <AirlineSeatList />,
+                          },
+                          {
+                            path: "seat/create",
+                            element: <AirlineSeatCreate />,
+                          },
+                          {
+                            path: "flight",
+                            children: [
+                              {
+                                index: true,
+                                element: <PlaneFlightList />,
+                              },
+                              {
+                                path: "create",
+                                element: <PlaneFlightAdd />,
+                              },
+                              {
+                                path: ":flight_id/booked-ticket",
+                                element: <TicketTransactionList />,
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
             ],
           },
         ],
+      },
+      {
+        path: "transactions",
+        element: <TransactionList />,
       },
       {
         path: "log",
@@ -177,14 +244,14 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <>
+    <HelmetProvider>
       <ToastContainer />
       <QueryClientProvider client={queryClient}>
         <CookiesProvider defaultSetOptions={{ path: "/" }}>
           <RouterProvider router={router} />;
         </CookiesProvider>
       </QueryClientProvider>
-    </>
+    </HelmetProvider>
   );
 }
 

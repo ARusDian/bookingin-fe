@@ -1,3 +1,10 @@
+type Meta = {
+  currentPage: number;
+  items: number;
+  totalItems: number;
+  totalPages: number;
+};
+
 export type AxiosErrorResponse = {
   status: string;
   code: number;
@@ -39,12 +46,7 @@ export interface HotelWithRoom extends Hotel {
 
 export interface HotelResponse {
   data: Hotel[];
-  meta: {
-    currentPage: number;
-    items: number;
-    totalItems: number;
-    totalPages: number;
-  };
+  meta: Meta;
 }
 
 export interface HotelWithRoomResponse extends HotelResponse {
@@ -90,3 +92,110 @@ export interface TypeResponse extends HotelTypeCreate {
   created_at: string;
   updated_at: string;
 }
+
+export type Airline = {
+  id: number;
+  name: string;
+  address: string;
+  description: string;
+  user?: {
+    id: number;
+    name: string;
+  };
+};
+
+export type AirlineResponse = {
+  data: Airline[];
+  meta: Meta;
+};
+
+export type AirlinePlane = {
+  id: number;
+  airline_id: number;
+  plane_type_id: number | null;
+  name: string;
+  description: string;
+};
+
+export type AirlinePlaneCreate = Omit<AirlinePlane, "id">;
+export type AirlinePlaneEdit = Omit<AirlinePlane, "id" | "airline_id">;
+
+export type AirlinePlaneResponse = {
+  data: AirlinePlane[];
+  meta: Meta;
+};
+
+export type AirlineTypeCreate = Omit<AirlinePlane, "id" | "plane_type_id">;
+
+export type AirlineType = Omit<AirlinePlane, "plane_type_id">;
+
+export interface AirlineTypeResponse {
+  data: AirlineType[];
+  meta: Meta;
+}
+
+export type PlaneSeat = {
+  id: number;
+  plane_id: number;
+  available?: boolean;
+  name: string;
+  user?: string
+};
+
+export type PlaneSeatCreate = {
+  plane_id: string;
+  seat_line: string;
+  start_number: number;
+  end_number: number;
+};
+
+export type PlaneSeatResponse = {
+  data: PlaneSeat[];
+  meta: Meta;
+};
+
+export type PlaneFlight = {
+  id: number;
+  plane_id: number;
+  last_check_in: string;
+  departure_time: string;
+  arrival_time: string;
+  departure_airport: string;
+  arrival_airport: string;
+  price: number;
+};
+
+export type PlaneFlightResponse = {
+  data: PlaneFlight[];
+  meta: Meta;
+};
+
+export type PlaneFlightCreate = Omit<PlaneFlight, "id">;
+
+export type User = {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  role: "admin" | "user" | "partner";
+};
+
+export type FlightTicket = {
+  id: number;
+  code: string;
+  transaction_id: number;
+  user_id: number;
+  plane_flight_id: number;
+  plane_seat_id: number;
+  deleted_at: null;
+  created_at: string;
+  updated_at: string;
+  user: {
+    name: string;
+  }
+};
+
+export type FlightTicketResponse = {
+  data: FlightTicket[];
+  meta: Meta;
+};

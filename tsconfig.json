@@ -28,6 +28,7 @@
       "@layouts/*": ["./layouts/*"],
       "@contexts/*": ["./contexts/*"],
       "@lib/*": ["./lib/*"],
+      "@zustand/*": ["./zustand/*"],
     },
   },
   "include": ["src"],
