@@ -209,7 +209,10 @@ export type PlaneSeat = {
   available?: boolean;
   name: string;
   code?: string;
-  user?: string;
+  user?: {
+    id: number;
+    name: string;
+  };
 };
 
 export type PlaneSeatCreate = {
@@ -258,6 +261,7 @@ export type Transaction = {
   created_at: string;
   updated_at: string;
   user: {
+    id: number;
     name: string;
   };
 };
@@ -276,6 +280,7 @@ export type FlightTicketResponse = {
 export type RoomTransaction = Transaction & {
   hotel_id: number;
   room_id: number;
+  room: Room;
   check_in: string;
   check_out: string;
 };

@@ -17,6 +17,7 @@ import { useAuthStore } from "../../../zustand/auth";
 import { Airline, AirlineResponse } from "@lib/model";
 import DeleteFromTable from "../components/DeleteFromTable";
 import { useAdminStore } from "../../../zustand/admin_access_partner";
+import { showErrorToast } from "@utils/toast";
 
 const AirlineList = () => {
   const [cookies] = useCookies(["token"]);
@@ -28,7 +29,9 @@ const AirlineList = () => {
     pageSize: 10,
   });
   const role = useAuthStore((state) => state.user?.role);
-  const { setPartner, deletePartner } = useAdminStore((state) => state);
+  const { setPartner, deletePartner } = useAdminStore(
+    (state) => state
+  );
 
   useEffect(() => {
     deletePartner();
@@ -131,6 +134,11 @@ const AirlineList = () => {
             className="px-3 py-1 bg-red-200 font-medium items-center space-x-1 rounded-lg hover:bg-red-300"
             onClick={() => {
               setSelectedRowId(row.original.id);
+              if (role === "ADMIN" && row.original.user)
+                setPartner({
+                  id: row.original.user.id,
+                  name: row.original.user.name,
+                });
             }}
           >
             <MdDelete className="text-2xl" />
@@ -158,13 +166,22 @@ const AirlineList = () => {
 
   const deleteAirline = () => {
     setDeleteLoading(true);
+    const url =
+      role === "PARTNER"
+        ? "/partner/airline/delete"
+        : `/admin/partner/${selectedRowId}/airline/delete`;
     api
-      .delete(`/partner/airline/delete/${selectedRowId}`, {
+      .delete(`${url}/${selectedRowId}`, {
         headers: { Authorization: `Bearer ${cookies.token}` },
       })
       .then(() => {
         refetch();
         setSelectedRowId(null);
+      })
+      .catch((err) => {
+        if (err.response.code === 403) {
+          showErrorToast("You are not authorized to delete this plane");
+        }
       })
       .finally(() => {
         setDeleteLoading(false);
