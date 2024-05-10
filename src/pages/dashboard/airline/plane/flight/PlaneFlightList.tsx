@@ -16,6 +16,7 @@ import { Link, useParams } from "react-router-dom";
 import DeleteFromTable from "../../../components/DeleteFromTable";
 import { useAuthStore } from "@zustand/auth";
 import { useAdminStore } from "@zustand/admin_access_partner";
+import { showErrorToast } from "@utils/toast";
 
 const PlaneFlightList = () => {
   const [cookies] = useCookies(["token"]);
@@ -41,11 +42,7 @@ const PlaneFlightList = () => {
     isLoading,
     refetch,
   } = useQuery<PlaneFlightResponse>({
-    queryKey: [
-      "users",
-      pagination.pageIndex,
-      pagination.pageSize,
-    ],
+    queryKey: ["users", pagination.pageIndex, pagination.pageSize],
     queryFn: () =>
       api
         .get(fetchUrl, {
@@ -101,7 +98,11 @@ const PlaneFlightList = () => {
         headers: { Authorization: `Bearer ${cookies.token}` },
       })
       .then(() => refetch())
-      .catch((err) => console.error(err))
+      .catch((err) => {
+        if (err.response.status === 403) {
+          showErrorToast("You are not authorized to delete this flight");
+        }
+      })
       .finally(() => {
         setDeleteLoading(false);
         setSelectedRowId(null);
@@ -164,7 +165,7 @@ const PlaneFlightList = () => {
       <DeleteFromTable
         open={selectedRowId}
         deleteHandler={deleteFlight}
-        state={{ id: selectedRowId!, isLoading: deleteLoading, name: "Plane" }}
+        state={{ id: selectedRowId!, isLoading: deleteLoading, name: "Flight" }}
         onClose={() => setSelectedRowId(null)}
       />
       <div className="px-4 py-6 h-dashboard-outlet">

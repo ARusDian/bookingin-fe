@@ -16,6 +16,7 @@ import { MdOutlineEventSeat, MdOutlineFlightTakeoff } from "react-icons/md";
 import DeleteFromTable from "../../components/DeleteFromTable";
 import { useAuthStore } from "../../../../zustand/auth";
 import { useAdminStore } from "../../../../zustand/admin_access_partner";
+import { showErrorToast } from "@utils/toast";
 
 const PlaneList = () => {
   const [cookies] = useCookies(["token"]);
@@ -150,7 +151,11 @@ const PlaneList = () => {
         headers: { Authorization: `Bearer ${cookies.token}` },
       })
       .then(() => refetch())
-      .catch((err) => console.error(err))
+      .catch((err) => {
+        if (err.response.status === 403) {
+          showErrorToast("You are not authorized to delete this plane");
+        }
+      })
       .finally(() => {
         setDeleteLoading(false);
         setSelectedRowId(null);

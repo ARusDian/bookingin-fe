@@ -13,6 +13,7 @@ import {
 import { useParams } from "react-router-dom";
 import { useAdminStore } from "../../../../../zustand/admin_access_partner";
 import { useAuthStore } from "../../../../../zustand/auth";
+import ShowUser from "@pages/dashboard/components/ShowUser";
 
 const TicketTransactionList = () => {
   const [cookies] = useCookies(["token"]);
@@ -27,6 +28,7 @@ const TicketTransactionList = () => {
     pageIndex: 0,
     pageSize: 10,
   });
+  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
 
   const seatUrl =
     user?.role == "ADMIN"
@@ -109,7 +111,15 @@ const TicketTransactionList = () => {
         (ticket) => ticket.plane_seat_id == seat.id
       );
       if (ticket) {
-        return { ...seat, available: false, code: ticket.code, user: ticket.user.name };
+        return {
+          ...seat,
+          available: false,
+          code: ticket.code,
+          user: {
+            id: ticket.user.id,
+            name: ticket.user.name,
+          },
+        };
       }
       return { ...seat, available: true };
     });
@@ -133,10 +143,15 @@ const TicketTransactionList = () => {
     },
     {
       header: "Booked by",
-      accessorKey: "user",
+      accessorKey: "user.name",
       Cell: ({ row }) => {
         return row.original.user ? (
-          <label className="font-bold">{row.original.user}</label>
+          <label
+            className="font-bold cursor-pointer hover:underline"
+            onClick={() => setSelectedUserId(row.original.user!.id)}
+          >
+            {row.original.user.name}
+          </label>
         ) : (
           "N/A"
         );
@@ -152,7 +167,7 @@ const TicketTransactionList = () => {
           "N/A"
         );
       },
-    }
+    },
   ];
 
   const table = useMaterialReactTable({
@@ -191,6 +206,13 @@ const TicketTransactionList = () => {
 
   return (
     <div className="px-4 py-6 h-dashboard-outlet">
+      {selectedUserId && (
+        <ShowUser
+          role={user!.role}
+          open={selectedUserId}
+          onClose={() => setSelectedUserId(null)}
+        />
+      )}
       <TableListHead
         linkTo="../.."
         title="Booked Ticket List"
