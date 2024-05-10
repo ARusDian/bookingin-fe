@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
 import FlightCard from './FlightCard';
+import Footer from '@components/Footer';
 
 const FlightListPage: React.FC = () => {
   const [flights, setFlights] = useState([
+    {id:1 , guest: 'Guest', date: '12 - 13 December 2021', airline: 'Premium Lion King', price: 'Rp1.000.000' },
+    {id:1 , guest: 'Guest', date: '12 - 13 December 2021', airline: 'Premium Lion King', price: 'Rp1.000.000' },
+    {id:1 , guest: 'Guest', date: '12 - 13 December 2021', airline: 'Premium Lion King', price: 'Rp1.000.000' },
+    {id:1 , guest: 'Guest', date: '12 - 13 December 2021', airline: 'Premium Lion King', price: 'Rp1.000.000' },
+    {id:1 , guest: 'Guest', date: '12 - 13 December 2021', airline: 'Premium Lion King', price: 'Rp1.000.000' },
     {id:1 , guest: 'Guest', date: '12 - 13 December 2021', airline: 'Premium Lion King', price: 'Rp1.000.000' },
   ]);
 
@@ -42,6 +48,7 @@ const FlightListPage: React.FC = () => {
           </ul>
         </div>
       </div>
+        <Footer />
     </>
   );
 };

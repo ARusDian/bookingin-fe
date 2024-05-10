@@ -17,7 +17,7 @@ const HotelPayments = () => {
   const hotels: Hotel[] = [
     {
       id: 1,
-      image: "hotel1.jpg",
+      image: "public/image/hotel.jpg",
       name: "Example Hotel 1",
       availability: 2,
       location: "asdasd",
@@ -30,14 +30,17 @@ const HotelPayments = () => {
       <Navbar />
       <div className="p-8">
         <h1 className="text-6xl mt-24 font-bold mb-10">Bookingin Sekarang!</h1>
-        <div className="grid grid-cols-1 md:grid-cols-1 gap-8">
-          {hotels.map((hotel) => (
-            <HotelCardPayments key={hotel.id} hotel={hotel} />
-            ))}
-        </div>
+        <div className="flex flex-wrap gap-8">
+          <div className="flex-1">
             <HotelForm />
+          </div>
+          {hotels.map((hotel) => (
+            <div key={hotel.id} className="flex-1">
+              <HotelCardPayments hotel={hotel} />
+            </div>
+          ))}
+        </div>
       </div>
-
       <Footer />
     </>
   );
