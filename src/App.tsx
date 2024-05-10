@@ -19,6 +19,7 @@ import FlightPayments from "@pages/homes/flights/payments/FlightPayments";
 import HotelPayments from "@pages/homes/hotels/payments/HotelPayments";
 import PostPayments from "@pages/homes/PostPayments";
 import ResetPassword from "@components/auth/ResetPassword";
+import { dashboardRoutes } from "./route";
 
 const queryClient = new QueryClient();
 
@@ -106,6 +107,7 @@ const router = createBrowserRouter([
       },
     ],
   },
+  ...dashboardRoutes,
   {
     path: "post-payments",
     element: <PostPayments />,
