@@ -1,15 +1,32 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { IoMdArrowBack } from "react-icons/io";
+import { useState } from "react";
+import api from "@lib/api";
+import { useMutation } from "@tanstack/react-query";
+import { useCookies } from "react-cookie";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { AxiosError } from "axios";
+import { AxiosErrorResponse, UserForm } from "@lib/model";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
+const postUser = async (data: UserForm, token: string) => {
+  const { data: response } = await api.post("/register", data, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  return response.data;
+};
+
 const Register = () => {
-  const [post, setPost] = useState({
+  const [cookies] = useCookies(["token"]);
+  const navigate = useNavigate();
+  const [data, setData] = useState<UserForm>({
     name: "",
-    username: "",
     email: "",
     phone: "",
     password: "",
-    role_id: 0,
+    role: "user",
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -18,31 +35,40 @@ const Register = () => {
     setShowPassword(!showPassword);
   };
 
-  const navigate = useNavigate();
 
-  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPost({ ...post, [event.target.name]: event.target.value });
+  const { mutate, isPending } = useMutation({
+    mutationFn: (data: UserForm) => postUser(data, cookies.token),
+    onError: (error: AxiosError) => {
+      const errorData: AxiosErrorResponse = error.response
+        ?.data as AxiosErrorResponse;
+      toast.error(errorData.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    },
+    onSuccess: (data) => {
+      console.log(data);
+      navigate("..", { relative: "path" });
+    },
+  });
+
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    mutate(data);
   };
-
-
-  // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-  //   console.log("Data to be sent:", post);
-  //   api
-  //     .post("/auth/register", post)
-  //     .then((response) => {
-  //       console.log("Data successfully sent:", response);
-  //       navigate("/dashboard-admin/user");
-  //     })
-  //     .catch((err) => console.log("Error sending data:", err));
-  // };
 
   return (
     <>
       <div className="flex items-center justify-center">
         <form
           className="bg-white w-screen rounded-lg"
-          // onSubmit={handleSubmit}
+          onSubmit={onSubmit}
         >
           <h1 className="text-center font-bold text-4xl mb-2">
             Daftar Akun
@@ -55,25 +81,11 @@ const Register = () => {
           </label>
           <input
             type="text"
+            id="name"
             className="bg-gray-200 appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-pink-500"
             placeholder="Isi Nama"
-            onChange={handleInput}
-            name="name"
-            required
-          />
-
-          <label
-            htmlFor="username"
-            className="block mt-4 text-gray-700 text-sm font-bold mb-2"
-          >
-            Nama Pengguna
-          </label>
-          <input
-            type="text"
-            className="bg-gray-200 appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-pink-500"
-            placeholder="Isi Nama Pengguna"
-            onChange={handleInput}
-            name="username"
+            value={data.name}
+            onChange={(e) => setData({ ...data, name: e.target.value })}
             required
           />
 
@@ -88,8 +100,8 @@ const Register = () => {
             id="email"
             className="bg-gray-200 appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-pink-500"
             placeholder="Isi E-mail"
-            onChange={handleInput}
-            name="email"
+            value={data.email}
+            onChange={(e) => setData({ ...data, email: e.target.value })}
             required
           />
 
@@ -104,8 +116,8 @@ const Register = () => {
             id="phone"
             className="bg-gray-200 appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-pink-500"
             placeholder="Isi Nomor Telepon"
-            onChange={handleInput}
-            name="phone"
+            value={data.phone}
+            onChange={(e) => setData({ ...data, phone: e.target.value })}
             required
           />
 
@@ -118,7 +130,9 @@ const Register = () => {
                 type={showPassword ? "text" : "password"}
                 className="bg-gray-200 appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-pink-500"
                 placeholder="Kata Sandi"
-                onChange={handleInput}
+                id="password"
+                value={data.password}
+                onChange={(e) => setData({ ...data, password: e.target.value })}
                 name="password"
                 required
               />

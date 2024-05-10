@@ -6,7 +6,9 @@ const Flight = () => {
     <>
       <Navbar />
       <div className="relative w-full h-[500px] overflow-hidden">
-        <div className="absolute inset-0 bg-gray-800 z-[-1]"></div>
+        <div className="absolute inset-0 bg-gray-800 z-[-1]">
+          <img className="h-screen w-screen" src="public/image/pesawat.jpeg" />
+        </div>
         <div className="h-full flex flex-col justify-center text-center drop-shadow-2xl relative">
           <h1 className="text-white text-7xl font-extrabold -mt-8">
             Penerbangan

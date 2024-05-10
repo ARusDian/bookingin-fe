@@ -1,3 +1,4 @@
+import React from "react";
 import Footer from "@components/Footer";
 import Navbar from "@components/Navbar";
 import FlightCardPayments from "./components/FlightCardPayments";
@@ -21,20 +22,26 @@ const FlightPayments = () => {
       price: 150,
     },
   ];
+
   return (
     <>
       <Navbar />
-      <div className="p-8 h-screen">
+      <div className="p-8">
         <h1 className="text-6xl mt-24 font-bold mb-10">Bookingin Sekarang!</h1>
-        <div className="grid grid-cols-1 md:grid-cols-1 gap-8">
+        <div className="flex flex-wrap gap-8">
+          <div className="flex-1">
+            <FlightForm />
+          </div>
           {flights.map((flight) => (
-            <FlightCardPayments key={flight.id} flight={flight} />
+            <div key={flight.id} className="flex-1">
+              <FlightCardPayments flight={flight} />
+            </div>
           ))}
         </div>
-        <FlightForm />
       </div>
-
-      <Footer />
+      <div className="absolute bottom-0 w-full">
+        <Footer />
+      </div>
     </>
   );
 };

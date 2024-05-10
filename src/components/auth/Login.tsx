@@ -1,26 +1,54 @@
-import { useState } from "react";
+import api from "@lib/api";
+import { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
+import { AxiosError } from "axios";
+import { AxiosErrorResponse } from "@lib/model";
+import { showErrorToast } from "@utils/toast";
+import Loading from "react-loading";
+// import { Helmet } from "react-helmet-async";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+
+  const [cookie, setCookie] = useCookies(["token"]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (cookie["token"]) {
+      navigate("/dashboard");
+    }
+  }, [cookie, navigate]);
+
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(event.target.value);
-  };
-
-  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value);
-  };
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    console.log("Login submitted:", { username, password });
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    api
+      .post("/login", { email, password })
+      .then((res) => {
+        setCookie("token", res.data.data.token, {
+          expires: new Date(res.data.data.expires_at),
+        });
+      })
+      .catch((err: AxiosError) => {
+        const errorResponse: AxiosErrorResponse = err.response
+          ?.data as AxiosErrorResponse;
+        if (errorResponse.code === 401) {
+          showErrorToast(errorResponse.message);
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -32,15 +60,15 @@ const Login = () => {
             htmlFor="username"
             className="block text-gray-700 text-sm font-bold mb-2"
           >
-            Nama Pengguna
+            E-mail
           </label>
           <input
-            type="text"
-            id="username"
+            type="email"
+            id="email"
             className="bg-gray-200 appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-pink-500"
-            placeholder="Isi Nama Pengguna"
-            value={username}
-            onChange={handleUsernameChange}
+            placeholder="Isi Email Pengguna"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
@@ -58,7 +86,7 @@ const Login = () => {
               className="bg-gray-200 appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-pink-500"
               placeholder="Isi Kata Sandi"
               value={password}
-              onChange={handlePasswordChange}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
             <button
@@ -72,9 +100,14 @@ const Login = () => {
         </div>
         <button
           type="submit"
+          disabled={loading}
           className="bg-pink-400 hover:bg-pink-700 text-white w-full font-bold py-2 px-4 rounded"
         >
-          Masuk
+          {loading ? (
+                <Loading type="spin" color="#fff" width={25} height={25} />
+              ) : (
+                "Login"
+              )}
         </button>
       </form>
     </div>
