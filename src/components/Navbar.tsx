@@ -13,6 +13,7 @@ import { IoIosLogOut } from "react-icons/io";
 import { currencyFormatter } from "@utils/currency_formatter";
 import ResetPasswordForm from "./auth/ResetPasswordForm";
 import { Link } from "react-router-dom";
+import { UserForm } from "@lib/model";
 
 type User = {
   id: number;
@@ -79,7 +80,7 @@ const Navbar = () => {
     isRefetching,
     isLoading,
     refetch,
-  } = useQuery<UserResponse>({
+  } = useQuery<UserForm>({
     queryKey: ["users"],
     queryFn: () =>
       api

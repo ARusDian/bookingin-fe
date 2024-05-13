@@ -1,38 +1,117 @@
 import React, { useState } from "react";
-import DatePicker from "react-datepicker";
+import { useNavigate } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
 import { MdEventSeat } from "react-icons/md";
+import api from "@lib/api";
+import { useCookies } from "react-cookie";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useMutation } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { FlightTicket, AxiosErrorResponse } from "@lib/model";
+
+interface Flight {
+  id: number;
+  seats_count: number;
+  available_seats_count: number;
+  date: string;
+  airline: string;
+  price: number;
+  departure_time: string;
+  arrival_time: string;
+  departure_airport: string;
+  last_check_in: string;
+  arrival_airport: string;
+  plane: {
+    name: string;
+    description: string;
+  };
+  seats: {
+    id: number;
+    name: string;
+    available: boolean;
+  }[];
+}
 
 interface Seat {
   id: number;
+  name: string;
+  available: boolean;
   selected: boolean;
 }
 
-const FlightForm: React.FC = () => {
-  const [file, setFile] = useState<File | null>(null);
-  const [acceptedPolicy, setAcceptedPolicy] = useState<boolean>(false);
-  const [selectedDateIn, setSelectedDateIn] = useState<Date | null>(null);
-  const [selectedDateOut, setSelectedDateOut] = useState<Date | null>(null);
-  const [seats, setSeats] = useState<Seat[]>([
-    { id: 1, selected: false },
-    { id: 2, selected: false },
-    { id: 3, selected: false },
-    { id: 4, selected: false },
-  ]);
+interface FlightFormProps {
+  flight: Flight;
+}
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const fileList = event.target.files;
-    if (fileList && fileList.length > 0) {
-      setFile(fileList[0]);
+
+
+const FlightForm: React.FC<FlightFormProps> = ({ flight }) => {
+  const navigate = useNavigate();
+  const [cookies] = useCookies(["token"]);
+  const [acceptedPolicy, setAcceptedPolicy] = useState<boolean>(false);
+  const [seats, setSeats] = useState<Seat[]>(
+    flight.seats.map((seat) => ({
+      ...seat,
+      selected: false,
+    }))
+  );
+
+  const postFlight = async (flightData: FlightTicket, token:string) => {
+    try {
+      const response = await api.post("/user/ticket/buy", flightData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return response.data;
+    } catch (error) {
+      throw error;
     }
   };
 
-  const handleDateChangeIn = (date: Date | null) => {
-    setSelectedDateIn(date);
-  };
+  const { mutate, isPending } = useMutation({
+    mutationFn: (data:FlightTicket) => postFlight(data, cookies.token),
+    onError: (error: AxiosError) => {
+      const errorData: AxiosErrorResponse = error.response
+        ?.data as AxiosErrorResponse;
+      toast.error(errorData.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    },
+    onSuccess: (data) => {
+      console.log(data);
+      navigate("/post-payments", { relative: "path" });
+    },
+  });
 
-  const handleDateChangeOut = (date: Date | null) => {
-    setSelectedDateOut(date);
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const selectedSeat = seats.find((seat) => seat.selected);
+    if (!selectedSeat || !acceptedPolicy) {
+      toast.error("Please select a seat and accept the policy to proceed.");
+      return;
+    }
+    mutate({
+      plane_flight_id: flight.id,
+      plane_seat_id: selectedSeat.id,
+      id: 0,
+      code: "",
+      transaction_id: 0,
+      user_id: 0,
+      created_at: "",
+      updated_at: "",
+      user: {
+        id: 0,
+        name: ""
+      },
+      deleted_at: null
+    });
   };
 
   const handleSeatSelection = (seatId: number) => {
@@ -42,41 +121,34 @@ const FlightForm: React.FC = () => {
     setSeats(updatedSeats);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (file && acceptedPolicy && selectedDateIn && selectedDateOut) {
-      console.log("File:", file);
-      console.log("Accepted Policy:", acceptedPolicy);
-      console.log("Selected Check-in Date:", selectedDateIn);
-      console.log("Selected Check-out Date:", selectedDateOut);
-      console.log("Selected Seats:", seats.filter((seat) => seat.selected).map((seat) => seat.id));
-    } else {
-      alert("Please fill all fields and accept the policy to proceed.");
-    }
-  };
-
   return (
-    <form onSubmit={handleSubmit} className="mt-4 p-6 rounded-lg bg-gray-200 shadow-md">
+    <form
+      onSubmit={handleSubmit}
+      className="mt-4 p-6 rounded-lg bg-gray-200 shadow-md"
+    >
       <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">Penerbangan Pada:</label>
-        <DatePicker
-          selected={selectedDateIn}
-          onChange={handleDateChangeIn}
-          className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-pink-500 focus:border-pink-500"
-        />
+        <label className="block text-sm font-medium text-gray-700">
+          Penerbangan Pada:
+        </label>
         <div className="mt-4">
           Pilih Kamar:
           <div className="grid grid-cols-12 gap-2">
             {seats.map((seat) => (
-              <div
-              key={seat.id}
-              className={`${
-                seat.selected ? "bg-green-500 text-white" : "bg-gray-300 text-gray-800"
-              } py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 focus:outline-none flex items-center justify-center`}
-              onClick={() => handleSeatSelection(seat.id)}
-            >
-              <MdEventSeat size={20} />
-            </div>
+              <button
+                key={seat.id}
+                className={`py-2 px-4 rounded-md transition duration-300 ease-in-out transform ${
+                  seat.selected
+                    ? "bg-green-500 text-white"
+                    : "bg-gray-300 text-gray-800"
+                } ${
+                  !seat.available && "bg-red-500 text-white cursor-not-allowed"
+                }`}
+                onClick={() => seat.available && handleSeatSelection(seat.id)}
+                disabled={!seat.available}
+              >
+                <MdEventSeat className="mx-auto"/>
+                {seat.name}
+              </button>
             ))}
           </div>
         </div>
@@ -89,7 +161,9 @@ const FlightForm: React.FC = () => {
             onChange={() => setAcceptedPolicy(!acceptedPolicy)}
             className="form-checkbox h-4 w-4 text-pink-600"
           />
-          <span className="ml-2 text-sm text-gray-700">Saya setuju dengan ketentuan yang berlaku</span>
+          <span className="ml-2 text-sm text-gray-700">
+            Saya setuju dengan ketentuan yang berlaku
+          </span>
         </label>
       </div>
       <button

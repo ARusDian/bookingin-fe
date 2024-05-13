@@ -25,13 +25,14 @@ interface Flight {
 
 type FlightResponse = {
   data: Flight[];
+  total: number;
 }
 
 const flightsPerPage = 10; 
 
 const FlightListPage: React.FC = () => {
   const [cookies] = useCookies(["token"]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState<number>(1); 
 
   const {
     data,
@@ -43,15 +44,16 @@ const FlightListPage: React.FC = () => {
     queryKey: ["flights", currentPage], 
     queryFn: () =>
       api
-        .get(`/flight/get?page=${currentPage}&item=${flightsPerPage}`, { // Menggunakan currentPage untuk halaman
+        .get(`/flight/get?page=${currentPage}&item=${flightsPerPage}`, { 
           headers: { Authorization: `Bearer ${cookies.token}` },
         })
         .then((res) => res.data),
-    placeholderData: keepPreviousData,
   });
 
   const flights = data?.data || [];
   console.log(flights)
+
+  const totalPages = Math.ceil(flights.length / flightsPerPage);
 
   return (
     <>
@@ -70,8 +72,8 @@ const FlightListPage: React.FC = () => {
             </div>
 
             <ul className="flex justify-center mt-4">
-              {[...Array(Math.ceil(flights.length / flightsPerPage)).keys()].map((number) => (
-                <li key={number} className="mx-1">
+              {[...Array(totalPages).keys()].map((number) => (
+                <li key={number + 1} className="mx-1">
                   <button
                     onClick={() => setCurrentPage(number + 1)}
                     className={`${

@@ -27,7 +27,7 @@ const HotelCard: React.FC<HotelCardProps> = ({ hotel }) => {
         </p>
       </div>
       <div className="bg-pink-500 rounded-b-lg text-white text-center p-3 uppercase font-bold cursor-pointer hover:bg-pink-600 transition-colors">
-        <Link to={`/payments/:id`}>Book Hotel Room</Link>
+        <Link to={`./payments/${hotel.id}`}>Book Hotel Room</Link>
       </div>
     </div>
   );
