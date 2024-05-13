@@ -39,6 +39,8 @@ const FlightListPage: React.FC = () => {
 
   const flights = data?.data || [];
 
+  console.log(data)
+
   return (
     <>
       <div className="my-20 container mx-auto">

@@ -99,12 +99,21 @@ const Navbar = () => {
   return (
     <nav className="h-20 w-full bg-white shadow-md fixed top-0 left-0">
       <div className="container mx-auto flex items-center justify-between h-full">
-        <div className="text-2xl font-bold">Logo</div>
+        <div className="text-2xl font-bold flex">
+          <img className="h-16 w-20 mb-2" src="public/image/logo2.png" />
+          <img className="h-12 w-48 mt-4" src="public/image/logo.png" />
+        </div>
         <div className="flex items-center">
           <ul className="flex space-x-4">
-            <Link to="/" className="hover:text-pink-500">Home</Link>
-            <Link to="/flight" className="hover:text-pink-500">Penerbangan</Link>
-            <Link to="/hotel" className="hover:text-pink-500">Hotel</Link>
+            <Link to="/" className="hover:text-pink-500">
+              Home
+            </Link>
+            <Link to="/flight" className="hover:text-pink-500">
+              Penerbangan
+            </Link>
+            <Link to="/hotel" className="hover:text-pink-500">
+              Hotel
+            </Link>
           </ul>
           <div className="relative ml-4">
             {data && data.role === "USER" ? (
@@ -147,10 +156,8 @@ const Navbar = () => {
                     }}
                     className="px-4 py-2 flex gap-2 items-center cursor-pointer"
                   >
-                    
-                      <IoIosLogOut className="text-xl group-hover:text-red-500" />
-                      <p className="group-hover:text-red-500">Logout</p>
-                    
+                    <IoIosLogOut className="text-xl group-hover:text-red-500" />
+                    <p className="group-hover:text-red-500">Logout</p>
                   </button>
                 </li>
               </ul>
