@@ -1,124 +1,67 @@
 import { useState } from "react";
+import api from "@lib/api";
 import HotelCard from "./HotelCard";
 import Footer from "@components/Footer";
+import { useCookies } from "react-cookie";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
 interface Hotel {
   id: number;
   name: string;
-  availability: number;
-  location: string;
-  roomType: string;
-  price: number;
+  address: string;
+  description: string;
+  user:{
+    name:string;
+  }
 }
 
+type HotelResponse = {
+  data: Hotel[];
+}
+
+const hotelPerPage = 9; 
+
 const HotelListPage = () => {
-  const hotels: Hotel[] = [
-    {
-      id: 1,
-      name: "Example Hotel 1",
-      availability: 2,
-      location: "asdasd",
-      roomType: "asdad",
-      price: 150,
-    },
-    {
-      id: 1,
-      name: "Example Hotel 1",
-      availability: 2,
-      location: "asdasd",
-      roomType: "asdad",
-      price: 150,
-    },
-    {
-      id: 1,
-      name: "Example Hotel 1",
-      availability: 2,
-      location: "asdasd",
-      roomType: "asdad",
-      price: 150,
-    },
-    {
-      id: 1,
-      name: "Example Hotel 1",
-      availability: 2,
-      location: "asdasd",
-      roomType: "asdad",
-      price: 150,
-    },
-    {
-      id: 1,
-      name: "Example Hotel 1",
-      availability: 2,
-      location: "asdasd",
-      roomType: "asdad",
-      price: 150,
-    },
-    {
-      id: 1,
-      name: "Example Hotel 1",
-      availability: 2,
-      location: "asdasd",
-      roomType: "asdad",
-      price: 150,
-    },
-    {
-      id: 1,
-      name: "Example Hotel 1",
-      availability: 2,
-      location: "asdasd",
-      roomType: "asdad",
-      price: 150,
-    },
-    {
-      id: 1,
-      name: "Example Hotel 1",
-      availability: 2,
-      location: "asdasd",
-      roomType: "asdad",
-      price: 150,
-    },
-    {
-      id: 1,
-      name: "Example Hotel 1",
-      availability: 2,
-      location: "asdasd",
-      roomType: "asdad",
-      price: 150,
-    },
-    {
-      id: 1,
-      name: "Example Hotel 1",
-      availability: 2,
-      location: "asdasd",
-      roomType: "asdad",
-      price: 150,
-    },
-  ];
-
+  const [cookies] = useCookies(["token"]);
   const [currentPage, setCurrentPage] = useState(1);
-  const hotelsPerPage = 9;
 
-  const indexOfLastHotel = currentPage * hotelsPerPage;
-  const indexOfFirstHotel = indexOfLastHotel - hotelsPerPage;
-  const currentHotels = hotels.slice(indexOfFirstHotel, indexOfLastHotel);
 
-  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+  const {
+    data,
+    isError,
+    isRefetching,
+    isLoading,
+    refetch,
+  } = useQuery<HotelResponse>({
+    queryKey: ["hotel", currentPage], 
+    queryFn: () =>
+      api
+        .get(`/hotel/get?page=${currentPage}&item=${hotelPerPage}`, { 
+          headers: { Authorization: `Bearer ${cookies.token}` },
+        })
+        .then((res) => res.data),
+    placeholderData: keepPreviousData,
+  });
+
+  const hotel = data?.data || [];
+  console.log(hotel)
+
 
   return (
     <div>
       <div className="my-20 container mx-auto">
-        <h1 className="text-4xl text-center font-bold mb-8">Hotels</h1>
+        <h1 className="text-4xl text-center font-bold mb-8">Hotel List</h1>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {currentHotels.map((hotel) => (
+          {hotel.map((hotel) => (
             <HotelCard key={hotel.id} hotel={hotel} />
           ))}
         </div>
         <ul className="flex justify-center mt-4">
-          {[...Array(Math.ceil(hotels.length / hotelsPerPage)).keys()].map(
+          {[...Array(Math.ceil(hotel.length / hotelPerPage)).keys()].map(
             (number) => (
               <li key={number} className="mx-1">
                 <button
-                  onClick={() => paginate(number + 1)}
+                  onClick={() => setCurrentPage(number + 1)}
                   className={`${
                     currentPage === number + 1
                       ? "bg-gray-800 text-white"

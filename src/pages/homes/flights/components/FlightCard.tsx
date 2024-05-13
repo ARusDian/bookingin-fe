@@ -34,7 +34,7 @@ interface FlightCardProps {
 
 const FlightCard: React.FC<FlightCardProps> = ({ flight }) => {
   return (
-    <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+    <div className="bg-pink-100 grid grid-col rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
       <div className="p-5">
         <div className="grid grid-cols-3 gap-4">
           <div>
@@ -92,7 +92,7 @@ const FlightCard: React.FC<FlightCardProps> = ({ flight }) => {
         </div>
       </div>
       <div className="bg-pink-500 text-white text-center p-3 uppercase font-bold cursor-pointer hover:bg-pink-600 transition-colors">
-        <Link to={`/payments/${flight.id}`}>Book Flight Ticket</Link>
+        <Link to={`/payments/:id`}>Book Flight Ticket</Link>
       </div>
     </div>
   );

@@ -56,7 +56,7 @@ const FlightListPage: React.FC = () => {
   return (
     <>
       <div className="my-20 container mx-auto">
-        <h1 className="text-4xl text-center font-bold mb-8">Flights</h1>
+        <h1 className="text-4xl text-center font-bold mb-8">Flight List</h1>
         {isLoading ? (
           <p>Loading...</p>
         ) : isError ? (
