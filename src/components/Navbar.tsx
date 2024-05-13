@@ -97,12 +97,12 @@ const Navbar = () => {
   console.log(profileData);
 
   return (
-    <nav className="h-20 w-full bg-white shadow-md fixed top-0 left-0">
+    <nav className="h-14 w-full bg-white shadow-md fixed top-0 left-0 z-40 shadow-lg">
       <div className="container mx-auto flex items-center justify-between h-full">
-        <div className="text-2xl font-bold flex">
-          <img className="h-16 w-20 mb-2" src="public/image/logo2.png" />
-          <img className="h-12 w-48 mt-4" src="public/image/logo.png" />
-        </div>
+        <Link to ="/" className="text-2xl font-bold flex">
+          <img className="h-14 w-20 mb-2 ml-2" src="public/image/logo2.png" />
+          <img className="h-12 w-48 mt-3" src="public/image/logo.png" />
+        </Link>
         <div className="flex items-center">
           <ul className="flex space-x-4">
             <Link to="/" className="hover:text-pink-500">

@@ -4,7 +4,6 @@ import Footer from "@components/Footer";
 
 interface Hotel {
   id: number;
-  image: string;
   name: string;
   availability: number;
   location: string;
@@ -16,7 +15,6 @@ const HotelListPage = () => {
   const hotels: Hotel[] = [
     {
       id: 1,
-      image: "public/image/hotel.jpg",
       name: "Example Hotel 1",
       availability: 2,
       location: "asdasd",
@@ -25,7 +23,6 @@ const HotelListPage = () => {
     },
     {
       id: 1,
-      image: "public/image/hotel.jpg",
       name: "Example Hotel 1",
       availability: 2,
       location: "asdasd",
@@ -34,7 +31,6 @@ const HotelListPage = () => {
     },
     {
       id: 1,
-      image: "public/image/hotel.jpg",
       name: "Example Hotel 1",
       availability: 2,
       location: "asdasd",
@@ -43,7 +39,6 @@ const HotelListPage = () => {
     },
     {
       id: 1,
-      image: "public/image/hotel.jpg",
       name: "Example Hotel 1",
       availability: 2,
       location: "asdasd",
@@ -52,7 +47,6 @@ const HotelListPage = () => {
     },
     {
       id: 1,
-      image: "public/image/hotel.jpg",
       name: "Example Hotel 1",
       availability: 2,
       location: "asdasd",
@@ -61,7 +55,6 @@ const HotelListPage = () => {
     },
     {
       id: 1,
-      image: "public/image/hotel.jpg",
       name: "Example Hotel 1",
       availability: 2,
       location: "asdasd",
@@ -70,7 +63,6 @@ const HotelListPage = () => {
     },
     {
       id: 1,
-      image: "public/image/hotel.jpg",
       name: "Example Hotel 1",
       availability: 2,
       location: "asdasd",
@@ -79,7 +71,6 @@ const HotelListPage = () => {
     },
     {
       id: 1,
-      image: "public/image/hotel.jpg",
       name: "Example Hotel 1",
       availability: 2,
       location: "asdasd",
@@ -88,7 +79,6 @@ const HotelListPage = () => {
     },
     {
       id: 1,
-      image: "public/image/hotel.jpg",
       name: "Example Hotel 1",
       availability: 2,
       location: "asdasd",
@@ -97,7 +87,6 @@ const HotelListPage = () => {
     },
     {
       id: 1,
-      image: "public/image/hotel.jpg",
       name: "Example Hotel 1",
       availability: 2,
       location: "asdasd",

@@ -18,11 +18,6 @@ interface Hotel {
   const HotelCard: React.FC<HotelCardProps> = ({ hotel }) => {
   return (
     <div className="bg-white rounded-lg shadow-md">
-      <img
-        src={hotel.image}
-        alt={hotel.name}
-        className="w-full bg-gray-800 h-64 object-cover rounded-t-lg"
-      />
       <div className="p-4">
         <h2 className="text-lg font-bold mb-2">{hotel.name}</h2>
         <div className="flex flex-col">
