@@ -1,17 +1,21 @@
 import React, { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import api from "@lib/api";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import FlightCard from './FlightCard';
 import Footer from '@components/Footer';
+import { useCookies } from "react-cookie";
 
 interface Flight {
   id: number;
-  guest: string;
+  seats_count: number;
+  available_seats_count:number;
   date: string;
   airline: string;
   price: number; 
   departure_time: string;
   arrival_time: string;
   departure_airport: string;
+  last_check_in:string;
   arrival_airport: string;
   plane: {
     name: string;
@@ -19,27 +23,35 @@ interface Flight {
   };
 }
 
-const fetchFlights = async (page: number, itemsPerPage: number) => {
-  const response = await fetch(`/flight/get?page=${page}&item=${itemsPerPage}`);
-  if (!response.ok) {
-    throw new Error('Network response was not ok');
-  }
-  return response.json();
-};
+type FlightResponse = {
+  data: Flight[];
+}
+
+const flightsPerPage = 10; 
 
 const FlightListPage: React.FC = () => {
+  const [cookies] = useCookies(["token"]);
   const [currentPage, setCurrentPage] = useState(1);
-  const flightsPerPage = 5; 
 
-  const { data, isError, isLoading, refetch } = useQuery({
-    queryKey: ['flights', currentPage, flightsPerPage],
-    queryFn: () => fetchFlights(currentPage, flightsPerPage),
-    
+  const {
+    data,
+    isError,
+    isRefetching,
+    isLoading,
+    refetch,
+  } = useQuery<FlightResponse>({
+    queryKey: ["flights", currentPage], 
+    queryFn: () =>
+      api
+        .get(`/flight/get?page=${currentPage}&item=${flightsPerPage}`, { // Menggunakan currentPage untuk halaman
+          headers: { Authorization: `Bearer ${cookies.token}` },
+        })
+        .then((res) => res.data),
+    placeholderData: keepPreviousData,
   });
 
   const flights = data?.data || [];
-
-  console.log(data)
+  console.log(flights)
 
   return (
     <>

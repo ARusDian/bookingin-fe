@@ -32,9 +32,10 @@ const DashboardSidebar = ({ isOpen }: Props) => {
         isOpen ? "left-0" : "-left-64"
       } top-0 border-r border-opacity-5 transition-all duration-300 bg-white`}
     >
-      <p className="flex text-2xl font-bold h-20 items-center px-4 font-roboto tracking-wider">
-        BOOKINGIN
-      </p>
+      <div className="flex">
+          <img className="h-14 w-20 mb-2 ml-6" src="public/image/logo2.png" />
+          <img className="h-6 w-32 mt-6" src="public/image/logo.png" />
+      </div>
       <div className="flex flex-col">
         <SidebarTile
           isActive={currentPaths.length === 0}

@@ -61,8 +61,6 @@ const Navbar = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const saldo = 45678;
-
   const openTopUpModal = () => {
     setIsTopUpModalOpen(true);
   };
