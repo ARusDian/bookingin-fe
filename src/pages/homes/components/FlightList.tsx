@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const FlightList = () => {
   return (
     <div className="my-20 container mx-auto">
@@ -96,9 +98,9 @@ const FlightList = () => {
               </button>
             </div>
           </div>
-          <div className="text-center text-sm text-pink-500 underline underline-offset-2">
+          <Link to="/flight" className="text-center text-sm text-pink-500 underline underline-offset-2">
             Lihat Selengkapnya
-          </div>
+          </Link>
         </div>
       </div>
     </div>

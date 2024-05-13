@@ -1,4 +1,5 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 import Footer from "@components/Footer";
 import Navbar from "@components/Navbar";
 import FlightCardPayments from "./components/FlightCardPayments";
@@ -13,6 +14,7 @@ interface Flight {
 }
 
 const FlightPayments = () => {
+  const { flightId } = useParams<{ flightId: string }>();
   const flights: Flight[] = [
     {
       id: 1,
@@ -22,6 +24,8 @@ const FlightPayments = () => {
       price: 150,
     },
   ];
+
+  const flight = flights.find(f => f.id === parseInt(flightId || '0'));
 
   return (
     <>

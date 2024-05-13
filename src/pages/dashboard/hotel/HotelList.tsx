@@ -6,20 +6,21 @@ import {
   MaterialReactTable,
   useMaterialReactTable,
 } from "material-react-table";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useCookies } from "react-cookie";
 import { IoMdAdd } from "react-icons/io";
-import { FaRegEye } from "react-icons/fa";
 import { MdDelete, MdOutlineEdit } from "react-icons/md";
+import { PiDoorOpenLight } from "react-icons/pi";
 import { Link } from "react-router-dom";
 import { useAuthStore } from "../../../zustand/auth";
 import FormModal from "../components/FormModal";
 import { Hotel, HotelResponse } from "@lib/model";
-
-
+import { useAdminStore } from "@zustand/admin_access_partner";
+import { CiCreditCard1 } from "react-icons/ci";
 
 const HotelList = () => {
   const [cookies] = useCookies(["token"]);
+  const { setPartner, deletePartner } = useAdminStore((state) => state);
   const [selectedRowId, setSelectedRowId] = useState<number | null>(null);
   const [globalFilter, setGlobalFilter] = useState("");
   const [deleteLoading, setDeleteLoading] = useState(false);
@@ -28,6 +29,11 @@ const HotelList = () => {
     pageSize: 10,
   });
   const role = useAuthStore((state) => state.user?.role);
+
+  useEffect(() => {
+    deletePartner();
+  }, [deletePartner]);
+
   const {
     data: { data = [], meta } = {},
     isError,
@@ -96,26 +102,52 @@ const HotelList = () => {
           to={`./${row.original.id}/room`}
           relative="path"
           className="px-3 py-1 bg-green-200 font-medium items-center space-x-1 rounded-lg hover:bg-green-300"
+          onClick={() => {
+            if (role === "ADMIN" && row.original.user)
+              setPartner({
+                id: row.original.user.id,
+                name: row.original.user.name,
+              });
+          }}
         >
-          <FaRegEye className="text-2xl" />
+          <PiDoorOpenLight className="text-2xl" />
         </Link>
         <Link
-          to={`./edit/${row.original.id}`}
+          to={`./${row.original.id}/transaction`}
+          relative="path"
+          className="px-3 py-1 bg-yellow-200 font-medium items-center space-x-1 rounded-lg hover:bg-yellow-300"
+          onClick={() => {
+            if (role === "ADMIN" && row.original.user)
+              setPartner({
+                id: row.original.user.id,
+                name: row.original.user.name,
+              });
+          }}
+        >
+          <CiCreditCard1 className="text-2xl" />
+        </Link>
+        <Link
+          to={`./${row.original.id}`}
           relative="path"
           className="px-3 py-1 bg-blue-200 font-medium items-center space-x-1 rounded-lg hover:bg-blue-300"
+          onClick={() => {
+            if (role === "ADMIN" && row.original.user)
+              setPartner({
+                id: row.original.user.id,
+                name: row.original.user.name,
+              });
+          }}
         >
           <MdOutlineEdit className="text-2xl" />
         </Link>
-        {role === "ADMIN" && (
-          <button
-            className="px-3 py-1 bg-red-200 font-medium items-center space-x-1 rounded-lg hover:bg-red-300"
-            onClick={() => {
-              setSelectedRowId(row.original.id);
-            }}
-          >
-            <MdDelete className="text-2xl" />
-          </button>
-        )}
+        <button
+          className="px-3 py-1 bg-red-200 font-medium items-center space-x-1 rounded-lg hover:bg-red-300"
+          onClick={() => {
+            setSelectedRowId(row.original.id);
+          }}
+        >
+          <MdDelete className="text-2xl" />
+        </button>
       </div>
     ),
     state: {
@@ -135,7 +167,7 @@ const HotelList = () => {
       </button>
     ),
   });
-  console.log(selectedRowId);
+
   const deleteHotel = (id: number) => {
     setDeleteLoading(true);
     api
@@ -180,14 +212,16 @@ const HotelList = () => {
       <div className="px-4 py-6 h-dashboard-outlet">
         <div className="flex justify-between items-center mb-2">
           <p className="text-2xl font-medium">Hotel List</p>
-          <Link
-            to="./create"
-            relative="path"
-            className="flex items-center space-x-1 bg-purple-200 font-medium px-4 py-2 rounded-lg hover:bg-purple-300"
-          >
-            <IoMdAdd className="text-xl" />
-            <span>Add Hotel</span>
-          </Link>
+          {role === "PARTNER" && (
+            <Link
+              to="./create"
+              relative="path"
+              className="flex items-center space-x-1 bg-purple-200 font-medium px-4 py-2 rounded-lg hover:bg-purple-300"
+            >
+              <IoMdAdd className="text-xl" />
+              <span>Add Hotel</span>
+            </Link>
+          )}
         </div>
         <div className="">
           <MaterialReactTable table={table} />

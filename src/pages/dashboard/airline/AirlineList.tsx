@@ -6,40 +6,37 @@ import {
   MaterialReactTable,
   useMaterialReactTable,
 } from "material-react-table";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useCookies } from "react-cookie";
 import { IoMdAdd } from "react-icons/io";
-import { FaRegEye } from "react-icons/fa";
+import { MdFlight } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { MdOutlineEdit } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { useAuthStore } from "../../../zustand/auth";
-
-type Airline = {
-  id: number;
-  name: string;
-  address: string;
-  description: string;
-};
-
-type AirlineResponse = {
-  data: Airline[];
-  meta: {
-    currentPage: number;
-    items: number;
-    totalItems: number;
-    totalPages: number;
-  };
-};
+import { Airline, AirlineResponse } from "@lib/model";
+import DeleteFromTable from "../components/DeleteFromTable";
+import { useAdminStore } from "../../../zustand/admin_access_partner";
+import { showErrorToast } from "@utils/toast";
 
 const AirlineList = () => {
   const [cookies] = useCookies(["token"]);
+  const [selectedRowId, setSelectedRowId] = useState<number | null>(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const [globalFilter, setGlobalFilter] = useState("");
   const [pagination, setPagination] = useState<MRT_PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
   const role = useAuthStore((state) => state.user?.role);
+  const { setPartner, deletePartner } = useAdminStore(
+    (state) => state
+  );
+
+  useEffect(() => {
+    deletePartner();
+  }, [deletePartner]);
+
   const {
     data: { data = [], meta } = {},
     isError,
@@ -105,16 +102,30 @@ const AirlineList = () => {
     renderRowActions: ({ row }) => (
       <div className="flex space-x-1">
         <Link
-          to={`./${row.original.id}`}
+          to={`./${row.original.id}/plane`}
           relative="path"
-          className="px-3 py-1 bg-green-200 font-medium items-center space-x-1 rounded-lg hover:bg-green-300"
+          className="px-3 py-1 bg-yellow-200 font-medium items-center space-x-1 rounded-lg hover:bg-yellow-300"
+          onClick={() => {
+            if (role === "ADMIN" && row.original.user)
+              setPartner({
+                id: row.original.user.id,
+                name: row.original.user.name,
+              });
+          }}
         >
-          <FaRegEye className="text-2xl" />
+          <MdFlight className="text-2xl" />
         </Link>
         <Link
           to={`./edit/${row.original.id}`}
           relative="path"
           className="px-3 py-1 bg-blue-200 font-medium items-center space-x-1 rounded-lg hover:bg-blue-300"
+          onClick={() => {
+            if (role === "ADMIN" && row.original.user)
+              setPartner({
+                id: row.original.user.id,
+                name: row.original.user.name,
+              });
+          }}
         >
           <MdOutlineEdit className="text-2xl" />
         </Link>
@@ -122,12 +133,12 @@ const AirlineList = () => {
           <button
             className="px-3 py-1 bg-red-200 font-medium items-center space-x-1 rounded-lg hover:bg-red-300"
             onClick={() => {
-              api
-                .delete("/hotel/delete", {
-                  headers: { Authorization: `Bearer ${cookies.token}` },
-                  params: { id: row.original.id },
-                })
-                .then(() => refetch());
+              setSelectedRowId(row.original.id);
+              if (role === "ADMIN" && row.original.user)
+                setPartner({
+                  id: row.original.user.id,
+                  name: row.original.user.name,
+                });
             }}
           >
             <MdDelete className="text-2xl" />
@@ -153,23 +164,61 @@ const AirlineList = () => {
     ),
   });
 
+  const deleteAirline = () => {
+    setDeleteLoading(true);
+    const url =
+      role === "PARTNER"
+        ? "/partner/airline/delete"
+        : `/admin/partner/${selectedRowId}/airline/delete`;
+    api
+      .delete(`${url}/${selectedRowId}`, {
+        headers: { Authorization: `Bearer ${cookies.token}` },
+      })
+      .then(() => {
+        refetch();
+        setSelectedRowId(null);
+      })
+      .catch((err) => {
+        if (err.response.code === 403) {
+          showErrorToast("You are not authorized to delete this plane");
+        }
+      })
+      .finally(() => {
+        setDeleteLoading(false);
+      });
+  };
+
   return (
-    <div className="px-4 py-6 h-dashboard-outlet">
-      <div className="flex justify-between items-center mb-2">
-        <p className="text-2xl font-medium">Airline List</p>
-        <Link
-          to="./create"
-          relative="path"
-          className="flex items-center space-x-1 bg-purple-200 font-medium px-4 py-2 rounded-lg hover:bg-purple-300"
-        >
-          <IoMdAdd className="text-xl" />
-          <span>Add Airline</span>
-        </Link>
+    <>
+      <DeleteFromTable
+        open={selectedRowId}
+        onClose={() => setSelectedRowId(null)}
+        state={{
+          id: selectedRowId!,
+          name: "Airline",
+          isLoading: deleteLoading,
+        }}
+        deleteHandler={deleteAirline}
+      />
+      <div className="px-4 py-6 h-dashboard-outlet">
+        <div className="flex justify-between items-center mb-2">
+          <p className="text-2xl font-medium">Airline List</p>
+          {role !== "ADMIN" && (
+            <Link
+              to="./create"
+              relative="path"
+              className="flex items-center space-x-1 bg-purple-200 font-medium px-4 py-2 rounded-lg hover:bg-purple-300"
+            >
+              <IoMdAdd className="text-xl" />
+              <span>Add Airline</span>
+            </Link>
+          )}
+        </div>
+        <div className="">
+          <MaterialReactTable table={table} />
+        </div>
       </div>
-      <div className="">
-        <MaterialReactTable table={table} />
-      </div>
-    </div>
+    </>
   );
 };
 

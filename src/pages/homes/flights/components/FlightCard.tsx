@@ -1,11 +1,20 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 interface Flight {
-    id:number;
+  id: number;
   guest: string;
   date: string;
   airline: string;
-  price: string;
+  price: number;
+  departure_time: string;
+  arrival_time: string;
+  departure_airport: string;
+  arrival_airport: string;
+  plane: {
+    name: string;
+    description: string;
+  };
 }
 interface FlightCardProps {
     flight: Flight; 
@@ -31,9 +40,9 @@ const FlightCard: React.FC<FlightCardProps> = ({ flight }) => {
           <p className="text-slate-400 italic">Price</p>
           <p className="font-bold text-lg">{flight.price}</p>
         </div>
-        <button className="bg-pink-400 flex h-full w-40 px-2 py-8 rounded-lg text-white font-semibold items-center">
+        <Link to="/payments/:id" className="bg-pink-400 flex h-full w-40 px-2 py-8 rounded-lg text-white font-semibold items-center">
           Book Flight Ticket
-        </button>
+        </Link>
       </div>
     </div>
   );
