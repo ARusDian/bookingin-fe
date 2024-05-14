@@ -2,6 +2,7 @@ import api from "@lib/api";
 import { HotelWithRoomResponse, Room } from "@lib/model";
 import FormModal from "@pages/dashboard/components/FormModal";
 import { useQuery } from "@tanstack/react-query";
+import { currencyFormatter } from "@utils/currency_formatter";
 import { useAdminStore } from "@zustand/admin_access_partner";
 import { useAuthStore } from "@zustand/auth";
 import {
@@ -66,11 +67,17 @@ const HotelRoomList = () => {
         header: "Description",
         accessorKey: "description",
       },
-      // {
-      //   header: "Total Rooms",
-      //   accessorKey: "rooms[]",
-      //   Cell: ({ row }) => row.original.rooms.length,
-      // },
+      {
+        header: "Price",
+        accessorKey: "type.price",
+        Cell: ({ row }) => (
+          <span>{currencyFormatter(row.original.type.price)}</span>
+        ),
+      },
+      {
+        header: "Type",
+        accessorKey: "type.name",
+      },
     ],
     []
   );
@@ -98,13 +105,15 @@ const HotelRoomList = () => {
     positionActionsColumn: "last",
     renderRowActions: ({ row }) => (
       <div className="flex space-x-1">
-        <Link
-          to={`./edit/${row.original.id}`}
-          relative="path"
-          className="px-3 py-1 bg-blue-200 font-medium items-center space-x-1 rounded-lg hover:bg-blue-300"
-        >
-          <MdOutlineEdit className="text-2xl" />
-        </Link>
+        {role !== "ADMIN" && (
+          <Link
+            to={`./edit/${row.original.id}`}
+            relative="path"
+            className="px-3 py-1 bg-blue-200 font-medium items-center space-x-1 rounded-lg hover:bg-blue-300"
+          >
+            <MdOutlineEdit className="text-2xl" />
+          </Link>
+        )}
         <button
           className="px-3 py-1 bg-red-200 font-medium items-center space-x-1 rounded-lg hover:bg-red-300"
           onClick={() => setSelectedRowId(row.original.id)}

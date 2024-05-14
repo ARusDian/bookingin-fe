@@ -5,8 +5,9 @@ interface AuthState {
   user?: {
     name: string;
     role: string;
+    balance: number;
   };
-  setUser: (user: { name: string; role: string }) => void;
+  setUser: (user: { name: string; role: string; balance: number }) => void;
   logout: () => void;
 }
 

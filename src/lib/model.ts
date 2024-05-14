@@ -36,8 +36,22 @@ export interface Hotel {
 
 export type Room = {
   id: number;
+  hotel_id: number;
   name: string;
   description: string;
+  type: {
+    created_at: string;
+    description: string;
+    id: 2;
+    name: "PREMIUM";
+    price: 450000;
+    updated_at: string;
+  };
+};
+
+export type RoomResponse = {
+  data: Room[];
+  meta: Meta;
 };
 
 export interface HotelWithRoom extends Hotel {
@@ -93,7 +107,7 @@ export interface TypeResponse extends HotelTypeCreate {
   updated_at: string;
 }
 
-export interface AirlineTypeResponse{
+export interface AirlineTypeResponse {
   data: AirlineType[];
   meta: Meta;
 }
