@@ -53,6 +53,7 @@ const HotelPayments: React.FC<HotelFormProps> = () => {
         })
         .then((res) => res.data),
   });
+  
 
   const hotels = hotelData?.data
     ? Array.isArray(hotelData.data)
@@ -75,11 +76,11 @@ const HotelPayments: React.FC<HotelFormProps> = () => {
               <HotelForm hotel={hotel} />
             </div>
           ))}
-          {/* {hotels.map((hotel) => (
+          {hotels.map((hotel) => (
             <div key={hotel.id} className="flex-1 mt-4">
               <HotelCardPayments hotel={hotel} />
             </div>
-          ))} */}
+          ))}
         </div>
       </div>
       <Footer />

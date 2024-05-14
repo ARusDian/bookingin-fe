@@ -25,7 +25,7 @@ type User = {
 };
 
 type UserResponse = {
-  data: User[];
+  data: UserForm[];
 };
 
 const Navbar = () => {
@@ -99,8 +99,8 @@ const Navbar = () => {
     <nav className="h-14 w-full bg-white shadow-md fixed top-0 left-0 z-40 shadow-lg">
       <div className="container mx-auto flex items-center justify-between h-full">
         <Link to="/" className="text-2xl font-bold flex">
-          <img className="h-14 w-20 mb-2 ml-2" src="public/image/logo2.png" />
-          <img className="h-12 w-48 mt-3" src="public/image/logo.png" />
+          <img className="h-14 w-20 mb-2 ml-2" src="/image/logo2.png" />
+          <img className="h-12 w-48 mt-3" src="/image/logo.png" />
         </Link>
         <div className="flex items-center">
           <ul className="flex space-x-4">

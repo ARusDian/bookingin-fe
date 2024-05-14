@@ -9,9 +9,11 @@ import Flight from "@pages/homes/flights/Flight";
 import Hotel from "@pages/homes/hotels/Hotel"; 
 import FlightPayments from "@pages/homes/flights/payments/FlightPayments";
 import HotelPayments from "@pages/homes/hotels/payments/HotelPayments";
-import PostPayments from "@pages/homes/PostPayments";
+import PostPayments from "@pages/homes/hotels/payments/PostPaymentsHotel";
 import ResetPassword from "@components/auth/ResetPassword";
 import { dashboardRoutes } from "./route";
+import PostPaymentsHotel from "@pages/homes/hotels/payments/PostPaymentsHotel";
+import PostPaymentsFlight from "@pages/homes/flights/payments/PostPaymentsFlight";
 
 const queryClient = new QueryClient();
 
@@ -31,7 +33,11 @@ const router = createBrowserRouter([
       {
         index: true,
         path: "payments/:hotelId",
-        element: <HotelPayments />,
+        element: <HotelPayments hotel={[]} />,
+      },
+      {
+        path: "post-payments/:reservationId",
+        element: <PostPaymentsHotel />,
       },
     ],
   },
@@ -46,13 +52,14 @@ const router = createBrowserRouter([
         path: "payments/:flightId",
         element: <FlightPayments />,
       },
+      {
+        path: "post-payments/:ticketId",
+        element: <PostPaymentsFlight />,
+      },
     ],
   },
   ...dashboardRoutes,
-  {
-    path: "post-payments",
-    element: <PostPayments />,
-  },
+  
   {
     path: "reset-password",
     element: <ResetPassword />,

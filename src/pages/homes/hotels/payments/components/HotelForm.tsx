@@ -9,6 +9,7 @@ import DatePicker from "react-datepicker";
 import { AxiosError } from "axios";
 import "react-datepicker/dist/react-datepicker.css";
 import { RoomTransaction, AxiosErrorResponse } from "@lib/model";
+import { currencyFormatter } from "@utils/currency_formatter";
 
 interface Hotel {
   id: number;
@@ -45,12 +46,11 @@ const HotelForm: React.FC<HotelFormProps> = ({ hotel }) => {
   const [selectedDateOut, setSelectedDateOut] = useState<Date | null>(null);
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
   const [rooms, setRooms] = useState<Room[]>([
-    hotel.rooms.map((room)=> ({
+    hotel.rooms.map((room) => ({
       ...room,
       selected: false,
-    }))
+    })),
   ]);
-
 
   const handleDateChangeIn = (date: Date | null) => {
     setSelectedDateIn(date);
@@ -75,6 +75,7 @@ const HotelForm: React.FC<HotelFormProps> = ({ hotel }) => {
     }
   };
 
+ 
   const { mutate, isPending } = useMutation({
     mutationFn: (data: RoomTransaction) => postHotel(data, cookies.token),
     onError: (error: AxiosError) => {
@@ -115,14 +116,14 @@ const HotelForm: React.FC<HotelFormProps> = ({ hotel }) => {
       updated_at: "",
       user: {
         id: 0,
-        name: ""
+        name: "",
       },
       hotel_id: 0,
       room: {
         id: 0,
         name: "",
-        description: ""
-      }
+        description: "",
+      },
     });
   };
 
@@ -132,7 +133,7 @@ const HotelForm: React.FC<HotelFormProps> = ({ hotel }) => {
       className="mt-4 p-6 rounded-lg bg-gray-200 shadow-md"
     >
       <div className="mb-4">
-        <h3 className="text-lg font-semibold mb-2">
+        <h3 className="text-lg text-3xl font-bold mb-2">
           Ketentuan Pemesanan Reservasi Hotel
         </h3>
         <ul className="list-disc pl-5">
@@ -144,7 +145,7 @@ const HotelForm: React.FC<HotelFormProps> = ({ hotel }) => {
         <DatePicker
           selected={selectedDateIn}
           onChange={handleDateChangeIn}
-          className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-pink-500 focus:border-pink-500"
+          className="mt-1 block w-full p-2 px-96 border-gray-300 rounded-md shadow-sm focus:ring-pink-500 focus:border-pink-500"
         />
         <label className="block text-sm font-medium text-gray-700">
           Check Out pada:
@@ -152,14 +153,16 @@ const HotelForm: React.FC<HotelFormProps> = ({ hotel }) => {
         <DatePicker
           selected={selectedDateOut}
           onChange={handleDateChangeOut}
-          className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-pink-500 focus:border-pink-500"
+          className="mt-1 block w-full p-2 px-96 border-gray-300 rounded-md shadow-sm focus:ring-pink-500 focus:border-pink-500"
         />
         <div className="mt-4">
           Pilih Kamar:
-          <div className="grid grid-cols-5 gap-4">
-            {hotel.rooms.map((room) => (
+          {hotel.rooms.map((room) => (
+            <div className="grid grid-cols-5 gap-4 my-2 ">
+              <p className="place-content-center">{room.name}</p>
               <button
                 key={room.id}
+                
                 className={`${
                   selectedRoom === room
                     ? "bg-green-500 text-white"
@@ -167,10 +170,14 @@ const HotelForm: React.FC<HotelFormProps> = ({ hotel }) => {
                 } py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 focus:outline-none`}
                 onClick={() => handleRoomSelection(room)}
               >
-                Kamar {room.name}
+                <p className="grid grid-cols-1">
+                  <span>{room.type.name}</span>
+                  <span>{currencyFormatter(room.type.price)}</span>
+                  
+                </p>
               </button>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </div>
       <div className="mb-4">

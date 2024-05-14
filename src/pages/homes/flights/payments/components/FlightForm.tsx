@@ -6,7 +6,7 @@ import api from "@lib/api";
 import { useCookies } from "react-cookie";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { FlightTicket, AxiosErrorResponse } from "@lib/model";
 
@@ -60,6 +60,8 @@ const FlightForm: React.FC<FlightFormProps> = ({ flight }) => {
     }))
   );
 
+  const queryClient = useQueryClient(); 
+
   const postFlight = async (flightData: FlightTicket, token: string) => {
     try {
       const response = await api.post("/user/ticket/buy", flightData, {
@@ -74,8 +76,7 @@ const FlightForm: React.FC<FlightFormProps> = ({ flight }) => {
   const { mutate, isPending } = useMutation({
     mutationFn: (data: FlightTicket) => postFlight(data, cookies.token),
     onError: (error: AxiosError) => {
-      const errorData: AxiosErrorResponse = error.response
-        ?.data as AxiosErrorResponse;
+      const errorData: AxiosErrorResponse = error.response?.data as AxiosErrorResponse;
       toast.error(errorData.message, {
         position: "top-right",
         autoClose: 5000,
@@ -87,9 +88,19 @@ const FlightForm: React.FC<FlightFormProps> = ({ flight }) => {
         theme: "light",
       });
     },
-    onSuccess: (data) => {
-      console.log(data);
-      navigate("/post-payments", { relative: "path" });
+    onSuccess: () => {
+      toast.success("Tiket berhasil dipesan! Silahkan lihat bukti Transaksi pada Riwayat Transaksi !", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        onClose: () => window.location.reload() 
+      });
+
     },
   });
 
@@ -157,7 +168,7 @@ const FlightForm: React.FC<FlightFormProps> = ({ flight }) => {
           Pilih Tempat:
           <div className="grid grid-cols-12 gap-2">
             {seats.map((seat) => (
-              <button
+              <button type="button"
                 key={seat.id}
                 className={`py-2 px-4 rounded-md transition duration-300 ease-in-out transform ${
                   seat.selected
