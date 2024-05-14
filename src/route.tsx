@@ -30,6 +30,7 @@ import TransactionList from "@pages/dashboard/admin/transactions/TransactionList
 import PlaneEdit from "@pages/dashboard/airline/plane/PlaneEdit";
 import TicketTransactionList from "@pages/dashboard/airline/plane/transactions/TicketTransactionList";
 import RoomTransactionList from "@pages/dashboard/hotel/transaction/RoomTransactionList";
+import HotelRoomEdit from "@pages/dashboard/hotel/room/HotelRoomEdit";
 
 export const dashboardRoutes = [
   {
@@ -141,6 +142,10 @@ export const dashboardRoutes = [
                         path: "add",
                         element: <HotelRoomAdd />,
                       },
+                      {
+                        path: "edit/:room_id",
+                        element: <HotelRoomEdit />
+                      }
                     ],
                   },
                   {

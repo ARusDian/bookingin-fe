@@ -1,23 +1,44 @@
-// import { useNavigate } from "react-router-dom";
 import FormHead from "../components/FormHead";
-// import { useCookies } from "react-cookie";
 import { useState } from "react";
 import { HotelForm } from "@lib/model";
-// import HotelFillForm from "./components/HotelFillForm";
 import PartnerFillForm from "../components/PartnerFillForm";
+import { useNavigate, useParams } from "react-router-dom";
+import { useCookies } from "react-cookie";
+import { useMutation } from "@tanstack/react-query";
+import api from "@lib/api";
+import { showSuccessToast } from "@utils/toast";
 
 const HotelEdit = () => {
-  // const [cookies] = useCookies(["token"]);
+  const [cookies] = useCookies(["token"]);
+  const { hotel_id } = useParams<{ hotel_id: string }>();
   const [hotel, setHotel] = useState<HotelForm>({
     name: "",
     address: "",
     description: "",
   });
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+
+  const { mutate } = useMutation({
+    mutationFn: (data: HotelForm) =>
+      api
+        .put(`/partner/hotel/edit/${hotel_id}`, data, {
+          headers: {
+            Authorization: `Bearer ${cookies.token}`,
+          },
+        })
+        .then((res) => res.data),
+    onError: (error) => {
+      console.error(error);
+    },
+    onSuccess: (data) => {
+      navigate("..", { relative: "path" });
+      setTimeout(() => showSuccessToast(data.message), 1);
+    },
+  });
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // mutate(hotel);
+    mutate(hotel);
   };
 
   return (
