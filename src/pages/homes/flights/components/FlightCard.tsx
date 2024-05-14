@@ -92,7 +92,7 @@ const FlightCard: React.FC<FlightCardProps> = ({ flight }) => {
         </div>
       </div>
       <Link to={`./payments/${flight.id}`} className="bg-pink-500 text-white text-center p-3 uppercase font-bold cursor-pointer hover:bg-pink-600 transition-colors">
-        Book Flight Ticket
+        Book Flight Ticket !
       </Link>
     </div>
   );

@@ -1,23 +1,55 @@
-const Riwayat_Transaksi = () => {
+import api from "@lib/api";
+import { useCookies } from "react-cookie";
+import { useQuery } from "@tanstack/react-query";
+
+interface Transaction {
+  id: number;
+  user_id: number;
+  type: string;
+  amount: number;
+  description: string;
+  created_at: string;
+  updated_at: string;
+}
+
+interface TransactionResponse {
+  code: number;
+  status: string;
+  data: Transaction[];
+}
+
+
+const RiwayatTransaksi: React.FC = () => {
+  const [cookies] = useCookies(["token"]);
+
+  const { data: transactionData, isError, isLoading } = useQuery<TransactionResponse>({
+    queryKey: ["transactions"],
+    queryFn: () => api.get(`/transaction`, {
+      headers: { Authorization: `Bearer ${cookies.token}` },
+    }).then((res) => res.data),
+  });
+
+  const transactions = transactionData?.data || [];
+
   return (
     <div className="w-full my-4">
-      <div className="bg-white shadow-md rounded-lg overflow-hidden">
-        <div className="p-4">
-          <h3 className="text-lg font-semibold mb-2">Transaksi A</h3>
-          <div className="flex items-center justify-between text-sm text-gray-600">
-            <p>ID Tiket: 123456789</p>
-            <p>Status: Berhasil</p>
+      {transactions.map(transaction => (
+        <div key={transaction.id} className="bg-white shadow-md rounded-lg overflow-hidden my-2">
+          <div className="p-4">
+            <h3 className="text-lg font-semibold mb-2">Transaction Details</h3>
+            <div className="flex items-center justify-between text-sm text-gray-600">
+              <p>ID Transaksi: {transaction.id}</p>
+              <p>Jumlah: Rp {transaction.amount.toLocaleString()}</p>
+            </div>
+            <p>{transaction.description}</p>
+            <p>Created at: {new Date(transaction.created_at).toLocaleDateString()}</p>
           </div>
-          <p>Hotel Blue Sky</p>
-          <p>Jl. Sultan Hasanuddin</p>
-          <p>Pemesanan Kamar Hotel hotel1 - type1 dari 13/03/2024 sampai 14/03/2024</p>
-          <p>Check in:<span>01 Januari 2023</span></p>
-          <p>Check out: 03 Januari 2023</p>
-          <p className="text-green-500 font-bold">Rp 1.000.000 </p>
         </div>
-      </div>
+      ))}
+      {isLoading && <p>Loading transactions...</p>}
+      {isError && <p>Error fetching transactions.</p>}
     </div>
   );
 };
 
-export default Riwayat_Transaksi;
+export default RiwayatTransaksi;

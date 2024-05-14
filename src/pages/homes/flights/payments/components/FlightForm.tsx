@@ -25,6 +25,11 @@ interface Flight {
   plane: {
     name: string;
     description: string;
+    airline: {
+      name: string;
+      description: string;
+      address: string;
+    };
   };
   seats: {
     id: number;
@@ -44,8 +49,6 @@ interface FlightFormProps {
   flight: Flight;
 }
 
-
-
 const FlightForm: React.FC<FlightFormProps> = ({ flight }) => {
   const navigate = useNavigate();
   const [cookies] = useCookies(["token"]);
@@ -57,7 +60,7 @@ const FlightForm: React.FC<FlightFormProps> = ({ flight }) => {
     }))
   );
 
-  const postFlight = async (flightData: FlightTicket, token:string) => {
+  const postFlight = async (flightData: FlightTicket, token: string) => {
     try {
       const response = await api.post("/user/ticket/buy", flightData, {
         headers: { Authorization: `Bearer ${token}` },
@@ -69,7 +72,7 @@ const FlightForm: React.FC<FlightFormProps> = ({ flight }) => {
   };
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (data:FlightTicket) => postFlight(data, cookies.token),
+    mutationFn: (data: FlightTicket) => postFlight(data, cookies.token),
     onError: (error: AxiosError) => {
       const errorData: AxiosErrorResponse = error.response
         ?.data as AxiosErrorResponse;
@@ -108,9 +111,9 @@ const FlightForm: React.FC<FlightFormProps> = ({ flight }) => {
       updated_at: "",
       user: {
         id: 0,
-        name: ""
+        name: "",
       },
-      deleted_at: null
+      deleted_at: null,
     });
   };
 
@@ -127,11 +130,31 @@ const FlightForm: React.FC<FlightFormProps> = ({ flight }) => {
       className="mt-4 p-6 rounded-lg bg-gray-200 shadow-md"
     >
       <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">
-          Penerbangan Pada:
-        </label>
+        <h3 className="text-lg font-semibold mb-2">
+          Ketentuan Pemesanan Tiket
+        </h3>
+        <ul className="list-disc pl-5">
+          <li className="mb-2">
+            Pemesanan tiket hanya dapat dilakukan oleh orang dewasa (usia di
+            atas 18 tahun).
+          </li>
+          <li className="mb-2">
+            Pembayaran harus dilakukan dalam jangka waktu tertentu setelah
+            pemesanan, jika tidak, tiket akan hangus.
+          </li>
+          <li className="mb-2">
+            Pembatalan tiket dapat dilakukan dengan syarat dan ketentuan yang
+            berlaku.
+          </li>
+          <li className="mb-2">
+            Harga tiket dapat berubah tanpa pemberitahuan sebelumnya.
+          </li>
+          <li className="mb-2">
+            Penumpang hanya perlu memperlihatkan riwayat transaksi soft copy ataupun hard copy
+          </li>
+        </ul>
         <div className="mt-4">
-          Pilih Kamar:
+          Pilih Tempat:
           <div className="grid grid-cols-12 gap-2">
             {seats.map((seat) => (
               <button
@@ -146,7 +169,7 @@ const FlightForm: React.FC<FlightFormProps> = ({ flight }) => {
                 onClick={() => seat.available && handleSeatSelection(seat.id)}
                 disabled={!seat.available}
               >
-                <MdEventSeat className="mx-auto"/>
+                <MdEventSeat className="mx-auto" />
                 {seat.name}
               </button>
             ))}

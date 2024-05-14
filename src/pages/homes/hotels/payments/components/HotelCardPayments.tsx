@@ -1,37 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import Timeline from 'react-calendar-timeline'
+// make sure you include the timeline stylesheet or the timeline will not be styled
+import 'react-calendar-timeline/lib/Timeline.css'
+import moment from 'moment'
 
 interface Hotel {
-    id:number
-    image: string;
+  id: number;
+  name: string;
+  address: string;
+  description: string;
+  user: {
     name: string;
-    availability: number;
-    location: string;
-    roomType: string;
-    price: number;
-  }
+  };
+}
 
-  interface HotelCardProps {
-    hotel: Hotel; 
-  }
-  
-  const HotelCardPayments: React.FC<HotelCardProps> = ({ hotel }) => {
+interface HotelCardProps {
+  hotel: Hotel;
+}
+
+const HotelCardPayments: React.FC<HotelCardProps> = ({ hotel }) => {
   return (
-    <div className="bg-white rounded-lg shadow-md">
-      <img
-        src={hotel.image}
-        alt={hotel.name}
-        className="w-full bg-gray-800 h-64 object-cover rounded-t-lg"
-      />
-      <div className="p-4">
-        <h2 className="text-2xl font-bold mb-2">{hotel.name}</h2>
-        <div className="flex flex-col">
-          <p className="text-xl text-gray-600 mb-1">Jumlah Tersedia: 50 / {hotel.availability}</p>
-          <p className="text-xl text-gray-600 mb-1">Lokasi: {hotel.location}</p>
-          <p className="text-xl text-gray-600 mb-4">Tipe Kamar: {hotel.roomType}</p>
-        </div>
-        <div className="flex justify-between items-center">
-          <p className="text-2xl font-bold">Rp{hotel.price}</p>
-        </div>
+    <div className="rounded-lg bg-pink-100 shadow-lg hover:shadow-xl transition-shadow duration-300 ease-in-out">
+      <div className="p-6">
+        <h2 className="text-2xl font-bold text-gray-900 mb-3">{hotel.name}</h2>
+        <p className="text-gray-700 mb-1">{hotel.description}</p>
+        <p className="text-gray-700 mb-2">{hotel.address}</p>
+      </div>
+      {/* Insert timeline here */}
+      <div className="p-6">
+        <Timeline
+          groups={[
+            { id: 1, title: 'group 1' },
+            { id: 2, title: 'group 2' }
+          ]}
+          items={[
+            { id: 1, group: 1, title: 'item 1', start_time: moment(), end_time: moment().add(1, 'hour') },
+            { id: 2, group: 2, title: 'item 2', start_time: moment().add(-0.5, 'hour'), end_time: moment().add(0.5, 'hour') }
+          ]}
+        />
       </div>
     </div>
   );

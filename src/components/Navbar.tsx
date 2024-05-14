@@ -282,7 +282,11 @@ const Navbar = () => {
               </button>
             </div>
           </div>
-          <Riwayat_Transaksi />
+          <div className="max-h-[500px] overflow-y-auto">
+            {" "}
+            
+            <Riwayat_Transaksi />
+          </div>
         </div>
       </Modal>
     </nav>

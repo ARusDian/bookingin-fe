@@ -8,18 +8,23 @@ import { useCookies } from "react-cookie";
 interface Flight {
   id: number;
   seats_count: number;
-  available_seats_count:number;
+  available_seats_count: number;
   date: string;
   airline: string;
-  price: number; 
+  price: number;
   departure_time: string;
   arrival_time: string;
   departure_airport: string;
-  last_check_in:string;
+  last_check_in: string;
   arrival_airport: string;
   plane: {
     name: string;
     description: string;
+  };
+  seats: {
+    id: number;
+    name: string;
+    available: boolean;
   };
 }
 

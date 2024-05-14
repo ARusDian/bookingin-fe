@@ -26,9 +26,11 @@ const HotelCard: React.FC<HotelCardProps> = ({ hotel }) => {
           Managed by: {hotel.user.name}
         </p>
       </div>
-      <div className="bg-pink-500 rounded-b-lg text-white text-center p-3 uppercase font-bold cursor-pointer hover:bg-pink-600 transition-colors">
-        <Link to={`./payments/${hotel.id}`}>Book Hotel Room</Link>
-      </div>
+      <Link to={`/hotel/payments/${hotel.id}`}>
+        <div className="bg-pink-500 rounded-b-lg text-white text-center p-3 uppercase font-bold cursor-pointer hover:bg-pink-600 transition-colors">
+          Book Hotel Room
+        </div>
+      </Link>
     </div>
   );
 };

@@ -1,30 +1,56 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import api from "@lib/api";
+import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useMutation } from "@tanstack/react-query";
 import DatePicker from "react-datepicker";
+import { AxiosError } from "axios";
 import "react-datepicker/dist/react-datepicker.css";
+import { RoomTransaction, AxiosErrorResponse } from "@lib/model";
+
+interface Hotel {
+  id: number;
+  name: string;
+  address: string;
+  description: string;
+  user: {
+    name: string;
+  };
+  rooms: Room[];
+}
 
 interface Room {
   id: number;
-  selected: boolean;
+  name: string;
+  description: string;
+  type: {
+    id: number;
+    name: string;
+    price: number;
+    selected: boolean;
+  };
 }
 
-const HotelForm: React.FC = () => {
-  const [file, setFile] = useState<File | null>(null);
+interface HotelFormProps {
+  hotel: Hotel;
+}
+
+const HotelForm: React.FC<HotelFormProps> = ({ hotel }) => {
+  const navigate = useNavigate();
+  const [cookies] = useCookies(["token"]);
   const [acceptedPolicy, setAcceptedPolicy] = useState<boolean>(false);
   const [selectedDateIn, setSelectedDateIn] = useState<Date | null>(null);
   const [selectedDateOut, setSelectedDateOut] = useState<Date | null>(null);
+  const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
   const [rooms, setRooms] = useState<Room[]>([
-    { id: 1, selected: false },
-    { id: 2, selected: false },
-    { id: 3, selected: false },
-    { id: 4, selected: false },
+    hotel.rooms.map((room)=> ({
+      ...room,
+      selected: false,
+    }))
   ]);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const fileList = event.target.files;
-    if (fileList && fileList.length > 0) {
-      setFile(fileList[0]);
-    }
-  };
 
   const handleDateChangeIn = (date: Date | null) => {
     setSelectedDateIn(date);
@@ -34,29 +60,84 @@ const HotelForm: React.FC = () => {
     setSelectedDateOut(date);
   };
 
-  const handleRoomSelection = (roomId: number) => {
-    const updatedRooms = rooms.map((room) =>
-      room.id === roomId ? { ...room, selected: !room.selected } : room
-    );
-    setRooms(updatedRooms);
+  const handleRoomSelection = (room: Room) => {
+    setSelectedRoom(room);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (file && acceptedPolicy && selectedDateIn && selectedDateOut) {
-      console.log("File:", file);
-      console.log("Accepted Policy:", acceptedPolicy);
-      console.log("Selected Check-in Date:", selectedDateIn);
-      console.log("Selected Check-out Date:", selectedDateOut);
-      console.log("Selected Rooms:", rooms.filter(room => room.selected).map(room => room.id));
-    } else {
-      alert("Please fill all fields and accept the policy to proceed.");
+  const postHotel = async (hotelData: RoomTransaction, token: string) => {
+    try {
+      const response = await api.post("/user/reservation/buy", hotelData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return response.data;
+    } catch (error) {
+      throw error;
     }
   };
 
+  const { mutate, isPending } = useMutation({
+    mutationFn: (data: RoomTransaction) => postHotel(data, cookies.token),
+    onError: (error: AxiosError) => {
+      const errorData: AxiosErrorResponse = error.response
+        ?.data as AxiosErrorResponse;
+      toast.error(errorData.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    },
+    onSuccess: (data) => {
+      console.log(data);
+      navigate("/post-payments", { relative: "path" });
+    },
+  });
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!selectedRoom || !acceptedPolicy) {
+      toast.error("Please select a room and accept the policy to proceed.");
+      return;
+    }
+    mutate({
+      room_id: selectedRoom.id,
+      check_in: selectedDateIn ? selectedDateIn.toISOString() : "",
+      check_out: selectedDateOut ? selectedDateOut.toISOString() : "",
+      id: 0,
+      code: "",
+      transaction_id: 0,
+      user_id: 0,
+      created_at: "",
+      updated_at: "",
+      user: {
+        id: 0,
+        name: ""
+      },
+      hotel_id: 0,
+      room: {
+        id: 0,
+        name: "",
+        description: ""
+      }
+    });
+  };
+
   return (
-    <form onSubmit={handleSubmit} className="mt-4 p-6 rounded-lg bg-gray-200 shadow-md">
+    <form
+      onSubmit={handleSubmit}
+      className="mt-4 p-6 rounded-lg bg-gray-200 shadow-md"
+    >
       <div className="mb-4">
+        <h3 className="text-lg font-semibold mb-2">
+          Ketentuan Pemesanan Reservasi Hotel
+        </h3>
+        <ul className="list-disc pl-5">
+          {/* Your hotel reservation policy */}
+        </ul>
         <label className="block text-sm font-medium text-gray-700">
           Check In pada:
         </label>
@@ -76,17 +157,17 @@ const HotelForm: React.FC = () => {
         <div className="mt-4">
           Pilih Kamar:
           <div className="grid grid-cols-5 gap-4">
-            {rooms.map((room) => (
+            {hotel.rooms.map((room) => (
               <button
                 key={room.id}
                 className={`${
-                  room.selected
+                  selectedRoom === room
                     ? "bg-green-500 text-white"
                     : "bg-gray-300 text-gray-800"
                 } py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 focus:outline-none`}
-                onClick={() => handleRoomSelection(room.id)}
+                onClick={() => handleRoomSelection(room)}
               >
-                Kamar {room.id}
+                Kamar {room.name}
               </button>
             ))}
           </div>

@@ -1,12 +1,13 @@
 import React from 'react';
 import api from "@lib/api";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { useQuery } from "@tanstack/react-query";
 import Footer from "@components/Footer";
 import Navbar from "@components/Navbar";
 import FlightCardPayments from "./components/FlightCardPayments";
 import FlightForm from "./components/FlightForm";
+import { MdOutlineArrowCircleLeft } from "react-icons/md";
 
 interface Flight {
   id: number;
@@ -23,21 +24,27 @@ interface Flight {
   plane: {
     name: string;
     description: string;
+    airline: {
+      name: string;
+      description: string;
+      address: string;
+    };
   };
   seats: {
     id: number;
     name: string;
     available: boolean;
-  };
+  }[];
 }
-
 type FlightResponse = {
-  data: Flight[] | null; 
+  data: Flight[];
+  total: number;
 }
 
 const FlightPayments = () => {
   const { flightId } = useParams<{ flightId: string }>();
   const [cookies] = useCookies(["token"]);
+  console.log(flightId)
 
   const {
     data: flightsData,
@@ -57,7 +64,9 @@ const FlightPayments = () => {
     <>
       <Navbar />
       <div className="p-8">
-        <h1 className="text-6xl mt-24 font-bold mb-10">Book Now!</h1>
+        
+        <Link to="/flight" className="text-6xl mt- font-bold"><MdOutlineArrowCircleLeft className='text-black mt-12 hover:text-pink-400'/></Link>
+        <h1 className="text-6xl mt-8 font-bold mb-10">Bookingin Sekarang!</h1>
         {isLoading ? (
           <p>Loading flights...</p>
         ) : isError || flights.length === 0 ? (
@@ -70,7 +79,7 @@ const FlightPayments = () => {
               </div>
             ))}
             {flights.map((flight: Flight) => (
-              <div key={flight.id} className="flex-1">
+              <div key={flight.id} className="flex-1 mt-4">
                 <FlightCardPayments flight={flight} />
               </div>
             ))}

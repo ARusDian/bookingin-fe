@@ -30,7 +30,7 @@ const router = createBrowserRouter([
       },
       {
         index: true,
-        path: "payments/:id",
+        path: "payments/:hotelId",
         element: <HotelPayments />,
       },
     ],

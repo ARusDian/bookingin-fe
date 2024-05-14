@@ -25,7 +25,17 @@ interface Flight {
   plane: {
     name: string;
     description: string;
+    airline: {
+      name: string;
+      description: string;
+      address: string;
+    };
   };
+  seats: {
+    id: number;
+    name: string;
+    available: boolean;
+  }[];
 }
 interface FlightCardPaymentsProps {
   flight: Flight;
@@ -90,7 +100,15 @@ const FlightCardPayments: React.FC<FlightCardPaymentsProps> = ({ flight }) => {
           <p className="font-bold">{flight.last_check_in}</p>
         </div>
       </div>
-
+      <div className="bg-pink-300 p-2 rounded-b-lg shadow-md">
+        <div className="flex">
+        <p className="text-lg font-semibold">
+          {flight.plane.airline.name} {"-"}
+        </p>
+        <p className="text-lg font-semibold ml-1">{flight.plane.airline.address}</p>
+        </div>
+        <p className="text-gray-700">{flight.plane.airline.description}</p>
+      </div>
     </div>
   );
 };
