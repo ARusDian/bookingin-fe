@@ -4,7 +4,9 @@ import { IoMdAdd } from "react-icons/io";
 import CreateTypeModal from "./CreateTypeModal";
 import { useQuery } from "@tanstack/react-query";
 import api from "@lib/api";
+import { capitalizeFirstLetter } from "@utils/capitalize_first_letter";
 interface Props {
+  type: string;
   state: {
     data: CreateHotelRoom;
     setData: React.Dispatch<React.SetStateAction<CreateHotelRoom>>;
@@ -16,6 +18,7 @@ interface Props {
 }
 
 const RoomCreateForm = ({
+  type,
   state: { data, setData, hotel_id, token, isPending },
   onSubmit,
 }: Props) => {
@@ -147,7 +150,7 @@ const RoomCreateForm = ({
           </div>
         </div>
         <button disabled={isPending} type="submit" className="bg-purple-200 p-2 rounded-lg">
-          Add Room
+          {capitalizeFirstLetter(type)} Room
         </button>
       </form>
     </>

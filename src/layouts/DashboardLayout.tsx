@@ -37,9 +37,11 @@ const DashboardLayout = () => {
             },
           })
           .then((res) => {
+            console.log(res)
             setUser({
               name: res.data.data.name,
               role: res.data.data.role,
+              balance: res.data.data.balance,
             });
           })
           .catch((err) => {
@@ -55,6 +57,10 @@ const DashboardLayout = () => {
     };
 
     if (!cookies.token) {
+      logout();
+      setTimeout(() => {
+        expiredSessionToast();
+      }, 1);
       navigate("/login-dashboard");
     } else {
       getProfile();
@@ -71,23 +77,23 @@ const DashboardLayout = () => {
 
   return (
     <>
-    <Helmet>
-      <title>Dashboard</title>
-    </Helmet>
-    <div className="bg-slate-50">
-      <DashboardNavbar
-        handleOpenSidebar={handleOpenSidebar}
-        isSidebarOpen={openSidebar}
-      />
-      <DashboardSidebar isOpen={openSidebar} />
-      <div
-        className={`${
-          openSidebar ? "pl-64" : ""
-        } pt-20 transition-all duration-300 -mb-6`}
-      >
-        <Outlet />
+      <Helmet>
+        <title>Dashboard</title>
+      </Helmet>
+      <div className="bg-slate-50">
+        <DashboardNavbar
+          handleOpenSidebar={handleOpenSidebar}
+          isSidebarOpen={openSidebar}
+        />
+        <DashboardSidebar isOpen={openSidebar} />
+        <div
+          className={`${
+            openSidebar ? "pl-64" : ""
+          } pt-20 transition-all duration-300 -mb-6`}
+        >
+          <Outlet />
+        </div>
       </div>
-    </div>
     </>
   );
 };
