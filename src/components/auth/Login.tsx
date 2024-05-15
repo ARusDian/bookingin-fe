@@ -10,7 +10,6 @@ import Loading from "react-loading";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
-
   const [cookie, setCookie] = useCookies(["token"]);
   const navigate = useNavigate();
 
@@ -48,6 +47,7 @@ const Login = () => {
       })
       .finally(() => {
         setLoading(false);
+        // window.location.reload()
       });
   };
 
@@ -101,13 +101,13 @@ const Login = () => {
         <button
           type="submit"
           disabled={loading}
-          className="bg-pink-400 hover:bg-pink-700 text-white w-full font-bold py-2 px-4 rounded"
+          className="bg-pink-400 hover:bg-pink-700 text-white w-full font-bold py-2 px-4 rounded flex justify-center items-center"
         >
           {loading ? (
-                <Loading type="spin" color="#fff" width={25} height={25} />
-              ) : (
-                "Login"
-              )}
+            <Loading type="spin" color="#fff" width={25} height={25} />
+          ) : (
+            "Login"
+          )}
         </button>
       </form>
     </div>

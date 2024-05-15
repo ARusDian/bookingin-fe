@@ -24,9 +24,7 @@ const FlightList = () => {
                 <p className="text-slate-400 italic">Harga</p>
                 <p className="font-bold text-lg">Rp1.000.000</p>
               </div>
-              <button className="bg-pink-400 flex h-full w-40 px-2 py-8 rounded-lg text-white font-semibold items-center">
-                Booking Tiket Penerbangan
-              </button>
+              
             </div>
           </div>
           <div className="h-28 border rounded-lg flex flex-col justify-center px-8 py-8 shadow">
@@ -47,9 +45,7 @@ const FlightList = () => {
                 <p className="text-slate-400 italic">Harga</p>
                 <p className="font-bold text-lg">Rp1.000.000</p>
               </div>
-              <button className="bg-pink-400 flex h-full w-40 px-2 py-8 rounded-lg text-white font-semibold items-center">
-                Booking Tiket Penerbangan
-              </button>
+              
             </div>
           </div>
           <div className="h-28 border rounded-lg flex flex-col justify-center px-8 py-8 shadow">
@@ -70,9 +66,7 @@ const FlightList = () => {
                 <p className="text-slate-400 italic">Harga</p>
                 <p className="font-bold text-lg">Rp1.000.000</p>
               </div>
-              <button className="bg-pink-400 flex h-full w-40 px-2 py-8 rounded-lg text-white font-semibold items-center">
-                Booking Tiket Penerbangan
-              </button>
+              
             </div>
           </div>
           <div className="h-28 border rounded-lg flex flex-col justify-center px-8 py-8 shadow">
@@ -93,9 +87,7 @@ const FlightList = () => {
                 <p className="text-slate-400 italic">Harga</p>
                 <p className="font-bold text-lg">Rp1.000.000</p>
               </div>
-              <button className="bg-pink-400 flex h-full w-40 px-2 py-8 rounded-lg text-white font-semibold items-center">
-                Booking Tiket Penerbangan
-              </button>
+              
             </div>
           </div>
           <Link to="/flight" className="text-center text-sm text-pink-500 underline underline-offset-2">

@@ -4,10 +4,11 @@ const Footer = () => {
       <p className="text-center text-2xl font-semibold mb-4 ">BookingIn</p>
       <div className="max-w-screen-sm mx-auto space-y-4">
         <p className="text-center text-sm">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis
-          expedita nulla pariatur, tempora aut magni provident hic dolor minus
-          voluptas.
+          Book your next flight and hotel with ease! Enjoy hassle-free
+          reservations and exclusive deals for an unforgettable travel
+          experience.
         </p>
+
         <div className="flex space-x-2 text-sm">
           <div className="flex flex-col gap-4">
             <p>Home</p>

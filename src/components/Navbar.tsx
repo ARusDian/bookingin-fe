@@ -14,6 +14,7 @@ import { currencyFormatter } from "@utils/currency_formatter";
 import ResetPasswordForm from "./auth/ResetPasswordForm";
 import { Link } from "react-router-dom";
 import { UserForm } from "@lib/model";
+import { toast } from 'react-toastify';
 
 type User = {
   id: number;
@@ -25,6 +26,12 @@ type User = {
 };
 
 type UserResponse = {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  balance: number;
+  role: string;
   data: UserForm[];
 };
 
@@ -80,7 +87,7 @@ const Navbar = () => {
     isRefetching,
     isLoading,
     refetch,
-  } = useQuery<UserForm>({
+  } = useQuery<UserResponse>({
     queryKey: ["users"],
     queryFn: () =>
       api
@@ -155,6 +162,8 @@ const Navbar = () => {
                     onClick={() => {
                       logout();
                       removeCookie("token");
+                      window.location.reload()
+                      
                     }}
                     className="px-4 py-2 flex gap-2 items-center cursor-pointer"
                   >
