@@ -61,6 +61,7 @@ const HotelRoomAdd = () => {
       />
       <div className="max-w-2xl mx-auto pt-4 border rounded-lg shadow-md">
         <RoomCreateForm
+        type="create"
           state={{
             hotel_id: hotel_id!,
             token: cookies.token,

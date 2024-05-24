@@ -207,6 +207,9 @@ const Navbar = () => {
                     Lupa Password ?
                   </span>
                 </h1>
+                <Link to="/login-dashboard" className="hover:italic hover:text-pink-400 cursor-pointer">
+                    Mitra atau Admin ?
+                  </Link>
               </div>
             </>
           ) : (

@@ -1,14 +1,13 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
 import { MdEventSeat } from "react-icons/md";
 import api from "@lib/api";
 import { useCookies } from "react-cookie";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { FlightTicket, AxiosErrorResponse } from "@lib/model";
+import { AxiosErrorResponse } from "@lib/model";
 
 interface Flight {
   id: number;
@@ -38,6 +37,11 @@ interface Flight {
   }[];
 }
 
+interface BuyTicket {
+  plane_flight_id: number;
+  plane_seat_id: number;
+}
+
 interface Seat {
   id: number;
   name: string;
@@ -50,7 +54,6 @@ interface FlightFormProps {
 }
 
 const FlightForm: React.FC<FlightFormProps> = ({ flight }) => {
-  const navigate = useNavigate();
   const [cookies] = useCookies(["token"]);
   const [acceptedPolicy, setAcceptedPolicy] = useState<boolean>(false);
   const [seats, setSeats] = useState<Seat[]>(
@@ -60,23 +63,22 @@ const FlightForm: React.FC<FlightFormProps> = ({ flight }) => {
     }))
   );
 
-  const queryClient = useQueryClient(); 
-
-  const postFlight = async (flightData: FlightTicket, token: string) => {
-    try {
-      const response = await api.post("/user/ticket/buy", flightData, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
+  const postFlight = async (flightData: BuyTicket, token: string) => {
+    // try {
+    const response = await api.post("/user/ticket/buy", flightData, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+    // } catch (error) {
+    //   throw error;
+    // }
   };
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: (data: FlightTicket) => postFlight(data, cookies.token),
+  const { mutate } = useMutation({
+    mutationFn: (data: BuyTicket) => postFlight(data, cookies.token),
     onError: (error: AxiosError) => {
-      const errorData: AxiosErrorResponse = error.response?.data as AxiosErrorResponse;
+      const errorData: AxiosErrorResponse = error.response
+        ?.data as AxiosErrorResponse;
       toast.error(errorData.message, {
         position: "top-right",
         autoClose: 5000,
@@ -88,8 +90,42 @@ const FlightForm: React.FC<FlightFormProps> = ({ flight }) => {
         theme: "light",
       });
     },
-    onSuccess: () => {
-      toast.success("Tiket berhasil dipesan! Silahkan lihat bukti Transaksi pada Riwayat Transaksi !", {
+    // onSuccess: () => {
+    //   toast.success(
+    //     "Tiket berhasil dipesan! Silahkan lihat bukti Transaksi pada Riwayat Transaksi !",
+    //     {
+    //       position: "top-right",
+    //       autoClose: 2000,
+    //       hideProgressBar: false,
+    //       closeOnClick: false,
+    //       pauseOnHover: true,
+    //       draggable: true,
+    //       progress: undefined,
+    //       theme: "light",
+    //       onClose: () => window.location.reload(),
+    //     }
+    //   );
+    // },
+  });
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const selectedSeat = seats.filter((seat) => seat.selected);
+    if (!selectedSeat || !acceptedPolicy) {
+      toast.error("Please select a seat and accept the policy to proceed.");
+      return;
+    }
+    console.log(selectedSeat);
+
+    for (let i = 0; i < selectedSeat.length; i++) {
+      mutate({
+        plane_flight_id: flight.id,
+        plane_seat_id: selectedSeat[i].id,
+      });
+    }
+    toast.success(
+      "Tiket berhasil dipesan! Silahkan lihat bukti Transaksi pada Riwayat Transaksi !",
+      {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: false,
@@ -98,34 +134,9 @@ const FlightForm: React.FC<FlightFormProps> = ({ flight }) => {
         draggable: true,
         progress: undefined,
         theme: "light",
-        onClose: () => window.location.reload() 
-      });
-
-    },
-  });
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const selectedSeat = seats.find((seat) => seat.selected);
-    if (!selectedSeat || !acceptedPolicy) {
-      toast.error("Please select a seat and accept the policy to proceed.");
-      return;
-    }
-    mutate({
-      plane_flight_id: flight.id,
-      plane_seat_id: selectedSeat.id,
-      id: 0,
-      code: "",
-      transaction_id: 0,
-      user_id: 0,
-      created_at: "",
-      updated_at: "",
-      user: {
-        id: 0,
-        name: "",
-      },
-      deleted_at: null,
-    });
+        onClose: () => window.location.reload(),
+      }
+    );
   };
 
   const handleSeatSelection = (seatId: number) => {
@@ -161,14 +172,16 @@ const FlightForm: React.FC<FlightFormProps> = ({ flight }) => {
             Harga tiket dapat berubah tanpa pemberitahuan sebelumnya.
           </li>
           <li className="mb-2">
-            Penumpang hanya perlu memperlihatkan riwayat transaksi soft copy ataupun hard copy
+            Penumpang hanya perlu memperlihatkan riwayat transaksi soft copy
+            ataupun hard copy
           </li>
         </ul>
         <div className="mt-4">
           Pilih Tempat:
           <div className="grid grid-cols-12 gap-2">
             {seats.map((seat) => (
-              <button type="button"
+              <button
+                type="button"
                 key={seat.id}
                 className={`py-2 px-4 rounded-md transition duration-300 ease-in-out transform ${
                   seat.selected

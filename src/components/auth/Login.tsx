@@ -47,7 +47,7 @@ const Login = () => {
       })
       .finally(() => {
         setLoading(false);
-        // window.location.reload()
+        window.location.reload()
       });
   };
 

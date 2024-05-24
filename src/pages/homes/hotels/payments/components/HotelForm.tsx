@@ -75,7 +75,6 @@ const HotelForm: React.FC<HotelFormProps> = ({ hotel }) => {
     }
   };
 
- 
   const { mutate, isPending } = useMutation({
     mutationFn: (data: RoomTransaction) => postHotel(data, cookies.token),
     onError: (error: AxiosError) => {
@@ -133,9 +132,29 @@ const HotelForm: React.FC<HotelFormProps> = ({ hotel }) => {
       className="mt-4 p-6 rounded-lg bg-gray-200 shadow-md"
     >
       <div className="mb-4">
-        <h3 className="text-lg text-3xl font-bold mb-2">
-          Ketentuan Pemesanan Reservasi Hotel
+        <h3 className="text-lg font-semibold mb-2">
+          Ketentuan Pemesanan Tiket
         </h3>
+        <ul className="list-disc pl-5">
+          <li className="mb-2">
+            Pemesanan reservasi hanya dapat dilakukan oleh orang dewasa (usia di
+            atas 18 tahun).
+          </li>
+          <li className="mb-2">
+            Pembatalan reservasi dapat dilakukan dengan syarat dan ketentuan yang
+            berlaku.
+          </li>
+          <li className="mb-2">
+            Harga reservasi dapat berubah tanpa pemberitahuan sebelumnya.
+          </li>
+          <li className="mb-2">
+            Penumpang hanya perlu memperlihatkan riwayat transaksi soft copy
+            ataupun hard copy
+          </li>
+          <li className="mb-2">
+            Maksimal pemesanan reservasi dilakukan 7 hari sebelum check-in"
+          </li>
+        </ul>
         <ul className="list-disc pl-5">
           {/* Your hotel reservation policy */}
         </ul>
@@ -162,7 +181,6 @@ const HotelForm: React.FC<HotelFormProps> = ({ hotel }) => {
               <p className="place-content-center">{room.name}</p>
               <button
                 key={room.id}
-                
                 className={`${
                   selectedRoom === room
                     ? "bg-green-500 text-white"
@@ -173,7 +191,6 @@ const HotelForm: React.FC<HotelFormProps> = ({ hotel }) => {
                 <p className="grid grid-cols-1">
                   <span>{room.type.name}</span>
                   <span>{currencyFormatter(room.type.price)}</span>
-                  
                 </p>
               </button>
             </div>

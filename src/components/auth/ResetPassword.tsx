@@ -2,17 +2,21 @@ import { useState } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import Footer from "@components/Footer";
 import Navbar from "@components/Navbar";
+import { useSearchParams } from "react-router-dom";
+import api from "@lib/api";
 
 const ResetPassword = () => {
-  const [email, setEmail] = useState("");
+  // const [email, setEmail] = useState("");
+  const [searchParams] = useSearchParams();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleResetPassword = () => {
-    if (!email || !password || !confirmPassword) {
+  const handleResetPassword = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!searchParams.get("email") || !password || !confirmPassword) {
       setErrorMessage("Please fill in all fields.");
     } else if (password !== confirmPassword) {
       setErrorMessage("Passwords do not match.");
@@ -20,6 +24,23 @@ const ResetPassword = () => {
       console.log("Reset password logic");
       // Perform reset password logic here
     }
+
+    api
+      .post(
+        `/reset-password`,
+        {
+          token: searchParams.get("token"),
+          email: searchParams.get("email"),
+          password
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -31,8 +52,8 @@ const ResetPassword = () => {
           {errorMessage && (
             <div className="text-red-500 mb-4">{errorMessage}</div>
           )}
-          <form onSubmit={(e) => e.preventDefault()}>
-            <div className="mb-4">
+          <form onSubmit={handleResetPassword}>
+            {/* <div className="mb-4">
               <label
                 htmlFor="email"
                 className="block text-sm font-medium text-gray-700"
@@ -46,7 +67,7 @@ const ResetPassword = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-            </div>
+            </div> */}
             <div className="mb-4">
               <label
                 htmlFor="password"
@@ -95,9 +116,7 @@ const ResetPassword = () => {
                 </button>
               </div>
             </div>
-            <button
-              className="bg-pink-400 hover:bg-pink-600 text-white w-full font-bold py-2 px-4 rounded"
-            >
+            <button className="bg-pink-400 hover:bg-pink-600 text-white w-full font-bold py-2 px-4 rounded">
               Ganti Password
             </button>
           </form>

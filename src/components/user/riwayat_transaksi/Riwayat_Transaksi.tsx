@@ -1,6 +1,7 @@
 import api from "@lib/api";
 import { useCookies } from "react-cookie";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
 
 interface Transaction {
   id: number;
@@ -44,6 +45,7 @@ const RiwayatTransaksi: React.FC = () => {
             <p>{transaction.description}</p>
             <p>Created at: {new Date(transaction.created_at).toLocaleDateString()}</p>
           </div>
+          
         </div>
       ))}
       {isLoading && <p>Loading transactions...</p>}

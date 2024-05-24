@@ -1,37 +1,38 @@
-import React, { useState } from 'react';
-import { toast } from 'react-toastify'; 
+import React, { useState } from "react";
+import { toast } from "react-toastify";
+import api from "@lib/api";
 
 const ResetPasswordForm = () => {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
 
-  const handleSubmit = async (event: { preventDefault: () => void; }) => {
+  const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
 
-    try {
-      const response = await fetch(`/api/forgot-password`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+    api
+      .post(
+        `/forgot-password`,
+        {
+          email,
         },
-        body: JSON.stringify({ email }), 
-      });
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Could not send reset password email.');
-      }
-
-      toast.success('Email untuk reset password telah dikirim!');
-    } catch (error) {
-      toast.error(`Error: ${error.message}`);
-    }
+    toast.success("Email untuk reset password telah dikirim!");
   };
 
   return (
     <>
       <form className="mb-4" onSubmit={handleSubmit}>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+        <label
+          htmlFor="email"
+          className="block text-sm font-medium text-gray-700"
+        >
           Email:
         </label>
         <input
